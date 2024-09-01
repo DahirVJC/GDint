@@ -1,0 +1,10 @@
+# ninja log v6
+208	253	1725155194588301603	CLionProjects	21a66966994eb0bc
+1	239	1725155094196280675	CMakeFiles/CLionProjects.dir/FileHandler.cpp.o	2a8c2a9a677eebdb
+1	208	1725155194381644152	CMakeFiles/CLionProjects.dir/PreprocessCode.cpp.o	7f163f2e7b7ad8ee
+1	155	1725155094196280675	CMakeFiles/CLionProjects.dir/CleanCharacters.cpp.o	c7a2899b7624a352
+0	23	1725155211704209553	build.ninja	b5f4932387acfd46
+1	212	1725155216224010693	CMakeFiles/CLionProjects.dir/PreprocessCode.cpp.o	7f163f2e7b7ad8ee
+212	256	1725155216434001471	CLionProjects	21a66966994eb0bc
+1	213	1725155446307925326	CMakeFiles/CLionProjects.dir/PreprocessCode.cpp.o	7f163f2e7b7ad8ee
+213	253	1725155446521250476	CLionProjects	21a66966994eb0bc

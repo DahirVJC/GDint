@@ -1,0 +1,17 @@
+Inicio:
+Imprimir “Hola GDint” \(Esto es un comentario)\
+variable a igual_a 0
+Leer a
+a igual_a 3+2
+constante PI = 3.1416
+Si a no es_mayor_a PI Entonces
+Imprimir “Condicional”
+Imprimir “Condicional 1”
+Sino
+Imprimir “Condicional 2” \(El indentado se elimina)\
+FinSi
+Si PI !< a Entonces \(También funciona con símbolos)
+	Imprimir “Condicion 2”
+FinSi
+variable c igual_a ObtenerApi https://pokeapi.co/api/v2/pokemon/ditto
+Fin
