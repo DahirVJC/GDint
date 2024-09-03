@@ -13,5 +13,5 @@ FinSi
 Si PI !< a Entonces \(También funciona con símbolos)
 	Imprimir “Condicion 2”
 FinSi
-variable c igual_a ObtenerApi https://pokeapi.co/api/v2/pokemon/ditto
+variable c igual_a ObtenerApi "https://pokeapi.co/api/v2/pokemon/ditto"
 Fin
