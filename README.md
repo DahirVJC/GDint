@@ -20,7 +20,7 @@
 - **Justificación del nuevo compilador:** El compilador se creará para plantear una propuesta de lenguaje pseudocódigo más cercano al lenguaje natural. Además, el nuevo compilador ofrecerá una manera en la que el programador realice llamadas a API y leer archivos, expandiendo su potencial para ofrecer un acercamiento a las tecnologías web y programas con acceso al sistema de archivos. Otro punto a destacar es que la potencia añadida del compilador
 
 ## Arquitectura y Diseño del Compilador
-- **Diagrama de bloques:**
+- **Diagrama de bloques:** ![Diagrama de bloques](/resources/GDint.drawio.png)
 
 - **Explicación del flujo de datos:** El compilador recibe un flujo de caracteres en el formato GDint, pasa por los análisis léxico, sintáctico y semántico para crear un flujo de tokens y árboles sintácticos para crear la tabla de símbolos, la cual, es usada para generar código intermedio que es optimizado para producir código en el lenguaje de programación de python. Al final, el código generado es optimizado y se entrega como la salida del compilador.
 - **Decisiones de diseño:** Se utiliza la arquitectura típica de un compilador, solo que se especifica que el flujo de caracteres es pseudocódigo GDint y la salida es código python en vez de código máquina.
