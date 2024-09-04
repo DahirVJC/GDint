@@ -27,12 +27,21 @@
 
 ## Análisis Léxico
 - **Análisis léxico:**
+![Tabla NFA a DFA](https://docs.google.com/spreadsheets/d/1d-Ae-Xse4y_mCXiTdAH2pxOPNWBGBultBXIrC_2EEV8/edit?usp=sharing)
+![Automata](/resources/analizador_Lexico.jpg)
   - Tokenización, identificación de palabras clave, operadores, etc.
-Identificador: [a-z|A-Z][\w\S]*
-integer: \d+
-keyword: (Inicio|Imprimir|variable|constante|Leer,|Si|Entonces|Sino|FinSi|LeerArchivo|Consultar)
-whitespace: \s+
+Identificador: [a-z|A-Z|_][a-z|A-Z|_]*
+Constante: [+|-]?\d+
+Keyword: (si|variable|entonces|sino|finsi|publicar|obtener|cambiar|borrar)
+Whitespace: [\t\r\f\v]+
+Puntuacion: [\n| |"|(|)|,|#]
+Operadores: [+|-|=|*|/|==|**||**|&&|<|>|!]
 - **Ejemplos:**
+- a -> Identificador
+- +98 -> Constante
+- variable -> Keyword
+-    -> Whitespace
+- || -> Operador
 
 ## Análisis Sintáctico
 
