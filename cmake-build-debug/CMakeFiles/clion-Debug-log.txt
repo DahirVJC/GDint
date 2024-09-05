@@ -1,4 +1,4 @@
-/home/hij555/.local/share/JetBrains/Toolbox/apps/clion/bin/cmake/linux/x64/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/home/hij555/.local/share/JetBrains/Toolbox/apps/clion/bin/ninja/linux/x64/ninja -G Ninja -S /home/hij555/Programming/CLionProjects -B /home/hij555/Programming/CLionProjects/cmake-build-debug
--- Configuring done (0.0s)
--- Generating done (0.0s)
--- Build files have been written to: /home/hij555/Programming/CLionProjects/cmake-build-debug
+C:\Users\dahir\AppData\Local\Programs\CLion\bin\cmake\win\x64\bin\cmake.exe -DCMAKE_BUILD_TYPE=Debug -G "MinGW Makefiles" -S C:\Users\dahir\OneDrive\Documentos\Programming\Compiladores -B C:\Users\dahir\OneDrive\Documentos\Programming\Compiladores\cmake-build-debug
+-- Configuring done (0.3s)
+-- Generating done (0.1s)
+-- Build files have been written to: C:/Users/dahir/OneDrive/Documentos/Programming/Compiladores/cmake-build-debug
