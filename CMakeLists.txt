@@ -15,5 +15,7 @@ add_executable(CLionProjects
         Lexer/Lexer.h
         TokensTable.h
         Lexer/Lexer.cpp
-        Lexer/StatesToType.h
-        Lexer/Automata.h)
+        Lexer/StatesInfo.h
+        Lexer/Automata.cpp
+        Lexer/Automata.h
+)

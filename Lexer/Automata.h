@@ -1,10 +1,21 @@
 ﻿//
-// Created by Dahir on 04/09/2024.
+// Created by Dahir on 06/09/2024.
 //
 
-#ifndef TRANSITION_H
-#define TRANSITION_H
-class Automata {
+#ifndef AUTOMATA_H
+#define AUTOMATA_H
+#include <map>
 
+
+class Automata {
+private:
+    std::map<int, std::map<char, int>> transitionTable;
+    public:
+    Automata(const std::map<int, std::map<char, int>>& transitions)
+        : transitionTable(transitions){}
+    int processTransition(int state, char symbol);
 };
-#endif //TRANSITION_H
+
+
+
+#endif //AUTOMATA_H

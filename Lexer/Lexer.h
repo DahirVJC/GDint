@@ -19,6 +19,7 @@ private:
     };
     std::list<Tokens> tokens;
     int state = 0;
+    int line = 0;
 public:
     void ReadInput(std::string code);
 };

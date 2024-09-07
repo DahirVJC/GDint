@@ -2,6 +2,8 @@ file(REMOVE_RECURSE
   "CLionProjects.exe"
   "CLionProjects.exe.manifest"
   "CLionProjects.pdb"
+  "CMakeFiles/CLionProjects.dir/Lexer/Automata.cpp.obj"
+  "CMakeFiles/CLionProjects.dir/Lexer/Automata.cpp.obj.d"
   "CMakeFiles/CLionProjects.dir/Lexer/Lexer.cpp.obj"
   "CMakeFiles/CLionProjects.dir/Lexer/Lexer.cpp.obj.d"
   "CMakeFiles/CLionProjects.dir/Preprocessing/CleanCharacters.cpp.obj"

@@ -128,6 +128,30 @@ CLionProjects/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionProjects.dir\build.make CMakeFiles/CLionProjects.dir/build
 .PHONY : CLionProjects/fast
 
+Lexer/Automata.obj: Lexer/Automata.cpp.obj
+.PHONY : Lexer/Automata.obj
+
+# target to build an object file
+Lexer/Automata.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionProjects.dir\build.make CMakeFiles/CLionProjects.dir/Lexer/Automata.cpp.obj
+.PHONY : Lexer/Automata.cpp.obj
+
+Lexer/Automata.i: Lexer/Automata.cpp.i
+.PHONY : Lexer/Automata.i
+
+# target to preprocess a source file
+Lexer/Automata.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionProjects.dir\build.make CMakeFiles/CLionProjects.dir/Lexer/Automata.cpp.i
+.PHONY : Lexer/Automata.cpp.i
+
+Lexer/Automata.s: Lexer/Automata.cpp.s
+.PHONY : Lexer/Automata.s
+
+# target to generate assembly for a file
+Lexer/Automata.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionProjects.dir\build.make CMakeFiles/CLionProjects.dir/Lexer/Automata.cpp.s
+.PHONY : Lexer/Automata.cpp.s
+
 Lexer/Lexer.obj: Lexer/Lexer.cpp.obj
 .PHONY : Lexer/Lexer.obj
 
@@ -233,6 +257,9 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... CLionProjects
+	@echo ... Lexer/Automata.obj
+	@echo ... Lexer/Automata.i
+	@echo ... Lexer/Automata.s
 	@echo ... Lexer/Lexer.obj
 	@echo ... Lexer/Lexer.i
 	@echo ... Lexer/Lexer.s
