@@ -2,9 +2,8 @@
 // Created by Dahir on 04/09/2024.
 //
 
-#ifndef STATESTOTYPE_H
-#define STATESTOTYPE_H
-#include <string>
+#ifndef STATESINFO_H
+#define STATESINFO_H
 
 // Type of Token
 constexpr int identifier[]={2};
@@ -15,4 +14,4 @@ constexpr int constant[]={10};
 
 // Non-final states
 constexpr int nonFinal[]={0,15,16};
-#endif //STATESTOTYPE_H
+#endif //STATESINFO_H

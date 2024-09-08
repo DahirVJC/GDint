@@ -18,4 +18,6 @@ add_executable(CLionProjects
         Lexer/StatesInfo.h
         Lexer/Automata.cpp
         Lexer/Automata.h
+        Lexer/LexerMain.cpp
+        Lexer/TransitionTable.h
 )

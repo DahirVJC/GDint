@@ -8,7 +8,6 @@
 
 
 class Automata {
-private:
     std::map<int, std::map<char, int>> transitionTable;
     public:
     Automata(const std::map<int, std::map<char, int>>& transitions)
