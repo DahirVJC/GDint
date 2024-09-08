@@ -1,7 +1,7 @@
 variable a = 0
 a = 3+2
-si a < 4 entonces
+si a < 4 && b ==-3 entonces
 obtener "https://pokeapi.co/api/v2/pokemon/ditto"
 sino
 finsi
-obtener "https://pokeapi.co/api/v2/pokemon/ditto"
+#obtener "https://pokeapi.co/api/v2/pokemon/ditto"

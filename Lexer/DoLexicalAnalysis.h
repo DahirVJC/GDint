@@ -7,8 +7,9 @@
 #include <list>
 
 inline void printTokens(const std::list<Token>& tokens) {
-    for (const auto& token : tokens) {
-        std::cout << "Token(name: " << token.name
+    for (const Token& token : tokens) {
+        std::string nameToPrint = (token.name == "\n") ? "\\n" : token.name;
+        std::cout << "Token(name: " << nameToPrint
                   << ", type: " << token.type
                   << ", line: " << token.line
                   << ")" << std::endl;

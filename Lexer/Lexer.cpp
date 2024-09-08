@@ -16,15 +16,20 @@ void Lexer::ReadInput(const std::string& code) {
     std::string word = "";
     int currentIndex = 0;
     int state = 0;
-    std::cout << "Code: " << code.length() << std::endl;
+    int currentLine = 1;
     while(currentIndex < code.length()) {
         const int prevState = state;
         state = automata.processTransition(state,code[currentIndex]);
         if (state == -1) {
             state=0;
-            if (!word.empty()) tokens.emplace_back(word,testState(prevState),line);
+            if (std::find(std::begin(nonFinal), std::end(nonFinal), prevState) != std::end(nonFinal)) {
+                std::cerr << "Lexical Error: string not recognized by the automata detected.\n";
+                //return;
+                exit(0);
+            }
+            if (!word.empty()) tokens.emplace_back(word,testState(prevState),currentLine);
+            if (word == "\n") currentLine++;
             word = "";
-            if (word == "\n") line++;
         }
         else {
             word += code[currentIndex];
