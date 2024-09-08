@@ -3,7 +3,6 @@
 #include <iostream>
 #include <cerrno>
 #include <cstring>
-#include "CleanCharacters.hpp"
 
 std::string readFileToString(const std::string& filePath) {
     std::ifstream in_file(filePath);

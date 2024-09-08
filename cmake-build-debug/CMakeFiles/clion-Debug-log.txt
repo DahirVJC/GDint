@@ -1,4 +1,13 @@
 /home/hij555/.local/share/JetBrains/Toolbox/apps/clion/bin/cmake/linux/x64/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/home/hij555/.local/share/JetBrains/Toolbox/apps/clion/bin/ninja/linux/x64/ninja -G Ninja -S /home/hij555/Programming/CLionProjects -B /home/hij555/Programming/CLionProjects/cmake-build-debug
 -- Configuring done (0.0s)
--- Generating done (0.0s)
--- Build files have been written to: /home/hij555/Programming/CLionProjects/cmake-build-debug
+CMake Error at CMakeLists.txt:8 (add_executable):
+  Cannot find source file:
+
+    Preprocessing/PreprocessCode.cpp
+
+
+CMake Error at CMakeLists.txt:8 (add_executable):
+  No SOURCES given to target: CLionProjects
+
+
+CMake Generate step failed.  Build files cannot be regenerated correctly.

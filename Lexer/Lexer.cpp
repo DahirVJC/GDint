@@ -3,11 +3,15 @@
 //
 #include "Lexer.h"
 #include "StatesInfo.h"
-
-#include <iostream>
+#include "TokenStruct.h"
 #include <list>
 #include <algorithm>
 #include <iterator>
+
+Lexer::Lexer() {
+    automata = transitionTable;
+    line = 1;
+}
 
 // Reads the input using the transition table of the automata
 void Lexer::ReadInput(const std::string& code) {
@@ -19,7 +23,7 @@ void Lexer::ReadInput(const std::string& code) {
         state = automata.processTransition(state,code[currentIndex]);
         if (state == -1) {
             state=0;
-            tokens.emplace_back(word,testState(prevState),line);
+            if (!word.empty()) tokens.emplace_back(word,testState(prevState),line);
             if (word == "\n") line++;
         }
         else {
@@ -39,6 +43,6 @@ std::string Lexer::testState(int state) {
     return "";
 }
 
-std::list<Lexer::Token> Lexer::getTokens() {
+std::list<Token> Lexer::getTokens() {
     return tokens;
 }

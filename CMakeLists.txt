@@ -9,8 +9,8 @@ add_executable(CLionProjects
         Preprocessing/BlankCharacters.hpp
         Preprocessing/CleanCharacters.cpp
         Preprocessing/CleanCharacters.hpp
-        Preprocessing/FileHandler.cpp
-        Preprocessing/FileHandler.hpp
+        Tools/FileHandler.cpp
+        Tools/FileHandler.hpp
         Preprocessing/PreprocessCode.cpp
         Lexer/Lexer.h
         TokensTable.h
@@ -18,6 +18,12 @@ add_executable(CLionProjects
         Lexer/StatesInfo.h
         Lexer/Automata.cpp
         Lexer/Automata.h
-        Lexer/LexerMain.cpp
+        Lexer/DoLexicalAnalysis.cpp
         Lexer/TransitionTable.h
+        Compiler/Compiler.cpp
+        Preprocessing/DoPreproccesing.h
+        Lexer/DoLexicalAnalysis.h
+        Lexer/TokenStruct.h
+        Lexer/DoLexicalAnalysis.h
+        Lexer/DoLexicalAnalysis.h
 )
