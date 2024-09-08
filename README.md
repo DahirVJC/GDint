@@ -17,7 +17,7 @@
 ## Revisión del Estado del Arte
 - **Compiladores similares:** PSeInt (PSEInt, s. f.), Scratch (Scratch, s. f.), Pseudocode Online Editor (PseudoEditor, s. f.)
 - **Limitaciones de soluciones actuales:** Todos esos compiladores están limitados a un entorno virtual, por lo que no pueden realizar llamadas a API. Los lenguajes pseudocódigos están limitados a un área, que es la enseñanza de programación básica.
-- **Justificación del nuevo compilador:** El compilador se creará para plantear una propuesta de lenguaje pseudocódigo más cercano al lenguaje natural. Además, el nuevo compilador ofrecerá una manera en la que el programador realice llamadas a API y expandiendo su potencial para ofrecer un acercamiento a las tecnologías web. Otro punto a destacar es que la potencia añadida del compilador
+- **Justificación del nuevo compilador:** El compilador se creará para plantear una propuesta de lenguaje pseudocódigo más cercano al lenguaje natural. Además, el nuevo compilador ofrecerá una manera en la que el programador realice llamadas a API y expandiendo su potencial para ofrecer un acercamiento a las tecnologías web.
 
 ## Arquitectura y Diseño del Compilador
 - **Diagrama de bloques:** ![Diagrama de bloques](/resources/GDint.drawio.png)
@@ -43,6 +43,8 @@
 - variable -> Keyword
 -    -> Whitespace
 - || -> Operador
+  
+![Ejemplo de éxito](/resources/lexerCorrect.jpg)
 
 ## Análisis Sintáctico
 
