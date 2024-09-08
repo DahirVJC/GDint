@@ -9,12 +9,13 @@
 #include <algorithm>
 #include <iterator>
 
+// Reads the input using the transition table of the automata
 void Lexer::ReadInput(const std::string& code) {
     std::string word = "";
     int currentIndex = 0;
     int state = 0;
     while(currentIndex < code.length()) {
-        int prevState = state;
+        const int prevState = state;
         state = automata.processTransition(state,code[currentIndex]);
         if (state == -1) {
             state=0;
@@ -22,11 +23,13 @@ void Lexer::ReadInput(const std::string& code) {
             if (word == "\n") line++;
         }
         else {
+            word += code[currentIndex];
             currentIndex++;
         }
     }
 }
 
+// Identifies the token type of each state
 std::string Lexer::testState(int state) {
     if (std::find(std::begin(identifier), std::end(identifier), state) != std::end(identifier)) return "Identifier";
     if (std::find(std::begin(keywords), std::end(keywords), state) != std::end(keywords)) return "Keyword";

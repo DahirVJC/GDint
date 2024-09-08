@@ -11,12 +11,12 @@
 #include "Automata.h"
 #include "TransitionTable.h"
 
+// The lexer reads code as input and uses an automata to determine the token of each word and place it in the Token table
 class Lexer {
     //Input
     Automata automata = transitionTable;
     //Process
     int line = 0;
-    std::stack<char> stack;
     //Output
     struct Token {
         std::string name;
@@ -26,9 +26,12 @@ class Lexer {
     };
     std::list<Token> tokens;
 public:
+    // Constructor
     Lexer(Automata automata, const int state) : automata(std::move(automata)) {}
+    // Process
     void ReadInput(const std::string& code);
     std::string testState(int state);
+    // Getters
     std::list<Token> getTokens();
 };
 #endif //LEXER_H

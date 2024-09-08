@@ -4,6 +4,7 @@
 
 #include "Automata.h"
 
+// Determine the next state given a state and a symbol. Returns -1 if it is a state of error
 int Automata::processTransition(const int state, const char symbol) {
     if (transitionTable[state].find(symbol) != transitionTable[state].end()) {
         return transitionTable[state][symbol];
