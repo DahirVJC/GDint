@@ -7,10 +7,8 @@
 #include <list>
 #include <algorithm>
 #include <iterator>
-
+#include <iostream>
 Lexer::Lexer() {
-    automata = transitionTable;
-    line = 1;
 }
 
 // Reads the input using the transition table of the automata
@@ -18,12 +16,14 @@ void Lexer::ReadInput(const std::string& code) {
     std::string word = "";
     int currentIndex = 0;
     int state = 0;
+    std::cout << "Code: " << code.length() << std::endl;
     while(currentIndex < code.length()) {
         const int prevState = state;
         state = automata.processTransition(state,code[currentIndex]);
         if (state == -1) {
             state=0;
             if (!word.empty()) tokens.emplace_back(word,testState(prevState),line);
+            word = "";
             if (word == "\n") line++;
         }
         else {

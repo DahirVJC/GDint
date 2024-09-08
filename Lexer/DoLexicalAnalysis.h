@@ -6,7 +6,7 @@
 #include <iostream>
 #include <list>
 
-void printTokens(const std::list<Token>& tokens) {
+inline void printTokens(const std::list<Token>& tokens) {
     for (const auto& token : tokens) {
         std::cout << "Token(name: " << token.name
                   << ", type: " << token.type
@@ -15,7 +15,7 @@ void printTokens(const std::list<Token>& tokens) {
     }
 }
 
-std::list<Token> DoLexicalAnalysis(std::string code) {
+inline std::list<Token> DoLexicalAnalysis(const std::string& code) {
     Lexer lexer;
     lexer.ReadInput(code);
     std::list<Token> TokenTable = lexer.getTokens();

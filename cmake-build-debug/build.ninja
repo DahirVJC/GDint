@@ -63,13 +63,6 @@ build CMakeFiles/CLionProjects.dir/Tools/FileHandler.cpp.o: CXX_COMPILER__CLionP
   OBJECT_DIR = CMakeFiles/CLionProjects.dir
   OBJECT_FILE_DIR = CMakeFiles/CLionProjects.dir/Tools
 
-build CMakeFiles/CLionProjects.dir/Preprocessing/PreprocessCode.cpp.o: CXX_COMPILER__CLionProjects_unscanned_Debug /home/hij555/Programming/CLionProjects/Preprocessing/PreprocessCode.cpp || cmake_object_order_depends_target_CLionProjects
-  DEP_FILE = CMakeFiles/CLionProjects.dir/Preprocessing/PreprocessCode.cpp.o.d
-  FLAGS = -g -std=gnu++14 -fdiagnostics-color=always
-  INCLUDES = -I/home/hij555/Programming/CLionProjects/.,/home/hij555/Programming/CLionProjects
-  OBJECT_DIR = CMakeFiles/CLionProjects.dir
-  OBJECT_FILE_DIR = CMakeFiles/CLionProjects.dir/Preprocessing
-
 build CMakeFiles/CLionProjects.dir/Lexer/Lexer.cpp.o: CXX_COMPILER__CLionProjects_unscanned_Debug /home/hij555/Programming/CLionProjects/Lexer/Lexer.cpp || cmake_object_order_depends_target_CLionProjects
   DEP_FILE = CMakeFiles/CLionProjects.dir/Lexer/Lexer.cpp.o.d
   FLAGS = -g -std=gnu++14 -fdiagnostics-color=always
@@ -84,19 +77,19 @@ build CMakeFiles/CLionProjects.dir/Lexer/Automata.cpp.o: CXX_COMPILER__CLionProj
   OBJECT_DIR = CMakeFiles/CLionProjects.dir
   OBJECT_FILE_DIR = CMakeFiles/CLionProjects.dir/Lexer
 
-build CMakeFiles/CLionProjects.dir/Lexer/LexerMain.cpp.o: CXX_COMPILER__CLionProjects_unscanned_Debug /home/hij555/Programming/CLionProjects/Lexer/LexerMain.cpp || cmake_object_order_depends_target_CLionProjects
-  DEP_FILE = CMakeFiles/CLionProjects.dir/Lexer/LexerMain.cpp.o.d
-  FLAGS = -g -std=gnu++14 -fdiagnostics-color=always
-  INCLUDES = -I/home/hij555/Programming/CLionProjects/.,/home/hij555/Programming/CLionProjects
-  OBJECT_DIR = CMakeFiles/CLionProjects.dir
-  OBJECT_FILE_DIR = CMakeFiles/CLionProjects.dir/Lexer
-
 build CMakeFiles/CLionProjects.dir/Compiler/Compiler.cpp.o: CXX_COMPILER__CLionProjects_unscanned_Debug /home/hij555/Programming/CLionProjects/Compiler/Compiler.cpp || cmake_object_order_depends_target_CLionProjects
   DEP_FILE = CMakeFiles/CLionProjects.dir/Compiler/Compiler.cpp.o.d
   FLAGS = -g -std=gnu++14 -fdiagnostics-color=always
   INCLUDES = -I/home/hij555/Programming/CLionProjects/.,/home/hij555/Programming/CLionProjects
   OBJECT_DIR = CMakeFiles/CLionProjects.dir
   OBJECT_FILE_DIR = CMakeFiles/CLionProjects.dir/Compiler
+
+build CMakeFiles/CLionProjects.dir/Lexer/TransitionTable.cpp.o: CXX_COMPILER__CLionProjects_unscanned_Debug /home/hij555/Programming/CLionProjects/Lexer/TransitionTable.cpp || cmake_object_order_depends_target_CLionProjects
+  DEP_FILE = CMakeFiles/CLionProjects.dir/Lexer/TransitionTable.cpp.o.d
+  FLAGS = -g -std=gnu++14 -fdiagnostics-color=always
+  INCLUDES = -I/home/hij555/Programming/CLionProjects/.,/home/hij555/Programming/CLionProjects
+  OBJECT_DIR = CMakeFiles/CLionProjects.dir
+  OBJECT_FILE_DIR = CMakeFiles/CLionProjects.dir/Lexer
 
 
 # =============================================================================
@@ -106,7 +99,7 @@ build CMakeFiles/CLionProjects.dir/Compiler/Compiler.cpp.o: CXX_COMPILER__CLionP
 #############################################
 # Link the executable CLionProjects
 
-build CLionProjects: CXX_EXECUTABLE_LINKER__CLionProjects_Debug CMakeFiles/CLionProjects.dir/Preprocessing/CleanCharacters.cpp.o CMakeFiles/CLionProjects.dir/Tools/FileHandler.cpp.o CMakeFiles/CLionProjects.dir/Preprocessing/PreprocessCode.cpp.o CMakeFiles/CLionProjects.dir/Lexer/Lexer.cpp.o CMakeFiles/CLionProjects.dir/Lexer/Automata.cpp.o CMakeFiles/CLionProjects.dir/Lexer/LexerMain.cpp.o CMakeFiles/CLionProjects.dir/Compiler/Compiler.cpp.o
+build CLionProjects: CXX_EXECUTABLE_LINKER__CLionProjects_Debug CMakeFiles/CLionProjects.dir/Preprocessing/CleanCharacters.cpp.o CMakeFiles/CLionProjects.dir/Tools/FileHandler.cpp.o CMakeFiles/CLionProjects.dir/Lexer/Lexer.cpp.o CMakeFiles/CLionProjects.dir/Lexer/Automata.cpp.o CMakeFiles/CLionProjects.dir/Compiler/Compiler.cpp.o CMakeFiles/CLionProjects.dir/Lexer/TransitionTable.cpp.o
   FLAGS = -g
   OBJECT_DIR = CMakeFiles/CLionProjects.dir
   POST_BUILD = :

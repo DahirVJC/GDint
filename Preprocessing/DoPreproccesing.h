@@ -7,11 +7,13 @@
 #include <iostream>
 #include "../Tools/FileHandler.hpp"
 #include "CleanCharacters.hpp"
+#include "../Compiler/paths.h"
 
 inline void DoPreprocessing(std::string content) {
     content = cleanCharacters(content);
     std::cout<<content;
-    writeStringToFile(content, "../output/Preprocessing_Code.txt");
+    std::string filePath = outputPath+"Preprocessing_Code.txt";
+    writeStringToFile(content, filePath );
 }
 
 #endif //DOPREPROCCESING_H

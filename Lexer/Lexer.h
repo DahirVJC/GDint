@@ -14,7 +14,7 @@
 // The lexer reads code as input and uses an automata to determine the token of each word and place it in the Token table
 class Lexer {
     //Input
-    Automata automata = transitionTable;
+    Automata automata = transitionTableDFA;
     //Process
     int line = 1;
     //Output

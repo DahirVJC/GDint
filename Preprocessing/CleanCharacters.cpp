@@ -2,7 +2,7 @@
 #include "BlankCharacters.hpp"
 
 inline bool isBlank(const char c) {
-    return c == Space ||
+    return //c == Space ||
            c == HorizontalTab ||
            c == CarriageReturn ||
            c == VerticalTab ||
