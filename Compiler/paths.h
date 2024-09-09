@@ -5,6 +5,6 @@
 #ifndef PATHS_H
 #define PATHS_H
 #include <string>
-std::string inputPath = "/home/hij555/Programming/CLionProjects/Input/";
-std::string outputPath = "/home/hij555/Programming/CLionProjects/Output/";
+std::string inputPath = R"(C:\Users\dahir\OneDrive\Documentos\Programming\Compiladores\Input\)";
+std::string outputPath = R"(C:\Users\dahir\OneDrive\Documentos\Programming\Compiladores\Output\)";
 #endif //PATHS_H

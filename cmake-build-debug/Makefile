@@ -128,6 +128,30 @@ CLionProjects/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionProjects.dir\build.make CMakeFiles/CLionProjects.dir/build
 .PHONY : CLionProjects/fast
 
+Compiler/Compiler.obj: Compiler/Compiler.cpp.obj
+.PHONY : Compiler/Compiler.obj
+
+# target to build an object file
+Compiler/Compiler.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionProjects.dir\build.make CMakeFiles/CLionProjects.dir/Compiler/Compiler.cpp.obj
+.PHONY : Compiler/Compiler.cpp.obj
+
+Compiler/Compiler.i: Compiler/Compiler.cpp.i
+.PHONY : Compiler/Compiler.i
+
+# target to preprocess a source file
+Compiler/Compiler.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionProjects.dir\build.make CMakeFiles/CLionProjects.dir/Compiler/Compiler.cpp.i
+.PHONY : Compiler/Compiler.cpp.i
+
+Compiler/Compiler.s: Compiler/Compiler.cpp.s
+.PHONY : Compiler/Compiler.s
+
+# target to generate assembly for a file
+Compiler/Compiler.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionProjects.dir\build.make CMakeFiles/CLionProjects.dir/Compiler/Compiler.cpp.s
+.PHONY : Compiler/Compiler.cpp.s
+
 Lexer/Automata.obj: Lexer/Automata.cpp.obj
 .PHONY : Lexer/Automata.obj
 
@@ -176,6 +200,30 @@ Lexer/Lexer.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionProjects.dir\build.make CMakeFiles/CLionProjects.dir/Lexer/Lexer.cpp.s
 .PHONY : Lexer/Lexer.cpp.s
 
+Lexer/TransitionTable.obj: Lexer/TransitionTable.cpp.obj
+.PHONY : Lexer/TransitionTable.obj
+
+# target to build an object file
+Lexer/TransitionTable.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionProjects.dir\build.make CMakeFiles/CLionProjects.dir/Lexer/TransitionTable.cpp.obj
+.PHONY : Lexer/TransitionTable.cpp.obj
+
+Lexer/TransitionTable.i: Lexer/TransitionTable.cpp.i
+.PHONY : Lexer/TransitionTable.i
+
+# target to preprocess a source file
+Lexer/TransitionTable.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionProjects.dir\build.make CMakeFiles/CLionProjects.dir/Lexer/TransitionTable.cpp.i
+.PHONY : Lexer/TransitionTable.cpp.i
+
+Lexer/TransitionTable.s: Lexer/TransitionTable.cpp.s
+.PHONY : Lexer/TransitionTable.s
+
+# target to generate assembly for a file
+Lexer/TransitionTable.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionProjects.dir\build.make CMakeFiles/CLionProjects.dir/Lexer/TransitionTable.cpp.s
+.PHONY : Lexer/TransitionTable.cpp.s
+
 Preprocessing/CleanCharacters.obj: Preprocessing/CleanCharacters.cpp.obj
 .PHONY : Preprocessing/CleanCharacters.obj
 
@@ -200,53 +248,29 @@ Preprocessing/CleanCharacters.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionProjects.dir\build.make CMakeFiles/CLionProjects.dir/Preprocessing/CleanCharacters.cpp.s
 .PHONY : Preprocessing/CleanCharacters.cpp.s
 
-Preprocessing/FileHandler.obj: Preprocessing/FileHandler.cpp.obj
-.PHONY : Preprocessing/FileHandler.obj
+Tools/FileHandler.obj: Tools/FileHandler.cpp.obj
+.PHONY : Tools/FileHandler.obj
 
 # target to build an object file
-Preprocessing/FileHandler.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionProjects.dir\build.make CMakeFiles/CLionProjects.dir/Preprocessing/FileHandler.cpp.obj
-.PHONY : Preprocessing/FileHandler.cpp.obj
+Tools/FileHandler.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionProjects.dir\build.make CMakeFiles/CLionProjects.dir/Tools/FileHandler.cpp.obj
+.PHONY : Tools/FileHandler.cpp.obj
 
-Preprocessing/FileHandler.i: Preprocessing/FileHandler.cpp.i
-.PHONY : Preprocessing/FileHandler.i
-
-# target to preprocess a source file
-Preprocessing/FileHandler.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionProjects.dir\build.make CMakeFiles/CLionProjects.dir/Preprocessing/FileHandler.cpp.i
-.PHONY : Preprocessing/FileHandler.cpp.i
-
-Preprocessing/FileHandler.s: Preprocessing/FileHandler.cpp.s
-.PHONY : Preprocessing/FileHandler.s
-
-# target to generate assembly for a file
-Preprocessing/FileHandler.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionProjects.dir\build.make CMakeFiles/CLionProjects.dir/Preprocessing/FileHandler.cpp.s
-.PHONY : Preprocessing/FileHandler.cpp.s
-
-Preprocessing/PreprocessCode.obj: Preprocessing/PreprocessCode.cpp.obj
-.PHONY : Preprocessing/PreprocessCode.obj
-
-# target to build an object file
-Preprocessing/PreprocessCode.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionProjects.dir\build.make CMakeFiles/CLionProjects.dir/Preprocessing/PreprocessCode.cpp.obj
-.PHONY : Preprocessing/PreprocessCode.cpp.obj
-
-Preprocessing/PreprocessCode.i: Preprocessing/PreprocessCode.cpp.i
-.PHONY : Preprocessing/PreprocessCode.i
+Tools/FileHandler.i: Tools/FileHandler.cpp.i
+.PHONY : Tools/FileHandler.i
 
 # target to preprocess a source file
-Preprocessing/PreprocessCode.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionProjects.dir\build.make CMakeFiles/CLionProjects.dir/Preprocessing/PreprocessCode.cpp.i
-.PHONY : Preprocessing/PreprocessCode.cpp.i
+Tools/FileHandler.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionProjects.dir\build.make CMakeFiles/CLionProjects.dir/Tools/FileHandler.cpp.i
+.PHONY : Tools/FileHandler.cpp.i
 
-Preprocessing/PreprocessCode.s: Preprocessing/PreprocessCode.cpp.s
-.PHONY : Preprocessing/PreprocessCode.s
+Tools/FileHandler.s: Tools/FileHandler.cpp.s
+.PHONY : Tools/FileHandler.s
 
 # target to generate assembly for a file
-Preprocessing/PreprocessCode.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionProjects.dir\build.make CMakeFiles/CLionProjects.dir/Preprocessing/PreprocessCode.cpp.s
-.PHONY : Preprocessing/PreprocessCode.cpp.s
+Tools/FileHandler.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionProjects.dir\build.make CMakeFiles/CLionProjects.dir/Tools/FileHandler.cpp.s
+.PHONY : Tools/FileHandler.cpp.s
 
 # Help Target
 help:
@@ -257,21 +281,24 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... CLionProjects
+	@echo ... Compiler/Compiler.obj
+	@echo ... Compiler/Compiler.i
+	@echo ... Compiler/Compiler.s
 	@echo ... Lexer/Automata.obj
 	@echo ... Lexer/Automata.i
 	@echo ... Lexer/Automata.s
 	@echo ... Lexer/Lexer.obj
 	@echo ... Lexer/Lexer.i
 	@echo ... Lexer/Lexer.s
+	@echo ... Lexer/TransitionTable.obj
+	@echo ... Lexer/TransitionTable.i
+	@echo ... Lexer/TransitionTable.s
 	@echo ... Preprocessing/CleanCharacters.obj
 	@echo ... Preprocessing/CleanCharacters.i
 	@echo ... Preprocessing/CleanCharacters.s
-	@echo ... Preprocessing/FileHandler.obj
-	@echo ... Preprocessing/FileHandler.i
-	@echo ... Preprocessing/FileHandler.s
-	@echo ... Preprocessing/PreprocessCode.obj
-	@echo ... Preprocessing/PreprocessCode.i
-	@echo ... Preprocessing/PreprocessCode.s
+	@echo ... Tools/FileHandler.obj
+	@echo ... Tools/FileHandler.i
+	@echo ... Tools/FileHandler.s
 .PHONY : help
 
 
