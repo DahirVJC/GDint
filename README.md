@@ -92,7 +92,7 @@
 
 ## Referencias
 - **Fuentes citadas:** Lista de libros, artículos, papers, y otras fuentes relevantes.
-PSEInt. (s. f.). *PSEInt*. https://pseint.sourceforge.net/
-PseudoEditor. (s. f.). *Pseudocode Editor online - PseudoEditor*. https://pseudoeditor.com/
-Scratch. (s. f.). *Scratch - FAQ*. https://scratch.mit.edu/faq
+  - PSEInt. (s. f.). *PSEInt*. https://pseint.sourceforge.net/
+  - PseudoEditor. (s. f.). *Pseudocode Editor online - PseudoEditor*. https://pseudoeditor.com/
+  - Scratch. (s. f.). *Scratch - FAQ*. https://scratch.mit.edu/faq
 
