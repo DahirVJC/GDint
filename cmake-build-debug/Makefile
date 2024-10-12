@@ -224,6 +224,54 @@ Lexer/TransitionTable.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionProjects.dir\build.make CMakeFiles/CLionProjects.dir/Lexer/TransitionTable.cpp.s
 .PHONY : Lexer/TransitionTable.cpp.s
 
+Parser/Grammar.obj: Parser/Grammar.cpp.obj
+.PHONY : Parser/Grammar.obj
+
+# target to build an object file
+Parser/Grammar.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionProjects.dir\build.make CMakeFiles/CLionProjects.dir/Parser/Grammar.cpp.obj
+.PHONY : Parser/Grammar.cpp.obj
+
+Parser/Grammar.i: Parser/Grammar.cpp.i
+.PHONY : Parser/Grammar.i
+
+# target to preprocess a source file
+Parser/Grammar.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionProjects.dir\build.make CMakeFiles/CLionProjects.dir/Parser/Grammar.cpp.i
+.PHONY : Parser/Grammar.cpp.i
+
+Parser/Grammar.s: Parser/Grammar.cpp.s
+.PHONY : Parser/Grammar.s
+
+# target to generate assembly for a file
+Parser/Grammar.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionProjects.dir\build.make CMakeFiles/CLionProjects.dir/Parser/Grammar.cpp.s
+.PHONY : Parser/Grammar.cpp.s
+
+Parser/Preparser.obj: Parser/Preparser.cpp.obj
+.PHONY : Parser/Preparser.obj
+
+# target to build an object file
+Parser/Preparser.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionProjects.dir\build.make CMakeFiles/CLionProjects.dir/Parser/Preparser.cpp.obj
+.PHONY : Parser/Preparser.cpp.obj
+
+Parser/Preparser.i: Parser/Preparser.cpp.i
+.PHONY : Parser/Preparser.i
+
+# target to preprocess a source file
+Parser/Preparser.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionProjects.dir\build.make CMakeFiles/CLionProjects.dir/Parser/Preparser.cpp.i
+.PHONY : Parser/Preparser.cpp.i
+
+Parser/Preparser.s: Parser/Preparser.cpp.s
+.PHONY : Parser/Preparser.s
+
+# target to generate assembly for a file
+Parser/Preparser.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\CLionProjects.dir\build.make CMakeFiles/CLionProjects.dir/Parser/Preparser.cpp.s
+.PHONY : Parser/Preparser.cpp.s
+
 Preprocessing/CleanCharacters.obj: Preprocessing/CleanCharacters.cpp.obj
 .PHONY : Preprocessing/CleanCharacters.obj
 
@@ -293,6 +341,12 @@ help:
 	@echo ... Lexer/TransitionTable.obj
 	@echo ... Lexer/TransitionTable.i
 	@echo ... Lexer/TransitionTable.s
+	@echo ... Parser/Grammar.obj
+	@echo ... Parser/Grammar.i
+	@echo ... Parser/Grammar.s
+	@echo ... Parser/Preparser.obj
+	@echo ... Parser/Preparser.i
+	@echo ... Parser/Preparser.s
 	@echo ... Preprocessing/CleanCharacters.obj
 	@echo ... Preprocessing/CleanCharacters.i
 	@echo ... Preprocessing/CleanCharacters.s

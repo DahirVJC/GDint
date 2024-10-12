@@ -24,4 +24,8 @@ add_executable(CLionProjects
         Lexer/TokenStruct.h
         Lexer/TransitionTable.cpp
         Compiler/paths.h
+        Parser/Preparser.cpp
+        Parser/Preparser.h
+        Parser/Grammar.cpp
+        Parser/Grammar.h
 )
