@@ -3,10 +3,11 @@
 #include "../Preprocessing/DoPreproccesing.h"
 #include "../Lexer/DoLexicalAnalysis.h"
 #include "../Lexer/TokenStruct.h"
-#include "../Compiler/paths.h"
+#include "../Tools/paths.h"
+#include "../Parser/DoSyntaxAnalysis.h"
 
 int main () {
-    std::string filePath = inputPath+"example.gdi";
+    std::string filePath = inputPath+R"(/example.gdi)";
     std::string content = readFileToString(filePath);
     if(content.empty()) {
         std::cout<<"No content found.\n";
@@ -14,12 +15,15 @@ int main () {
     }
     DoPreprocessing(content);
 
-    filePath = outputPath+"Preprocessing_Code.txt";
+    filePath = outputPath+R"(/Preprocessing_Code.txt)";
     content = readFileToString(filePath);
     if(content.empty()) {
         std::cout<<"No content found.";
         return 1;
     }
     std::list<Token> LexerTokens = DoLexicalAnalysis(content);
+
+    DoSyntaxAnalysis();
+
     return 0;
 }

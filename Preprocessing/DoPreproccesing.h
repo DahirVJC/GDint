@@ -7,7 +7,7 @@
 #include <iostream>
 #include "../Tools/FileHandler.hpp"
 #include "CleanCharacters.hpp"
-#include "../Compiler/paths.h"
+#include "../Tools/paths.h"
 
 inline void DoPreprocessing(std::string content) {
     content = cleanCharacters(content);
