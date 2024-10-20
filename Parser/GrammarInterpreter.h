@@ -12,7 +12,7 @@ class GrammarInterpreter {
     Grammar grammar;
     void interpretGrammar(const std::vector<std::string>& grammarRules);
     public:
-    void readGrammar();
+    void readGrammar(const std::string &filename);
     Grammar getGrammar();
 };
 

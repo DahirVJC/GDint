@@ -32,8 +32,8 @@ void GrammarInterpreter::interpretGrammar(const std::vector<std::string>& gramma
     }
 }
 
-void GrammarInterpreter::readGrammar() {
-    interpretGrammar(splitByChar(readFileToString(inputPath+"/grammar.txt"),'\n'));
+void GrammarInterpreter::readGrammar(const std::string &filename) {
+    interpretGrammar(splitByChar(readFileToString(inputPath+"/"+filename),'\n'));
 }
 
 Grammar GrammarInterpreter::getGrammar() {
