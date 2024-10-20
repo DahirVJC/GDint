@@ -1,0 +1,5 @@
+EXP->TERM EXP'
+EXP'->+ TERM EXP'|- TERM EXP'|ε
+TERM->FACTOR TERM'
+TERM'->* FACTOR TERM'|/ FACTOR TERM'|ε
+FACTOR->identificador|numero|( EXP )

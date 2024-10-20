@@ -4,8 +4,13 @@
 
 //TODO: Define return data type
 void DoSyntaxAnalysis() {
-    GrammarInterpreter grammar;
-    grammar.readGrammar();
-    grammar.getGrammar().createToRightRecursion().printGrammar();
+    GrammarInterpreter grammarReader;
+    grammarReader.readGrammar("LL1Grammar.txt");
+    Grammar grammar = grammarReader.getGrammar();
+    //grammar.printGrammar();
+    //grammar.printFirst("CODIGO'");
+    //grammar.printAllFirsts();
+    //grammar.printFollow("EXP");
+    grammar.printAllFollows();
 }
 #endif //DOSYNTAXANALYSIS_H
