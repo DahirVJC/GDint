@@ -171,7 +171,12 @@ void Grammar::createParserTable() {
             Production production = getFirstProduction(symbol, rule.first);
             if (symbol == "∈Σ-'") {
                 for (const auto& termSym : getAllTerminalSymbols()) {
-                    parserTable[std::make_pair(rule.first,termSym)] = production;
+                    if (termSym != "'") parserTable[std::make_pair(rule.first,termSym)] = production;
+                }
+                for (const auto& charSym : butCharGetAllChars('\'')) {
+                    if (parserTable[std::make_pair(rule.first, std::string (1, charSym))].empty()) {
+                        parserTable[std::make_pair(rule.first,std::string (1, charSym))] = production;
+                    }
                 }
             }
             else parserTable[std::make_pair(rule.first,symbol)] = production;
@@ -353,6 +358,11 @@ bool Grammar::SyntaxAnalysis(std::list<LexerToken> tokens) {
                 return false;
             }
             Production symbols = parserTable[std::make_pair(memory.top(), flowOfTokens.at(index))];
+            std::cout << memory.top() << " Produce: ";
+            for (const auto& symbol : symbols) {
+                std::cout << symbolFormat(symbol) << " ";
+            }
+            std::cout << " con " << symbolFormat(flowOfTokens[index]) << std::endl;
             memory.pop();
             std::reverse(symbols.begin(), symbols.end());
             for(const std::string& symbol : symbols) {

@@ -21,3 +21,12 @@ std::string symbolFormat(std::string symbol) {
     if (symbol == " ") return  "space";
     return symbol;
 }
+
+std::vector<char> butCharGetAllChars(char excluded) {
+    std::vector<char> butExcludedAllChar;
+    for (int i = 32; i < 127; ++i) {
+        unsigned char c = static_cast<unsigned char>(i);
+        if (c != excluded) butExcludedAllChar.emplace_back(c);
+    }
+    return butExcludedAllChar;
+}

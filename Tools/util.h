@@ -10,5 +10,5 @@
 
 std::vector<std::string> splitByChar(const std::string &str, char c);
 std::string symbolFormat(std::string symbol);
-
+std::vector<char> butCharGetAllChars(char excluded);
 #endif //UTIL_H
