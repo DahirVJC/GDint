@@ -115,7 +115,6 @@ void Grammar::follow(std::set<std::string> &followSym, const std::string &symbol
                             if(isNonTerminal(production[i + 1])) {
                                 firstNoEpsilon(followSym, production[i + 1]);
                                 if (hasEpsilon(production[i + 1])) follow(followSym, rule.first);
-                                else break;
                             }
                             else {
                                 followSym.insert(production[i + 1]);
@@ -124,7 +123,6 @@ void Grammar::follow(std::set<std::string> &followSym, const std::string &symbol
                         else {
                             follow(followSym, rule.first);
                         }
-                        break;
                     }
                 }
             }
@@ -362,7 +360,7 @@ bool Grammar::SyntaxAnalysis(std::list<LexerToken> tokens) {
             for (const auto& symbol : symbols) {
                 std::cout << symbolFormat(symbol) << " ";
             }
-            std::cout << " con " << symbolFormat(flowOfTokens[index]) << std::endl;
+            std::cout << "con " << symbolFormat(flowOfTokens[index]) << std::endl;
             memory.pop();
             std::reverse(symbols.begin(), symbols.end());
             for(const std::string& symbol : symbols) {
