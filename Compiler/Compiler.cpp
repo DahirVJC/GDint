@@ -21,9 +21,9 @@ int main () {
         std::cout<<"No content found.";
         return 1;
     }
-    std::list<Token> LexerTokens = DoLexicalAnalysis(content);
+    std::list<LexerToken> LexerTokens = DoLexicalAnalysis(content);
 
-    DoSyntaxAnalysis();
+    DoSyntaxAnalysis(LexerTokens);
 
     return 0;
 }

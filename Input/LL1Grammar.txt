@@ -25,6 +25,6 @@ TERM'->* FACTOR TERM'|/ FACTOR TERM'|ε
 FACTOR->identificador|CONSTANTE|( EXP )
 ESPACIO->space ESPACIO'
 ESPACIO'->space ESPACIO'|ε
-CONSTANTE->constante|‘ CADENA ‘
+CONSTANTE->constante|' CADENA '
 CADENA->∈Σ-' CADENA'
 CADENA'->∈Σ-' CADENA'|ε

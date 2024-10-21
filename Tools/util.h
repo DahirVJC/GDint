@@ -9,5 +9,6 @@
 #include <vector>
 
 std::vector<std::string> splitByChar(const std::string &str, char c);
+std::string symbolFormat(std::string symbol);
 
 #endif //UTIL_H

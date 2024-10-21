@@ -15,3 +15,9 @@ std::vector<std::string> splitByChar(const std::string &str, const char c) {
     }
     return v;
 }
+
+std::string symbolFormat(std::string symbol) {
+    if (symbol == "\n") return  R"(\n)";
+    if (symbol == " ") return  "space";
+    return symbol;
+}
