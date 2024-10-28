@@ -5,7 +5,6 @@
 #include <algorithm>
 #include <queue>
 #include <stack>
-#include <bits/locale_facets_nonio.h>
 
 #include "../Tools/TokenTypes.h"
 #include "../Tools/util.h"
@@ -338,46 +337,68 @@ void Grammar::printPrintParserTable() {
     }
 }
 
-bool Grammar::SyntaxAnalysis(std::list<LexerToken> tokens) {
+std::shared_ptr<SyntaxNode> Grammar::SyntaxAnalysis(std::list<LexerToken> tokens) {
     createParserTable();
-    std::stack<std::string> memory;
-    memory.emplace("EOF"); // Start with $
-    memory.emplace(rules.at(0).first); // Add S
-    std::vector<std::string> flowOfTokens;
+
+    std::stack<ParserState> memory;
+    memory.emplace("EOF", nullptr); // Start with $
+    std::shared_ptr<SyntaxNode> rootNode = std::make_shared<SyntaxNode>(rules.at(0).first);
+    memory.emplace(rules.at(0).first, rootNode); // Add S
+
+    std::vector<std::pair<std::string,std::string>> flowOfTokens;
     for (const auto& token : tokens) {
-        flowOfTokens.push_back(usedToken(token));
+        flowOfTokens.push_back(std::make_pair(usedToken(token), token.name));
     }
-    flowOfTokens.push_back("EOF");
+    flowOfTokens.push_back(std::make_pair("EOF", "EOF"));
+
     int index = 0;
+
     while (index < flowOfTokens.size()) {
-        if (index == flowOfTokens.size() - 1 && memory.top() == "EOF") break;
-        if (isNonTerminal(memory.top())) {
-            if (parserTable[std::make_pair(memory.top(), flowOfTokens.at(index))].empty()) {
-                return false;
+        if (index == flowOfTokens.size() - 1 && memory.top().symbol == "EOF") break;
+
+        if (isNonTerminal(memory.top().symbol)) {
+            ParserState currentState = memory.top();
+            if (parserTable[std::make_pair(memory.top().symbol, flowOfTokens.at(index).first)].empty()) {
+                return nullptr;
             }
-            Production symbols = parserTable[std::make_pair(memory.top(), flowOfTokens.at(index))];
-            std::cout << memory.top() << " Produce: ";
+            Production symbols = parserTable[std::make_pair(memory.top().symbol, flowOfTokens.at(index).first)];
+
+            std::cout << memory.top().symbol << " Produce: ";
             for (const auto& symbol : symbols) {
                 std::cout << symbolFormat(symbol) << " ";
             }
-            std::cout << "con " << symbolFormat(flowOfTokens[index]) << std::endl;
+            std::cout << "con " << symbolFormat(flowOfTokens[index].first) << std::endl;
+
             memory.pop();
-            std::reverse(symbols.begin(), symbols.end());
+            std::vector<ParserState> reverseStates;
             for(const std::string& symbol : symbols) {
-                memory.emplace(symbol);
+                std::shared_ptr<SyntaxNode> newNode = std::make_shared<SyntaxNode>(symbol);
+                currentState.node->children.push_back(newNode);
+                reverseStates.emplace_back(symbol, newNode);
+            }
+
+            std::reverse(reverseStates.begin(), reverseStates.end());
+            for (const auto& state : reverseStates) {
+                memory.emplace(state);
             }
         }
-        if (memory.top() == flowOfTokens.at(index)) {
+        if (memory.top().symbol == flowOfTokens.at(index).first) {
+            memory.top().node->value = symbolFormat(flowOfTokens.at(index).second);
             memory.pop();
             index++;
         }
-        else if (memory.top() == "∈Σ-'" && flowOfTokens.at(index) != "'") {
+        else if (memory.top().symbol == "∈Σ-'" && flowOfTokens.at(index).first != "'") {
+                memory.top().node->value = symbolFormat(flowOfTokens.at(index).second);
                 memory.pop();
                 index++;
         }
-        else if (memory.top() == "ε")  memory.pop();
+        else if (memory.top().symbol == "ε") {
+            memory.top().node->value = "ε";
+            memory.pop();
+        }
     }
-    if (memory.top() == "EOF") return true;
-    if (memory.empty()) return true;
-    return false;
+
+    if (memory.top().symbol == "EOF") return rootNode;
+    if (memory.empty()) return rootNode;
+    return nullptr;
 }
