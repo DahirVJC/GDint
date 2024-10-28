@@ -23,7 +23,8 @@ int main () {
     }
     std::list<LexerToken> LexerTokens = DoLexicalAnalysis(content);
 
-    DoSyntaxAnalysis(LexerTokens);
+    bool Correct = DoSyntaxAnalysis(LexerTokens);
+    if(!Correct) exit(0);
 
     return 0;
 }

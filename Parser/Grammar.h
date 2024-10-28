@@ -6,6 +6,7 @@
 #include <set>
 #include <map>
 
+#include "SyntaxNode.h"
 #include "../Lexer/TokenStruct.h"
 
 //std::vector<std::pair<std::string No terminal, std::vector<std::vector<std::string Simbolos>Produccion >Producciones >>
@@ -50,7 +51,7 @@ public:
     void printAllFollows();
     void printPrintParserTable();
     //  Realizar el analisis sintactico
-    bool SyntaxAnalysis(std::list<LexerToken> tokens);
+    std::shared_ptr<SyntaxNode> SyntaxAnalysis(std::list<LexerToken> tokens);
 };
 
 
