@@ -49,14 +49,134 @@
 ## Análisis Sintáctico
 
 - **Análisis sintáctico:**
-  - Uso de gramáticas y árboles sintácticos.
+  - **Gramatica:**
+    - CODIGO->BLOQUE CODIGO'
+    - CODIGO'->BLOQUE CODIGO'|ε
+    - BLOQUE->ACCION BLOQUE'
+    - BLOQUE'->salto ACCION BLOQUE'|ε
+    - ACCION->CONDICIONAL|INSTRUCCION|COMENTARIO
+    - CONDICIONAL->si ESPACIO CONDICION ESPACIO entonces salto BLOQUE salto SINO finsi salto
+    - SINO->sino salto BLOQUE salto|ε
+    - CONDICION->COMPARACION CONDICION'
+    - CONDICION'->&& COMPARACION CONDICION'|or COMPARACION CONDICION'|ε
+    - COMPARACION->BOOL COMPARACION'
+    - COMPARACION'->== BOOL COMPARACION'|< BOOL COMPARACION'|> BOOL COMPARACION'|ε
+    - BOOL->identificador|! identificador|CONSTANTE
+    - COMENTARIO-># INSTRUCCION
+    - INSTRUCCION->DECLARACION|ASIGNACION|LLAMADA
+    - LLAMADA->FUNCION ESPACIO PARAMETROS
+    - PARAMETROS->CONSTANTE PARAMETROS'
+    - PARAMETROS'->ESPACIO CONSTANTE PARAMETROS'|ε
+    - FUNCION->obtener|publicar|cambiar|borrar
+    - DECLARACION->variable ESPACIO identificador
+    - ASIGNACION->identificador ESPACIO = ESPACIO EXP
+    - EXP->TERM EXP'
+    - EXP'->+ ESPACIO TERM EXP'|- ESPACIO TERM EXP'|ε
+    - TERM->FACTOR TERM'
+    - TERM'->* FACTOR TERM'|/ FACTOR TERM'|ε
+    - FACTOR->identificador|CONSTANTE|( EXP )
+    - ESPACIO->space ESPACIO'
+    - ESPACIO'->space ESPACIO'|ε
+    - CONSTANTE->constante|' CADENA '
+    - CADENA->∈Σ-' CADENA'
+    - CADENA'->∈Σ-' CADENA'|ε
+  - **Análisis first:**
+    - CODIGO=si variable identificador obtener publicar cambiar borrar #
+    - CODIGO'=si variable identificador obtener publicar cambiar borrar # ε
+    - BLOQUE=si variable identificador obtener publicar cambiar borrar #
+    - BLOQUE'=\n ε
+    - ACCION=si variable identificador obtener publicar cambiar borrar #
+    - CONDICIONAL=si
+    - SINO=sino ╬╡
+    - CONDICION=identificador ! constante '
+    - CONDICION'=&& || ε
+    - COMPARACION=identificador ! constante '
+    - COMPARACION'=== < > ε
+    - BOOL=identificador ! constante '
+    - COMENTARIO=#
+    - INSTRUCCION=variable identificador obtener publicar cambiar borrar
+    - LLAMADA=obtener publicar cambiar borrar
+    - PARAMETROS=constante '
+    - PARAMETROS'=space ε
+    - FUNCION=obtener publicar cambiar borrar
+    - DECLARACION=variable
+    - ASIGNACION=identificador
+    - EXP=identificador constante ' (
+    - EXP'=+ - ε
+    - TERM=identificador constante ' (
+    - TERM'=* / ε
+    - FACTOR=identificador constante ' (
+    - ESPACIO=space
+    - ESPACIO'=space ε
+    - CONSTANTE=constante '
+    - CADENA=∈Σ-'
+    - CADENA'=∈Σ-' ε
+  - **Análisis Follow:**
+    - CODIGO = EOF
+    - CODIGO' = EOF
+    - BLOQUE = \n # EOF borrar cambiar identificador obtener publicar si variable
+    - BLOQUE' = \n # EOF borrar cambiar identificador obtener publicar si variable
+    - ACCION = \n # EOF borrar cambiar identificador obtener publicar si variable
+    - CONDICIONAL = \n # EOF borrar cambiar identificador obtener publicar si variable
+    - SINO = finsi
+    - CONDICION = space
+    - CONDICION' = space
+    - COMPARACION = space && ||
+    - COMPARACION' = space && ||
+    - BOOL = space && < == > ||
+    - COMENTARIO = \n # EOF borrar cambiar identificador obtener publicar si variable
+    - INSTRUCCION = \n # EOF borrar cambiar identificador obtener publicar si variable
+    - LLAMADA = \n # EOF borrar cambiar identificador obtener publicar si variable
+    - PARAMETROS = \n # EOF borrar cambiar identificador obtener publicar si variable
+    - PARAMETROS' = \n # EOF borrar cambiar identificador obtener publicar si variable
+    - FUNCION = space
+    - DECLARACION = \n # EOF borrar cambiar identificador obtener publicar si variable
+    - ASIGNACION = \n # EOF borrar cambiar identificador obtener publicar si variable
+    - EXP = \n # ) EOF borrar cambiar identificador obtener publicar si variable
+    - EXP' = \n # ) EOF borrar cambiar identificador obtener publicar si variable
+    - TERM = \n # ) + - EOF borrar cambiar identificador obtener publicar si variable
+    - TERM' = \n # ) + - EOF borrar cambiar identificador obtener publicar si variable
+    - FACTOR = \n # ) * + - / EOF borrar cambiar identificador obtener publicar si variable
+    - ESPACIO = ! ' ( = constante entonces identificador
+    - ESPACIO' = ! ' ( = constante entonces identificador
+    - CONSTANTE = \n space # && ) * + - / < == > EOF borrar cambiar identificador obtener publicar si variable ||
+    - CADENA = '
+    - CADENA' = '
 
 - **Ejemplos:**
+  - variable a
+  - a = 3+ 2
+  - obtener 'https://pokeapi.co/api/v2/pokemon/ditto'
+  - obtener 'https://pokeapi.co/api/v2/pokemon/incineroar'
+  - #obtener 'https://pokeapi.co/api/v2/pokemon/ditto'
+  - variable body
+  - body = '
+  - doe: "a deer, a female deer"
+  - ray: "a drop of golden sun"
+  - pi: 3.14159
+  - xmas: true
+  - french-hens: 3
+  - calling-birds:
+  - huey
+  - dewey
+  - louie
+  - fred
+  - xmas-fifth-day:
+  - calling-birds: four
+  - french-hens: 3
+  - golden-rings: 5
+  - partridges:
+  - count: 1
+  - location: "a pear tree"
+  - turtle-doves: two
+  - '
+  - publicar 'https://pokeapi.co/api/v2/pokemon/ditto'
+
 
 ## Análisis Semántico
 
 - **Análisis sintáctico:**
-  - Uso de gramáticas y árboles sintácticos.
+    
 
 - **Ejemplos:**
 

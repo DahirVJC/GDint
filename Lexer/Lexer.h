@@ -18,7 +18,7 @@ class Lexer {
     //Process
     int line = 1;
     //Output
-    std::list<Token> tokens;
+    std::list<LexerToken> tokens;
 public:
     // Constructor
     Lexer();
@@ -27,6 +27,6 @@ public:
     void ReadInput(const std::string& code);
     std::string testState(int state);
     // Getters
-    std::list<Token> getTokens();
+    std::list<LexerToken> getTokens();
 };
 #endif //LEXER_H

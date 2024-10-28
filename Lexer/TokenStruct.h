@@ -3,10 +3,10 @@
 
 #include <string>
 
-struct Token {
+struct LexerToken {
     std::string name;
     std::string type;
     int line;
-    Token(std::string n, std::string t, const int line) : name(std::move(n)), type(std::move(t)), line(line) {}
+    LexerToken(std::string n, std::string t, const int line) : name(std::move(n)), type(std::move(t)), line(line) {}
 };
 #endif

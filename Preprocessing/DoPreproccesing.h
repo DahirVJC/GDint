@@ -12,7 +12,7 @@
 inline void DoPreprocessing(std::string content) {
     content = cleanCharacters(content);
     std::cout<<content;
-    std::string filePath = outputPath+"Preprocessing_Code.txt";
+    std::string filePath = outputPath+"/Preprocessing_Code.txt";
     writeStringToFile(content, filePath );
 }
 
