@@ -26,4 +26,4 @@ doe: "a deer, a female deer"
      location: "a pear tree"
    turtle-doves: two
 '
-publicar 'https://pokeapi.co/api/v2/pokemon/ditto'
+publicar 'https://pokeapi.co/api/v2/pokemon/ditto' body
