@@ -404,15 +404,17 @@ std::shared_ptr<SyntaxNode> Grammar::SyntaxAnalysis(std::list<LexerToken> tokens
                     if (idName == "0") {
                         idName = flowOfTokens.at(index).second;
                         if (idTypes.find(idName) != idTypes.end()) {
-                            std::cout << "Variable " << idName << " already declared" << std::endl;
+                            std::cerr << "Variable " << idName << " already declared" << std::endl;
+                            return nullptr;
                         }
                     }
                     // Usar el tipo de la variable si no es string
                     else {
-                        if (idTypes.count(flowOfTokens.at(index).second) > 0) {
+                        if (idTypes.find(flowOfTokens.at(index).second) != idTypes.end()) {
                             if (dataType != STRING) dataType = idTypes[flowOfTokens.at(index).second];
                         } else {
-                            std::cout<<"Usage of undeclared variable: "<<flowOfTokens.at(index).second<<std::endl;
+                            std::cerr<<"Usage of undeclared variable: "<<flowOfTokens.at(index).second<<std::endl;
+                            return nullptr;
                         }
                     }
                 }
@@ -424,7 +426,10 @@ std::shared_ptr<SyntaxNode> Grammar::SyntaxAnalysis(std::list<LexerToken> tokens
                         inDeclaration = false;
                         idName = "0";
                     }
-                    std::cout << "Variable " << idName << " already declared" << std::endl;
+                    else {
+                        std::cerr << "Variable " << idName << " already declared" << std::endl;
+                        return nullptr;
+                    }
                 }
             }
 

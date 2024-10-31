@@ -1,6 +1,6 @@
 variable a = 0
 a = 3 + 2
-variable b = 5 * 9
+variable b = a * 9
 variable c = 'a' + 'b'
 variable d = 4 + 'b'
 si a<4&&a==-3 entonces
