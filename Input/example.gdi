@@ -31,3 +31,4 @@ doe: "a deer, a female deer"
    turtle-doves: two
 '
 publicar 'https://pokeapi.co/api/v2/pokemon/ditto' body
+variable f = 'h'

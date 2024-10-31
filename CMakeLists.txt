@@ -33,4 +33,5 @@ add_executable(CLionProjects
         Parser/Grammar.h
         Tools/TokenTypes.h
         Parser/SyntaxNode.h
+        Parser/SyntaxToken.h
 )

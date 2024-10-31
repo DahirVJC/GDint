@@ -339,7 +339,7 @@ void Grammar::printPrintParserTable() {
 }
 
 // Algoritmo de Neso Academy https://www.youtube.com/watch?v=clkHOgZUGWU
-std::shared_ptr<SyntaxNode> Grammar::SyntaxAnalysis(std::list<LexerToken> tokens) {
+std::pair<std::shared_ptr<SyntaxNode>,std::list<SyntaxToken>> Grammar::SyntaxAnalysis(std::list<LexerToken> tokens) {
     createParserTable();
 
     std::stack<ParserState> memory;
@@ -368,7 +368,8 @@ std::shared_ptr<SyntaxNode> Grammar::SyntaxAnalysis(std::list<LexerToken> tokens
         if (isNonTerminal(memory.top().symbol)) {
             ParserState currentState = memory.top();
             if (parserTable[std::make_pair(memory.top().symbol, flowOfTokens.at(index).first)].empty()) {
-                return nullptr;
+                std::cerr << "Syntax Error" << std::endl;
+                return {nullptr, {}};
             }
 
             if (memory.top().symbol == "DECLARACION") inDeclaration = true;
@@ -405,7 +406,7 @@ std::shared_ptr<SyntaxNode> Grammar::SyntaxAnalysis(std::list<LexerToken> tokens
                         idName = flowOfTokens.at(index).second;
                         if (idTypes.find(idName) != idTypes.end()) {
                             std::cerr << "Variable " << idName << " already declared" << std::endl;
-                            return nullptr;
+                            return {nullptr, {}};
                         }
                     }
                     // Usar el tipo de la variable si no es string
@@ -414,7 +415,7 @@ std::shared_ptr<SyntaxNode> Grammar::SyntaxAnalysis(std::list<LexerToken> tokens
                             if (dataType != STRING) dataType = idTypes[flowOfTokens.at(index).second];
                         } else {
                             std::cerr<<"Usage of undeclared variable: "<<flowOfTokens.at(index).second<<std::endl;
-                            return nullptr;
+                            return {nullptr, {}};
                         }
                     }
                 }
@@ -428,7 +429,7 @@ std::shared_ptr<SyntaxNode> Grammar::SyntaxAnalysis(std::list<LexerToken> tokens
                     }
                     else {
                         std::cerr << "Variable " << idName << " already declared" << std::endl;
-                        return nullptr;
+                        return {nullptr, {}};
                     }
                 }
             }
@@ -448,7 +449,31 @@ std::shared_ptr<SyntaxNode> Grammar::SyntaxAnalysis(std::list<LexerToken> tokens
         }
     }
 
-    if (memory.top().symbol == "EOF") return rootNode;
-    if (memory.empty()) return rootNode;
-    return nullptr;
+    if (idName != "0") {
+        if (idTypes.find(idName) == idTypes.end()) {
+            idTypes[idName] = dataType;
+            std::cout << idName << " es un "<< dataType << std::endl;
+            dataType = NUMBER;
+            inDeclaration = false;
+            idName = "0";
+        }
+        else {
+            std::cerr << "Variable " << idName << " already declared" << std::endl;
+            return {nullptr, {}};
+        }
+    }
+
+    std::list<SyntaxToken> syntaxTokens;
+    if (memory.top().symbol == "EOF" || memory.empty()) {
+        for (const auto& idVar : idTypes) {
+            LexerToken lexerToken = LexerToken("NULL","NULL",-1);
+            getFirstLexerToken(tokens, idVar.first, lexerToken);
+            if (lexerToken.line != -1) {
+                syntaxTokens.emplace_back(lexerToken.name,lexerToken.type,lexerToken.line,idVar.second);
+            }
+        }
+        return std::make_pair(rootNode, syntaxTokens);
+    }
+    std::cerr << "Syntax Error" << std::endl;
+    return {nullptr, {}};
 }
