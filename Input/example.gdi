@@ -1,10 +1,12 @@
-variable a
+variable a = 0
 a = 3+ 2
+si a<4&&a==-3 entonces
 obtener 'https://pokeapi.co/api/v2/pokemon/ditto'
+sino
 obtener 'https://pokeapi.co/api/v2/pokemon/incineroar'
+finsi
 #obtener 'https://pokeapi.co/api/v2/pokemon/ditto'
-variable body
-body = '
+variable body = '
 doe: "a deer, a female deer"
  ray: "a drop of golden sun"
  pi: 3.14159
@@ -24,4 +26,4 @@ doe: "a deer, a female deer"
      location: "a pear tree"
    turtle-doves: two
 '
-publicar 'https://pokeapi.co/api/v2/pokemon/ditto'
+publicar 'https://pokeapi.co/api/v2/pokemon/ditto' body
