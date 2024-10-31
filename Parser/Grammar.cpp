@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <queue>
 #include <stack>
+#include <unordered_map>
 
 #include "../Tools/TokenTypes.h"
 #include "../Tools/util.h"
@@ -337,6 +338,7 @@ void Grammar::printPrintParserTable() {
     }
 }
 
+// Algoritmo de Neso Academy https://www.youtube.com/watch?v=clkHOgZUGWU
 std::shared_ptr<SyntaxNode> Grammar::SyntaxAnalysis(std::list<LexerToken> tokens) {
     createParserTable();
 
@@ -353,6 +355,13 @@ std::shared_ptr<SyntaxNode> Grammar::SyntaxAnalysis(std::list<LexerToken> tokens
 
     int index = 0;
 
+    bool inDeclaration = false;
+    const std::string NUMBER = "Number";
+    const std::string STRING = "String";
+    std::string dataType = NUMBER;
+    std::string idName = "0";
+    std::unordered_map<std::string,std::string> idTypes;
+
     while (index < flowOfTokens.size()) {
         if (index == flowOfTokens.size() - 1 && memory.top().symbol == "EOF") break;
 
@@ -361,6 +370,9 @@ std::shared_ptr<SyntaxNode> Grammar::SyntaxAnalysis(std::list<LexerToken> tokens
             if (parserTable[std::make_pair(memory.top().symbol, flowOfTokens.at(index).first)].empty()) {
                 return nullptr;
             }
+
+            if (memory.top().symbol == "DECLARACION") inDeclaration = true;
+
             Production symbols = parserTable[std::make_pair(memory.top().symbol, flowOfTokens.at(index).first)];
 
             std::cout << memory.top().symbol << " Produce: ";
@@ -384,13 +396,46 @@ std::shared_ptr<SyntaxNode> Grammar::SyntaxAnalysis(std::list<LexerToken> tokens
         }
         if (memory.top().symbol == flowOfTokens.at(index).first) {
             memory.top().node->value = symbolFormat(flowOfTokens.at(index).second);
+
+            // En declaracion
+            if (inDeclaration){
+                if (memory.top().symbol == "identificador") {
+                    // Es la variable a declarar
+                    if (idName == "0") {
+                        idName = flowOfTokens.at(index).second;
+                        if (idTypes.find(idName) != idTypes.end()) {
+                            std::cout << "Variable " << idName << " already declared" << std::endl;
+                        }
+                    }
+                    // Usar el tipo de la variable si no es string
+                    else {
+                        if (idTypes.count(flowOfTokens.at(index).second) > 0) {
+                            if (dataType != STRING) dataType = idTypes[flowOfTokens.at(index).second];
+                        } else {
+                            std::cout<<"Usage of undeclared variable: "<<flowOfTokens.at(index).second<<std::endl;
+                        }
+                    }
+                }
+                else if (flowOfTokens.at(index).first == "\n") {
+                    if (idTypes.find(idName) == idTypes.end()) {
+                        idTypes[idName] = dataType;
+                        std::cout << idName << " es un "<< dataType << std::endl;
+                        dataType = NUMBER;
+                        inDeclaration = false;
+                        idName = "0";
+                    }
+                    std::cout << "Variable " << idName << " already declared" << std::endl;
+                }
+            }
+
             memory.pop();
             index++;
         }
         else if (memory.top().symbol == "∈Σ-'" && flowOfTokens.at(index).first != "'") {
-                memory.top().node->value = symbolFormat(flowOfTokens.at(index).second);
-                memory.pop();
-                index++;
+            memory.top().node->value = symbolFormat(flowOfTokens.at(index).second);
+            memory.pop();
+            index++;
+            dataType = STRING;
         }
         else if (memory.top().symbol == "ε") {
             memory.top().node->value = "ε";
