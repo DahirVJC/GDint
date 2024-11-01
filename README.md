@@ -25,10 +25,10 @@
 Donde:
   - GDInt es el lenguaje nuevo a compilar.
   - Python es al lenguaje donde se va a traducir.
-  - C++ es el lenguaje de implementacion.
+  - C++ es el lenguaje de implementación.
   - 64 bits  es la arquitectura de las máquinas en las que se va a ejecutar.
 - **Explicación del flujo de datos:** El compilador recibe un flujo de caracteres en el formato GDint, pasa por los análisis léxico, sintáctico y semántico para crear un flujo de tokens y árboles sintácticos para crear la tabla de símbolos, la cual, es usada para generar código intermedio que es optimizado para producir código en el lenguaje de programación de python. Al final, el código generado es optimizado y se entrega como la salida del compilador.
-- **Decisiones de diseño:** Se utiliza la arquitectura típica de un compilador, solo que se especifica que el flujo de caracteres es pseudocódigo GDint y la salida es código python en vez de código máquina. Se elige la arquitectura de 64 bits porque es la correspondiente a las maquinas que se usan para desarrollar y ejecutar el compilador. Las pruebas y adaptacion del compilador a maquinas de 32 bits, ARM u otras arquitecturas queda fuera del alcance del proyecto.
+- **Decisiones de diseño:** Se utiliza la arquitectura típica de un compilador, solo que se especifica que el flujo de caracteres es pseudocódigo GDint y la salida es código python en vez de código máquina. Se elige la arquitectura de 64 bits porque es la correspondiente a las máquinas que se utilizan para desarrollar y ejecutar el compilador. Las pruebas y adaptación del compilador a máquinas de 32 bits, ARM u otras arquitecturas queda fuera del alcance del proyecto.
 
 ## Análisis Léxico
 - **Análisis léxico:**
@@ -54,6 +54,7 @@ Donde:
 ## Análisis Sintáctico
 
 - **Análisis sintáctico:**
+  **Nota**: Por cuestiones de implementación, " " se escribe como space en las reglas, y \n como salto únicamente en el archivo de gramática (LL1Grammar.txt), esto para ser interpretado correctamente por el lector de gramática.
   - **Gramatica:**
     - CODIGO -> BLOQUE CODIGO'
     - CODIGO' -> BLOQUE CODIGO' | ε
@@ -634,8 +635,8 @@ Salida: `Uso de una variable no declarada: a`
 ## Herramientas y Entorno de Desarrollo
 - **Lenguajes de programación utilizados:** C++ y Python
 - **Herramientas de desarrollo:** Git, GitHub y CLion
-- **Entorno de pruebas y simulación:** Pruebas en CLion en los sistemas operativos Windows 10 y EndeavourOS
-- **Otras herramientas:** Draw.io, Google Docs y ChatGPT
+- **Entorno de pruebas y simulación:** Pruebas en CLion en los sistemas operativos Windows 10, Windows 11 y EndeavourOS
+- **Otras herramientas:** Draw.io, Google Docs, ChatGPT y Claude
 
 ## Demostración
 - **Ejemplo de código fuente:**
