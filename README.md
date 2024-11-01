@@ -548,7 +548,6 @@ Donde:
     - En \<VALOR> dado ['] produce: CONSTANTE
     - En \<VALOR> dado [constante] produce: CONSTANTE
     - En \<VALOR> dado [identificador] produce: identificador
-    `
 - **Ejemplos:**
 ````
 variable a = 0
