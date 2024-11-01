@@ -7,6 +7,7 @@
 #include "../Tools/paths.h"
 #include "../Tools/util.h"
 
+// Generado por: ChatGPT
 void GrammarInterpreter::interpretGrammar(const std::vector<std::string>& grammarRules) {
     for (const std::string& rule: grammarRules) {
         const size_t arrowPos = rule.find("->");// Encontrar la posicion de la flecha
@@ -31,6 +32,7 @@ void GrammarInterpreter::interpretGrammar(const std::vector<std::string>& gramma
         grammar.getRules().emplace_back(nonTerminal, productionRulesSymbols); // Establecer regla
     }
 }
+// Fin generacion
 
 void GrammarInterpreter::readGrammar(const std::string &filename) {
     interpretGrammar(splitByChar(readFileToString(inputPath+"/"+filename),'\n'));

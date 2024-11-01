@@ -5,6 +5,7 @@
 #include <cstring>
 #include <list>
 
+// Asistido por: ChatGPT
 std::string readFileToString(const std::string& filePath) {
     std::ifstream in_file(filePath);
     if (!in_file) {
@@ -32,3 +33,4 @@ void writeStringToFile(const std::string& content, const std::string& fileName){
     out_file << content;
     out_file.close();
 }
+// Fin Asistencia

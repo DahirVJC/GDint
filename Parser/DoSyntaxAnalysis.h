@@ -3,18 +3,7 @@
 #include "GrammarInterpreter.h"
 #include "SyntaxNode.h"
 
-inline void printTokens(const std::list<SyntaxToken> &tokens) {
-    for (const SyntaxToken& token : tokens) {
-        std::string nameToPrint = (token.name == "\n") ? "\\n" : token.name;
-        std::cout << "Token(name: " << nameToPrint
-                    << ", token type: " << token.tokenType
-                    << ", line: " << token.line
-                    << ", data type: " << token.dataType
-                    << ")" << std::endl;
-    }
-}
-
-bool DoSyntaxAnalysis(std::list<LexerToken> tokens) {
+std::pair<std::shared_ptr<SyntaxNode>,std::list<SyntaxToken>> DoSyntaxAnalysis(std::list<LexerToken> tokens) {
     GrammarInterpreter grammarReader;
     grammarReader.readGrammar("LL1Grammar.txt");
     Grammar grammar = grammarReader.getGrammar();
@@ -25,8 +14,8 @@ bool DoSyntaxAnalysis(std::list<LexerToken> tokens) {
             printTokens(result.second);
         }
         std::cout << "Valido" << std::endl;
-        return true;
+        return result;
     }
-    return false;
+    return {nullptr, {}};
 }
 #endif //DOSYNTAXANALYSIS_H

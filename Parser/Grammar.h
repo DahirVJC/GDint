@@ -41,8 +41,6 @@ private:
 public:
     // Metodos externos
     Grammar createToRightRecursion();
-    Grammar createFactorizedGrammar();
-    Grammar createLL1Grammar();
     std::vector<Rule> & getRules();
     //  Metodos para imprimir
     void printGrammar();
