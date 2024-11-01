@@ -363,7 +363,7 @@ std::pair<std::shared_ptr<SyntaxNode>,std::list<SyntaxToken>> Grammar::SyntaxAna
     std::string dataType = NUMBER;
     std::string idName = "0";
     std::unordered_map<std::string,std::string> idTypes;
-    std::list<SyntaxToken> syntaxTokens;
+    std::list<SyntaxToken> valuesTable;
     while (index < flowOfTokens.size()) {
         if (index == flowOfTokens.size() - 1 && memory.top().symbol == "EOF") break;
 
@@ -429,7 +429,7 @@ std::pair<std::shared_ptr<SyntaxNode>,std::list<SyntaxToken>> Grammar::SyntaxAna
                         LexerToken lexerToken = LexerToken("NULL","NULL",-1);
                         getFirstLexerToken(tokens, idName, lexerToken);
                         if (lexerToken.line != -1) {
-                            syntaxTokens.emplace_back(lexerToken.name,lexerToken.type,lexerToken.line,dataType);
+                            valuesTable.emplace_back(lexerToken.name,lexerToken.type,lexerToken.line,dataType);
                         }
                         dataType = NUMBER;
                         inDeclaration = false;
@@ -439,6 +439,12 @@ std::pair<std::shared_ptr<SyntaxNode>,std::list<SyntaxToken>> Grammar::SyntaxAna
                         std::cerr << "La variable '" << idName << "' ya fue declarada previamente" << std::endl;
                         return {nullptr, {}};
                     }
+                }
+            }
+            else if (memory.top().symbol == "identificador") {
+                if (idTypes.find(flowOfTokens.at(index).second) == idTypes.end()) {
+                    std::cerr<<"Uso de una variable no declarada: "<<flowOfTokens.at(index).second<<std::endl;
+                    return {nullptr, {}};
                 }
             }
 
@@ -464,7 +470,7 @@ std::pair<std::shared_ptr<SyntaxNode>,std::list<SyntaxToken>> Grammar::SyntaxAna
             LexerToken lexerToken = LexerToken("NULL","NULL",-1);
             getFirstLexerToken(tokens, idName, lexerToken);
             if (lexerToken.line != -1) {
-                syntaxTokens.emplace_back(lexerToken.name,lexerToken.type,lexerToken.line,dataType);
+                valuesTable.emplace_back(lexerToken.name,lexerToken.type,lexerToken.line,dataType);
             }
         }
         else {
@@ -474,7 +480,7 @@ std::pair<std::shared_ptr<SyntaxNode>,std::list<SyntaxToken>> Grammar::SyntaxAna
     }
 
     if (memory.top().symbol == "EOF" || memory.empty()) {
-        return std::make_pair(rootNode, syntaxTokens);
+        return std::make_pair(rootNode, valuesTable);
     }
     std::cerr << "Error de sintaxis" << std::endl;
     return {nullptr, {}};

@@ -613,7 +613,10 @@ a = 3 + 2
 variable b = a + u
 ````
 Salida: `Uso de una variable no declarada: u`
-
+````
+a = 3 + 2
+````
+Salida: `Uso de una variable no declarada: a`
 ## Análisis Semántico
 
 - **Análisis sintáctico:**
