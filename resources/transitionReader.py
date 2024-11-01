@@ -1,5 +1,6 @@
 import pandas as pd
 
+# Generado por: ChatGPT
 file_path = '/home/hij555/Programming/Compiladores/Script/DFA.csv'
 df = pd.read_csv(file_path)
 df.head()
@@ -25,3 +26,4 @@ with open('/home/hij555/Programming/Compiladores/Script/my_file.txt', 'w') as fi
     file.write(formatted_dfa_output)
 
 print("String has been written to the file.")
+# Fin Generacion

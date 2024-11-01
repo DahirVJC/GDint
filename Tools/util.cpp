@@ -5,7 +5,7 @@
 #include <iostream>
 #include <sstream>
 
-// Source: https://www.geeksforgeeks.org/split-string-by-space-into-vector-in-cpp-stl/
+// Autor: Riteshjha0002
 std::vector<std::string> splitByChar(const std::string &str, const char c) {
     std::string s;
     std::stringstream ss(str);
@@ -15,6 +15,7 @@ std::vector<std::string> splitByChar(const std::string &str, const char c) {
     }
     return v;
 }
+//Fin Autor
 
 std::string symbolFormat(std::string symbol) {
     if (symbol == "\n") return  R"(\n)";
@@ -22,6 +23,7 @@ std::string symbolFormat(std::string symbol) {
     return symbol;
 }
 
+// Asistido por: ChatGPT
 std::vector<char> butCharGetAllChars(char excluded) {
     std::vector<char> butExcludedAllChar;
     for (int i = 32; i < 127; ++i) {
@@ -30,6 +32,7 @@ std::vector<char> butCharGetAllChars(char excluded) {
     }
     return butExcludedAllChar;
 }
+// Fin Asistencia
 
 void getFirstLexerToken(const std::list<LexerToken> &tokens, const std::string &tokenName, LexerToken &output) {
     for (LexerToken token : tokens ) {

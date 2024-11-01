@@ -23,8 +23,8 @@ int main () {
     }
     std::list<LexerToken> LexerTokens = DoLexicalAnalysis(content);
 
-    bool Correct = DoSyntaxAnalysis(LexerTokens);
-    if(!Correct) exit(0);
+    std::pair<std::shared_ptr<SyntaxNode>,std::list<SyntaxToken>> syntaxProducts = DoSyntaxAnalysis(LexerTokens);
+    if(nullptr == syntaxProducts.first) exit(0);
 
     return 0;
 }

@@ -102,8 +102,10 @@ void Grammar::firstNoEpsilon(std::set<std::string> &firstSym, const std::string 
 }
 
 void Grammar::follow(std::set<std::string> &followSym, const std::string &symbol) {
+    // Si es la primera regla insertar EOF ($)
     if (rules.at(0).first == symbol) followSym.insert("EOF");
 
+    // Buscar todas las reglas en las que aparece
     for (const auto& rule : this->rules) {
         if (rule.first != symbol) {
             for (const auto& production : rule.second) {
@@ -111,18 +113,25 @@ void Grammar::follow(std::set<std::string> &followSym, const std::string &symbol
                     const auto& sym = production[i];
 
                     if (sym == symbol) {
+                        // Revisar si hay un simbolo que le sigue
                         if (i + 1 < production.size()) {
                             if(isNonTerminal(production[i + 1])) {
+                                // Follow(sym) Union = First(sym siguiente) - {ε}
                                 firstNoEpsilon(followSym, production[i + 1]);
-                                if (hasEpsilon(production[i + 1])) follow(followSym, rule.first);
+                                // Si ε pertence al first del siguiente simbolo
+                                std::vector<std::string> firstSig = doFirst(production[i + 1]);
+                                // Si es asi, Follow(sym) Union = Follow(rule)
+                                if (std::find(firstSig.begin(), firstSig.end(), "ε") != firstSig.end()) follow(followSym, rule.first);
                             }
                             else {
                                 followSym.insert(production[i + 1]);
                             }
                         }
                         else {
+                            // Follow(sym) Union = Follow(rule)
                             follow(followSym, rule.first);
                         }
+                        // Seguir revisando mas ocurrencias de sym en la misma regla
                     }
                 }
             }
@@ -180,7 +189,7 @@ void Grammar::createParserTable() {
             else parserTable[std::make_pair(rule.first,symbol)] = production;
         }
 
-
+        // Como Follow sirve para asignar epsilons, hay que omitir aquellos simbolo que no produzcan epsilon
         if (hasEpsilon(rule.first)) {
             std::string e = "ε";
             std::set<std::string> followSym = doFollow(rule.first);
@@ -200,6 +209,7 @@ std::string Grammar::usedToken(LexerToken token) {
     return token.name;
 }
 
+// Generado por: ChatGPT
 Grammar Grammar::createToRightRecursion() {
     Grammar newGrammar;
 
@@ -211,8 +221,9 @@ Grammar Grammar::createToRightRecursion() {
         for (const Production& production : productions) { // Para cada produccion
             if (production[0] == nonTerminal) { // Si el primer simbolo es recursivo
                 // Insertar los siguientes simbolos
-                // Source: https://www.geeksforgeeks.org/how-to-extract-a-subvector-from-a-vector-in-cpp/
+                // Autor: Anuragvbj79
                 Production alphaProduction(production.begin() + 1, production.end());
+                // Fin Autor
                 alpha.push_back(alphaProduction);
             } else {
                 // Sino, inserta a simbolos beta
@@ -244,23 +255,13 @@ Grammar Grammar::createToRightRecursion() {
     }
     return newGrammar;
 }
-
-Grammar Grammar::createFactorizedGrammar() {
-    Grammar newGrammar;
-    for (const auto& rule : this->rules) {
-        // Verify if first
-    }
-    return newGrammar;
-}
-
-Grammar Grammar::createLL1Grammar() {
-    return createToRightRecursion().createFactorizedGrammar();
-}
+// Fin Generacion
 
 std::vector<std::pair<std::string, std::vector<std::vector<std::string>>>>  & Grammar::getRules() {
     return rules;
 }
 
+// Generado por: ChatGPT
 void Grammar::printGrammar() {
     for (const auto &rule : this->rules) {
         std::cout << rule.first << " -> "; // Imprimir no terminal
@@ -277,6 +278,7 @@ void Grammar::printGrammar() {
         std::cout << std::endl;
     }
 }
+// Fin Generacion
 
 void Grammar::printFirst(const std::string &symbol) {
     std::vector<std::string> firstSym;
@@ -338,7 +340,7 @@ void Grammar::printPrintParserTable() {
     }
 }
 
-// Algoritmo de Neso Academy https://www.youtube.com/watch?v=clkHOgZUGWU
+// Algoritmo por: Neso Academy
 std::pair<std::shared_ptr<SyntaxNode>,std::list<SyntaxToken>> Grammar::SyntaxAnalysis(std::list<LexerToken> tokens) {
     createParserTable();
 
@@ -361,14 +363,14 @@ std::pair<std::shared_ptr<SyntaxNode>,std::list<SyntaxToken>> Grammar::SyntaxAna
     std::string dataType = NUMBER;
     std::string idName = "0";
     std::unordered_map<std::string,std::string> idTypes;
-
+    std::list<SyntaxToken> syntaxTokens;
     while (index < flowOfTokens.size()) {
         if (index == flowOfTokens.size() - 1 && memory.top().symbol == "EOF") break;
 
         if (isNonTerminal(memory.top().symbol)) {
             ParserState currentState = memory.top();
             if (parserTable[std::make_pair(memory.top().symbol, flowOfTokens.at(index).first)].empty()) {
-                std::cerr << "Syntax Error" << std::endl;
+                std::cerr << "Error de sintaxis" << std::endl;
                 return {nullptr, {}};
             }
 
@@ -405,7 +407,7 @@ std::pair<std::shared_ptr<SyntaxNode>,std::list<SyntaxToken>> Grammar::SyntaxAna
                     if (idName == "0") {
                         idName = flowOfTokens.at(index).second;
                         if (idTypes.find(idName) != idTypes.end()) {
-                            std::cerr << "Variable " << idName << " already declared" << std::endl;
+                            std::cerr << "La variable '" << idName << "' ya fue declarada previamente" << std::endl;
                             return {nullptr, {}};
                         }
                     }
@@ -414,21 +416,27 @@ std::pair<std::shared_ptr<SyntaxNode>,std::list<SyntaxToken>> Grammar::SyntaxAna
                         if (idTypes.find(flowOfTokens.at(index).second) != idTypes.end()) {
                             if (dataType != STRING) dataType = idTypes[flowOfTokens.at(index).second];
                         } else {
-                            std::cerr<<"Usage of undeclared variable: "<<flowOfTokens.at(index).second<<std::endl;
+                            std::cerr<<"Uso de una variable no declarada: "<<flowOfTokens.at(index).second<<std::endl;
                             return {nullptr, {}};
                         }
                     }
                 }
+                // Guardar Token con el Follow de DECLARACION \n
                 else if (flowOfTokens.at(index).first == "\n") {
                     if (idTypes.find(idName) == idTypes.end()) {
                         idTypes[idName] = dataType;
                         std::cout << idName << " es un "<< dataType << std::endl;
+                        LexerToken lexerToken = LexerToken("NULL","NULL",-1);
+                        getFirstLexerToken(tokens, idName, lexerToken);
+                        if (lexerToken.line != -1) {
+                            syntaxTokens.emplace_back(lexerToken.name,lexerToken.type,lexerToken.line,dataType);
+                        }
                         dataType = NUMBER;
                         inDeclaration = false;
                         idName = "0";
                     }
                     else {
-                        std::cerr << "Variable " << idName << " already declared" << std::endl;
+                        std::cerr << "La variable '" << idName << "' ya fue declarada previamente" << std::endl;
                         return {nullptr, {}};
                     }
                 }
@@ -453,27 +461,22 @@ std::pair<std::shared_ptr<SyntaxNode>,std::list<SyntaxToken>> Grammar::SyntaxAna
         if (idTypes.find(idName) == idTypes.end()) {
             idTypes[idName] = dataType;
             std::cout << idName << " es un "<< dataType << std::endl;
-            dataType = NUMBER;
-            inDeclaration = false;
-            idName = "0";
+            LexerToken lexerToken = LexerToken("NULL","NULL",-1);
+            getFirstLexerToken(tokens, idName, lexerToken);
+            if (lexerToken.line != -1) {
+                syntaxTokens.emplace_back(lexerToken.name,lexerToken.type,lexerToken.line,dataType);
+            }
         }
         else {
-            std::cerr << "Variable " << idName << " already declared" << std::endl;
+            std::cerr << "La variable '" << idName << "' ya fue declarada previamente" << std::endl;
             return {nullptr, {}};
         }
     }
 
-    std::list<SyntaxToken> syntaxTokens;
     if (memory.top().symbol == "EOF" || memory.empty()) {
-        for (const auto& idVar : idTypes) {
-            LexerToken lexerToken = LexerToken("NULL","NULL",-1);
-            getFirstLexerToken(tokens, idVar.first, lexerToken);
-            if (lexerToken.line != -1) {
-                syntaxTokens.emplace_back(lexerToken.name,lexerToken.type,lexerToken.line,idVar.second);
-            }
-        }
         return std::make_pair(rootNode, syntaxTokens);
     }
-    std::cerr << "Syntax Error" << std::endl;
+    std::cerr << "Error de sintaxis" << std::endl;
     return {nullptr, {}};
 }
+// Fin Algoritmo

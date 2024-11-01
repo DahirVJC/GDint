@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 
+// Asistido por: Claude
 struct SyntaxNode {
     std::string value;
     std::vector<std::shared_ptr<SyntaxNode>> children;
@@ -18,7 +19,6 @@ struct ParserState {
         : symbol(std::move(sym)), node(std::move(n)) {}
 };
 
-
 inline void printSyntaxTree(const std::shared_ptr<SyntaxNode>& node, int depth = 0) {
     if (node){
         std::cout << std::string(depth * 2, ' ') << node->value << std::endl;
@@ -27,5 +27,6 @@ inline void printSyntaxTree(const std::shared_ptr<SyntaxNode>& node, int depth =
         }
     }
 }
+// Fin Asistencia
 
 #endif //SYNTAXNODE_H

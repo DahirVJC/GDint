@@ -6,6 +6,7 @@
 #include <iostream>
 #include <list>
 
+// Asistido por: ChatGPT
 inline void printTokens(const std::list<LexerToken>& tokens) {
     for (const LexerToken& token : tokens) {
         std::string nameToPrint = (token.name == "\n") ? "\\n" : token.name;
@@ -15,6 +16,7 @@ inline void printTokens(const std::list<LexerToken>& tokens) {
                   << ")" << std::endl;
     }
 }
+// Fin Asistencia
 
 inline std::list<LexerToken> DoLexicalAnalysis(const std::string& code) {
     Lexer lexer;
