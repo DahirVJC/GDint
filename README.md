@@ -154,6 +154,7 @@ Donde:
     - CADENA = '
     - CADENA' = '
   - **Reglas de parseo (Parsing Table):**
+    - [Tabla de parseo](https://docs.google.com/spreadsheets/d/1QxdhRR3tCjMBeSxMir3cwsD7_051wFhnC_6Y7lOdV9g/edit?usp=sharing)
     - En \<ACCION> dado [#] produce: COMENTARIO
     - En \<ACCION> dado [borrar] produce: INSTRUCCION
     - En \<ACCION> dado [cambiar] produce: INSTRUCCION
