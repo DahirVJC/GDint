@@ -30,3 +30,12 @@ std::vector<char> butCharGetAllChars(char excluded) {
     }
     return butExcludedAllChar;
 }
+
+void getFirstLexerToken(const std::list<LexerToken> &tokens, const std::string &tokenName, LexerToken &output) {
+    for (LexerToken token : tokens ) {
+        if (token.name == tokenName) {
+            output = token;
+            return;
+        }
+    }
+}
