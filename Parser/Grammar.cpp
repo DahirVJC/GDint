@@ -349,11 +349,11 @@ std::pair<std::shared_ptr<SyntaxNode>,std::list<SyntaxToken>> Grammar::SyntaxAna
     std::shared_ptr<SyntaxNode> rootNode = std::make_shared<SyntaxNode>(rules.at(0).first);
     memory.emplace(rules.at(0).first, rootNode); // Add S
 
-    std::vector<std::pair<std::string,std::string>> flowOfTokens;
+    std::vector<std::pair<std::string,LexerToken>> flowOfTokens;
     for (const auto& token : tokens) {
-        flowOfTokens.push_back(std::make_pair(usedToken(token), token.name));
+        flowOfTokens.push_back(std::make_pair(usedToken(token), token));
     }
-    flowOfTokens.push_back(std::make_pair("EOF", "EOF"));
+    flowOfTokens.push_back(std::make_pair("EOF",  LexerToken("EOF",PUNCTUATION,-1)));
 
     int index = 0;
 
@@ -362,6 +362,7 @@ std::pair<std::shared_ptr<SyntaxNode>,std::list<SyntaxToken>> Grammar::SyntaxAna
     const std::string STRING = "String";
     std::string dataType = NUMBER;
     std::string idName = "0";
+    SyntaxToken* idPlaceholder;
     std::unordered_map<std::string,std::string> idTypes;
     std::list<SyntaxToken> valuesTable;
     while (index < flowOfTokens.size()) {
@@ -398,25 +399,32 @@ std::pair<std::shared_ptr<SyntaxNode>,std::list<SyntaxToken>> Grammar::SyntaxAna
             }
         }
         if (memory.top().symbol == flowOfTokens.at(index).first) {
-            memory.top().node->value = symbolFormat(flowOfTokens.at(index).second);
+            if (memory.top().symbol != "identificador") {
+                LexerToken aux = flowOfTokens.at(index).second;
+                memory.top().node->token = SyntaxToken(aux.name,aux.type,aux.line,"-");
+            }
 
             // En declaracion
             if (inDeclaration){
                 if (memory.top().symbol == "identificador") {
                     // Es la variable a declarar
                     if (idName == "0") {
-                        idName = flowOfTokens.at(index).second;
+                        idName = flowOfTokens.at(index).second.name;
                         if (idTypes.find(idName) != idTypes.end()) {
                             std::cerr << "La variable '" << idName << "' ya fue declarada previamente" << std::endl;
                             return {nullptr, {}};
                         }
+                        memory.top().node->token = SyntaxToken("NULL","NULL",-1,"NULL");
+                        idPlaceholder = &memory.top().node->token;
                     }
                     // Usar el tipo de la variable si no es string
                     else {
-                        if (idTypes.find(flowOfTokens.at(index).second) != idTypes.end()) {
-                            if (dataType != STRING) dataType = idTypes[flowOfTokens.at(index).second];
+                        if (idTypes.find(flowOfTokens.at(index).second.name) != idTypes.end()) {
+                            if (dataType != STRING) dataType = idTypes[flowOfTokens.at(index).second.name];
+                            LexerToken aux = flowOfTokens.at(index).second;
+                            memory.top().node->token = SyntaxToken(aux.name,aux.type,aux.line,idTypes[flowOfTokens.at(index).second.name]);
                         } else {
-                            std::cerr<<"Uso de una variable no declarada: "<<flowOfTokens.at(index).second<<std::endl;
+                            std::cerr<<"Uso de una variable no declarada: "<<flowOfTokens.at(index).second.name<<std::endl;
                             return {nullptr, {}};
                         }
                     }
@@ -430,7 +438,14 @@ std::pair<std::shared_ptr<SyntaxNode>,std::list<SyntaxToken>> Grammar::SyntaxAna
                         getFirstLexerToken(tokens, idName, lexerToken);
                         if (lexerToken.line != -1) {
                             valuesTable.emplace_back(lexerToken.name,lexerToken.type,lexerToken.line,dataType);
+                            if(nullptr != idPlaceholder) {
+                                idPlaceholder->name = lexerToken.name;
+                                idPlaceholder->tokenType = lexerToken.type;
+                                idPlaceholder->line = lexerToken.line;
+                                idPlaceholder->dataType = dataType;
+                            }
                         }
+                        idPlaceholder = nullptr;
                         dataType = NUMBER;
                         inDeclaration = false;
                         idName = "0";
@@ -442,23 +457,26 @@ std::pair<std::shared_ptr<SyntaxNode>,std::list<SyntaxToken>> Grammar::SyntaxAna
                 }
             }
             else if (memory.top().symbol == "identificador") {
-                if (idTypes.find(flowOfTokens.at(index).second) == idTypes.end()) {
-                    std::cerr<<"Uso de una variable no declarada: "<<flowOfTokens.at(index).second<<std::endl;
+                if (idTypes.find(flowOfTokens.at(index).second.name) == idTypes.end()) {
+                    std::cerr<<"Uso de una variable no declarada: "<<flowOfTokens.at(index).second.name<<std::endl;
                     return {nullptr, {}};
                 }
+                LexerToken aux = flowOfTokens.at(index).second;
+                memory.top().node->token = SyntaxToken(aux.name,aux.type,aux.line,idTypes[flowOfTokens.at(index).second.name]);
             }
 
             memory.pop();
             index++;
         }
         else if (memory.top().symbol == "∈Σ-'" && flowOfTokens.at(index).first != "'") {
-            memory.top().node->value = symbolFormat(flowOfTokens.at(index).second);
+            LexerToken aux = flowOfTokens.at(index).second;
+            memory.top().node->token = SyntaxToken(aux.name,aux.type,aux.line,"-");
             memory.pop();
             index++;
             dataType = STRING;
         }
         else if (memory.top().symbol == "ε") {
-            memory.top().node->value = "ε";
+            memory.top().node->productionName = "ε";
             memory.pop();
         }
     }
@@ -471,6 +489,12 @@ std::pair<std::shared_ptr<SyntaxNode>,std::list<SyntaxToken>> Grammar::SyntaxAna
             getFirstLexerToken(tokens, idName, lexerToken);
             if (lexerToken.line != -1) {
                 valuesTable.emplace_back(lexerToken.name,lexerToken.type,lexerToken.line,dataType);
+                if(nullptr != idPlaceholder) {
+                    idPlaceholder->name = lexerToken.name;
+                    idPlaceholder->tokenType = lexerToken.type;
+                    idPlaceholder->line = lexerToken.line;
+                    idPlaceholder->dataType = dataType;
+                }
             }
         }
         else {
