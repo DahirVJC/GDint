@@ -54,7 +54,7 @@ Donde:
 ## Análisis Sintáctico
 
 - **Análisis sintáctico:**
-  **Nota**: Por cuestiones de implementación, " " se escribe como space en las reglas, y \n como salto únicamente en el archivo de gramática (LL1Grammar.txt), esto para ser interpretado correctamente por el lector de gramática.
+  **Nota**: Por cuestiones de implementación, " " se escribe como space en las reglas, y \n como salto únicamente en el archivo de gramática (LL1Grammar.txt), al igual que || se escribe como or en dicho archivo, esto para ser interpretado correctamente por el lector de gramática.
   - **Gramatica:**
     - CODIGO -> BLOQUE CODIGO'
     - CODIGO' -> BLOQUE CODIGO' | ε
