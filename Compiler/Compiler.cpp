@@ -13,7 +13,7 @@ int main () {
         std::cout<<"No content found.\n";
         return 1;
     }
-    DoPreprocessing(content);
+    doPreprocessing(content);
 
     filePath = outputPath+R"(/Preprocessing_Code.txt)";
     content = readFileToString(filePath);
@@ -21,9 +21,9 @@ int main () {
         std::cout<<"No content found.";
         return 1;
     }
-    std::list<LexerToken> LexerTokens = DoLexicalAnalysis(content);
+    std::list<LexerToken> LexerTokens = doLexicalAnalysis(content);
 
-    std::pair<std::shared_ptr<SyntaxNode>,std::list<SyntaxToken>> syntaxProducts = DoSyntaxAnalysis(LexerTokens);
+    std::pair<std::shared_ptr<SyntaxNode>,std::list<SyntaxToken>> syntaxProducts = doSyntaxAnalysis(LexerTokens);
     if(nullptr == syntaxProducts.first) exit(0);
 
     return 0;

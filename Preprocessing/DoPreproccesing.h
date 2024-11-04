@@ -9,7 +9,7 @@
 #include "CleanCharacters.hpp"
 #include "../Tools/paths.h"
 
-inline void DoPreprocessing(std::string content) {
+inline void doPreprocessing(std::string content) {
     content = cleanCharacters(content);
     std::cout<<content;
     std::string filePath = outputPath+"/Preprocessing_Code.txt";

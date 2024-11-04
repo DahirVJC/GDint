@@ -24,7 +24,7 @@ public:
     Lexer();
     Lexer(Automata automata) : automata(std::move(automata)) {}
     // Process
-    void ReadInput(const std::string& code);
+    void readInput(const std::string& code);
     std::string testState(int state);
     // Getters
     std::list<LexerToken> getTokens();

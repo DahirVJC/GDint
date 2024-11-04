@@ -18,9 +18,9 @@ inline void printTokens(const std::list<LexerToken>& tokens) {
 }
 // Fin Asistencia
 
-inline std::list<LexerToken> DoLexicalAnalysis(const std::string& code) {
+inline std::list<LexerToken> doLexicalAnalysis(const std::string& code) {
     Lexer lexer;
-    lexer.ReadInput(code);
+    lexer.readInput(code);
     std::list<LexerToken> TokenTable = lexer.getTokens();
     printTokens(TokenTable);
     return TokenTable;

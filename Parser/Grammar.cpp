@@ -341,7 +341,7 @@ void Grammar::printPrintParserTable() {
 }
 
 // Algoritmo por: Neso Academy
-std::pair<std::shared_ptr<SyntaxNode>,std::list<SyntaxToken>> Grammar::SyntaxAnalysis(std::list<LexerToken> tokens) {
+std::pair<std::shared_ptr<SyntaxNode>,std::list<SyntaxToken>> Grammar::syntaxAnalysis(std::list<LexerToken> tokens) {
     createParserTable();
 
     std::stack<ParserState> memory;
@@ -401,7 +401,14 @@ std::pair<std::shared_ptr<SyntaxNode>,std::list<SyntaxToken>> Grammar::SyntaxAna
         if (memory.top().symbol == flowOfTokens.at(index).first) {
             if (memory.top().symbol != "identificador") {
                 LexerToken aux = flowOfTokens.at(index).second;
-                memory.top().node->token = SyntaxToken(aux.name,aux.type,aux.line,"-");
+                if (memory.top().symbol == "constante") {
+                    memory.top().node->token = SyntaxToken(aux.name,aux.type,aux.line,NUMBER);
+                }
+                else memory.top().node->token = SyntaxToken(aux.name,aux.type,aux.line,"-");
+            }
+            if (memory.top().node->token.name == "'") {
+                LexerToken aux = flowOfTokens.at(index).second;
+                memory.top().node->token = SyntaxToken(aux.name,aux.type,aux.line,STRING);
             }
 
             // En declaracion
@@ -470,7 +477,7 @@ std::pair<std::shared_ptr<SyntaxNode>,std::list<SyntaxToken>> Grammar::SyntaxAna
         }
         else if (memory.top().symbol == "∈Σ-'" && flowOfTokens.at(index).first != "'") {
             LexerToken aux = flowOfTokens.at(index).second;
-            memory.top().node->token = SyntaxToken(aux.name,aux.type,aux.line,"-");
+            memory.top().node->token = SyntaxToken(aux.name,aux.type,aux.line,STRING);
             memory.pop();
             index++;
             dataType = STRING;

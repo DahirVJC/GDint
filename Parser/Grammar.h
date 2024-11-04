@@ -50,7 +50,7 @@ public:
     void printAllFollows();
     void printPrintParserTable();
     //  Realizar el analisis sintactico
-    std::pair<std::shared_ptr<SyntaxNode>,std::list<SyntaxToken>> SyntaxAnalysis(std::list<LexerToken> tokens);
+    std::pair<std::shared_ptr<SyntaxNode>,std::list<SyntaxToken>> syntaxAnalysis(std::list<LexerToken> tokens);
 };
 
 

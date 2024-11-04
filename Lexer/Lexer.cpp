@@ -15,7 +15,7 @@ Lexer::Lexer() {
 }
 
 // Reads the input using the transition table of the automata
-void Lexer::ReadInput(const std::string& code) {
+void Lexer::readInput(const std::string& code) {
     std::string word = "";
     int currentIndex = 0;
     int state = 0;
