@@ -3,6 +3,8 @@ project(CLionProjects)
 
 set(CMAKE_CXX_STANDARD 14)
 
+add_subdirectory(antlr4)
+
 include_directories(.,${CMAKE_SOURCE_DIR})
 
 add_executable(CLionProjects
