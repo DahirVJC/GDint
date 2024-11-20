@@ -1,11 +1,15 @@
 cmake_minimum_required(VERSION 3.29)
 project(CLionProjects)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 
-add_subdirectory(antlr4)
+add_subdirectory(NewLexer/Cpp)
 
 include_directories(.,${CMAKE_SOURCE_DIR})
+set(ANTLR_FILES
+        NewLexer/Lexer.cpp
+        NewLexer/Lexer.h
+)
 
 add_executable(CLionProjects
         Preprocessing/BlankCharacters.hpp
@@ -37,3 +41,6 @@ add_executable(CLionProjects
         Parser/SyntaxNode.h
         Parser/SyntaxToken.h
 )
+
+# Vincular con el runtime de ANTLR
+target_link_libraries(CLionProjects antlr4_shared)
