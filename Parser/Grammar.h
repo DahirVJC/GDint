@@ -5,6 +5,7 @@
 #include <vector>
 #include <set>
 #include <map>
+#include <stack>
 
 #include "SyntaxNode.h"
 #include "SyntaxToken.h"
@@ -37,7 +38,6 @@ private:
     //  LL(1)
     void createParserTable();
     std::string usedToken(LexerToken token);
-
 public:
     // Metodos externos
     Grammar createToRightRecursion();
@@ -50,6 +50,7 @@ public:
     void printAllFollows();
     void printPrintParserTable();
     //  Realizar el analisis sintactico
+    std::pair<std::shared_ptr<SyntaxNode>,std::list<SyntaxToken>> parseAnalysis(std::list<LexerToken> tokens);
     std::pair<std::shared_ptr<SyntaxNode>,std::list<SyntaxToken>> syntaxAnalysis(std::list<LexerToken> tokens);
 };
 

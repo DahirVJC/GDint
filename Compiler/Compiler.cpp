@@ -5,6 +5,7 @@
 #include "../Lexer/TokenStruct.h"
 #include "../Tools/paths.h"
 #include "../Parser/DoSyntaxAnalysis.h"
+#include "../Semantics/DoSemanticAnalysis.h"
 
 int main () {
     std::string filePath = inputPath+R"(/example.gdi)";
@@ -25,6 +26,8 @@ int main () {
 
     std::pair<std::shared_ptr<SyntaxNode>,std::list<SyntaxToken>> syntaxProducts = doSyntaxAnalysis(LexerTokens);
     if(nullptr == syntaxProducts.first) exit(0);
+
+    doSemanticAnalysis(syntaxProducts.first);
 
     return 0;
 }
