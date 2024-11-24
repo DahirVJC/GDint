@@ -677,8 +677,8 @@ public:
         else {
             if (elseBlock) {
                 elseBlock->resolve();
-                thenBlock = nullptr;
             }
+            thenBlock = nullptr;
         }
         return result;
     }
