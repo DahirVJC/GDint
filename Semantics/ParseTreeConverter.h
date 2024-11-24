@@ -82,18 +82,20 @@ private:
 
         if (!bloqueNode->children.empty()) {
             auto instruccionNode = bloqueNode->children[0];
-            if (instruccionNode && instruccionNode->productionName == "INSTRUCCION") {
+            if (instruccionNode && (instruccionNode->productionName == "INSTRUCCION" || instruccionNode->productionName == "INSTBLOQ")) {
                 convertInstruccion(instruccionNode->children[0], program);
             }
         }
 
         if (bloqueNode->children.size() > 1) {
             auto bloquePrime = bloqueNode->children[1];
-            while (bloquePrime && bloquePrime->productionName == "BLOQUE'" &&
-                   !bloquePrime->children.empty()) {
+            while (bloquePrime &&
+                  (bloquePrime->productionName == "BLOQUE'" || bloquePrime->productionName == "ANIDADO'") &&
+                  !bloquePrime->children.empty()) {
+
                 if (bloquePrime->children.size() >= 2) {
                     auto instruccionNode = bloquePrime->children[1];
-                    if (instruccionNode && instruccionNode->productionName == "INSTRUCCION") {
+                    if (instruccionNode && (instruccionNode->productionName == "INSTRUCCION" || instruccionNode->productionName == "INSTBLOQ")) {
                         convertInstruccion(instruccionNode->children[0], program);
                     }
                 }
@@ -103,7 +105,7 @@ private:
                 } else {
                     break;
                 }
-                   }
+                  }
         }
     }
 
@@ -138,8 +140,8 @@ private:
                 program->addInstruction(instrNode.release());
             }
         }
-        else if(instruccionNode->productionName == "BORRAR") {
-            auto instrNode = convertBorrar(instruccionNode);
+        else if(instruccionNode->productionName == "CONDICIONAL") {
+            auto instrNode = convertCondicional(instruccionNode);
             if (instrNode) {
                 program->addInstruction(instrNode.release());
             }
@@ -253,6 +255,114 @@ private:
         );
     }
 
+    std::unique_ptr<Node> convertCondicional(const std::shared_ptr<SyntaxNode>& node) {
+        if (!node || node->children.size() < 8) return nullptr;
+
+        auto conditionNode = node->children[2];
+        if (!conditionNode) return nullptr;
+
+        auto condition = convertCondition(conditionNode);
+        if (!condition) return nullptr;
+
+        auto thenBlockNode = node->children[6];
+        if (!thenBlockNode) return nullptr;
+
+        auto thenProgram = std::make_unique<ProgramNode>();
+        convertBloque(thenBlockNode, thenProgram.get());
+
+        auto sinoNode = node->children[7];
+        std::unique_ptr<ProgramNode> elseProgram = nullptr;
+
+        if (sinoNode->children.size() >= 2) {
+            auto elseBlockNode = sinoNode->children[2];
+            if (elseBlockNode) {
+                elseProgram = std::make_unique<ProgramNode>();
+                convertBloque(elseBlockNode, elseProgram.get());
+            }
+        }
+
+        return std::make_unique<CondicionalNode>(
+            static_cast<BinaryOperationNode*>(condition.release()),
+            thenProgram.release(),
+            elseProgram ? elseProgram.release() : nullptr
+        );
+    }
+
+    std::unique_ptr<Node> convertCondition(const std::shared_ptr<SyntaxNode>& node) {
+        if (!node || node->children.empty()) return nullptr;
+
+        auto result = convertComparison(node->children[0]);
+
+        if (node->children.size() > 1) {
+            auto conditionPrime = node->children[1];
+            while (conditionPrime && conditionPrime->productionName == "CONDICION'" &&
+                   !conditionPrime->children.empty()) {
+
+                if (conditionPrime->children.size() >= 2) {
+                    auto op = conditionPrime->children[0]->token.name;
+                    auto rightComparison = convertComparison(conditionPrime->children[1]);
+
+                    if (result && rightComparison) {
+                        result = std::make_unique<BinaryOperationNode>(
+                            result.release(),
+                            rightComparison.release(),
+                            op
+                        );
+                    }
+                }
+
+                if (conditionPrime->children.size() > 2) {
+                    conditionPrime = conditionPrime->children[2];
+                } else {
+                    break;
+                }
+            }
+        }
+
+        return result;
+    }
+
+    std::unique_ptr<Node> convertComparison(const std::shared_ptr<SyntaxNode>& node) {
+        if (!node || node->children.empty()) return nullptr;
+
+        auto result = convertBool(node->children[0]);
+
+        if (node->children.size() > 1) {
+            auto comparisonPrime = node->children[1];
+            while (comparisonPrime && comparisonPrime->productionName == "COMPARACION'" &&
+                   !comparisonPrime->children.empty()) {
+
+                if (comparisonPrime->children.size() >= 2) {
+                    auto op = comparisonPrime->children[0]->token.name;
+                    auto rightBool = convertBool(comparisonPrime->children[1]);
+
+                    if (result && rightBool) {
+                        result = std::make_unique<BinaryOperationNode>(
+                            result.release(),
+                            rightBool.release(),
+                            op
+                        );
+                    }
+                }
+
+                if (comparisonPrime->children.size() > 2) {
+                    comparisonPrime = comparisonPrime->children[2];
+                } else {
+                    break;
+                }
+            }
+        }
+
+        return result;
+    }
+
+    std::unique_ptr<Node> convertBool(const std::shared_ptr<SyntaxNode>& node) {
+        if (!node || node->children.empty()) return nullptr;
+
+        auto child = node->children[0];
+        return convertDato(child);
+    }
+
     std::unique_ptr<Node> convertExpression(const std::shared_ptr<SyntaxNode>& node) {
         if (!node || node->children.empty()) return nullptr;
 
@@ -326,7 +436,7 @@ private:
 
     std::unique_ptr<Node> convertString(const std::shared_ptr<SyntaxNode>& node) {
         std::string value = toCadena(node->children[1]);
-        return std::make_unique<StringNode>(
+        return std::make_unique<ConstantNode>(
                 value,
                 "String"
             );
@@ -356,7 +466,7 @@ private:
         }
 
         if (child->token.tokenType == "Constant") {
-            return std::make_unique<NumberNode>(
+            return std::make_unique<ConstantNode>(
                 child->token.name,
                 child->token.dataType
             );

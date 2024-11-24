@@ -62,34 +62,15 @@ public:
     }
 };
 
-class NumberNode : public Node {
+class ConstantNode : public Node {
 private:
     std::string value;
     std::string dataType;
 
 public:
-    NumberNode(const std::string& val, const std::string& type)
+    ConstantNode(const std::string& val, const std::string& type)
         : Node(val), value(val), dataType(type) {}
 
-    void print(int depth = 0) const override {
-        std::string indent(depth * 2, ' ');
-        std::cout << indent << value << " (Type: " << dataType << ")" << std::endl;
-    }
-    std::string resolve() override {
-        return value;
-    }
-    std::string getDataType() const override {
-        return dataType;
-    }
-};
-
-class StringNode : public Node {
-private:
-    std::string value;
-    std::string dataType;
-public:
-    StringNode(const std::string& id, const std::string& type)
-        : Node(id), value(id), dataType(type) {}
     void print(int depth = 0) const override {
         std::string indent(depth * 2, ' ');
         std::cout << indent << value << " (Type: " << dataType << ")" << std::endl;
@@ -144,35 +125,52 @@ public:
             return false;
         }
 
-        dataType = leftType;
-
-        if (dataType == "String") {
-            if (operation != "+") {
-                std::cerr << "Error semantico: no se permite la operacion " << operation << " en " << dataType << std::endl;
+        if (leftType == "String") {
+            if (operation != "+" && operation != "==") {
+                std::cerr << "Error semantico: no se permite la operacion " << operation << " en " << leftType << std::endl;
                 return false;
             }
+        }
+        else if (leftType == "Number") {
+            if (operation != "+" && operation != "-" && operation != "*" && operation != "/" && operation != "==" && operation != "<" && operation != ">") {
+                std::cerr << "Error semantico: no se permite la operacion " << operation << " en " << leftType << std::endl;
+                return false;
+            }
+        }
+        else if (leftType == "Bool") {
+            if (operation != "&&" && operation != "||") {
+                std::cerr << "Error semantico: no se permite la operacion " << operation << " en " << leftType << std::endl;
+                return false;
+            }
+        }
+
+        if (operation == "&&" || operation == "||" || operation == "==" || operation == ">" || operation == "<") {
+            dataType = "Bool";
+        }
+        else {
+            dataType = leftType;
         }
 
         return leftValid && rightValid;
     }
 
     std::string resolve() override {
-        std::string varValue = left ? left->resolve() : "0";
-        std::string expValue = right ? right->resolve() : "0";
+        std::string leftStrValue = left ? left->resolve() : "0";
+        std::string rightStrValue = right ? right->resolve() : "0";
         if (left->getDataType() == "Number") {
-            std::unique_ptr<Node> newLeft= std::make_unique<NumberNode>(
+            std::unique_ptr<Node> newLeft= std::make_unique<ConstantNode>(
                 left->resolve(),
                 left->getDataType()
             );
             left = std::move(newLeft);
-            std::unique_ptr<Node> newRight= std::make_unique<NumberNode>(
+            std::unique_ptr<Node> newRight= std::make_unique<ConstantNode>(
                 right->resolve(),
                 right->getDataType()
             );
             right = std::move(newRight);
 
-            int leftValue = std::stoi(varValue);
-            int rightValue = std::stoi(expValue);
+            int leftValue = std::stoi(leftStrValue);
+            int rightValue = std::stoi(rightStrValue);
             if (operation == "+") {
                 return std::to_string(leftValue + rightValue);
             }
@@ -188,19 +186,46 @@ public:
                 }
                 return std::to_string(leftValue / rightValue);
             }
+            if (operation == "==") {
+                return leftValue == rightValue ? "true" : "false";
+            }
+            if (operation == ">") {
+                return leftValue > rightValue ? "true" : "false";
+            }
+            if (operation == "<") {
+                return leftValue < rightValue ? "true" : "false";
+            }
         }
-        else {
-            std::unique_ptr<Node> newLeft= std::make_unique<StringNode>(
+        else if (left->getDataType() == "String") {
+            std::unique_ptr<Node> newLeft= std::make_unique<ConstantNode>(
                 left->resolve(),
                 left->getDataType()
             );
             left = std::move(newLeft);
-            std::unique_ptr<Node> newRight= std::make_unique<StringNode>(
+            std::unique_ptr<Node> newRight= std::make_unique<ConstantNode>(
                 right->resolve(),
                 right->getDataType()
             );
             right = std::move(newRight);
-            return varValue + expValue;
+            return leftStrValue + rightStrValue;
+        }
+        else if (left->getDataType() == "Bool") {
+            std::unique_ptr<Node> newLeft= std::make_unique<ConstantNode>(
+                left->resolve(),
+                left->getDataType()
+            );
+            left = std::move(newLeft);
+            std::unique_ptr<Node> newRight= std::make_unique<ConstantNode>(
+                right->resolve(),
+                right->getDataType()
+            );
+            right = std::move(newRight);
+            if (operation == "&&") {
+                return (leftStrValue == "true" && rightStrValue == "true") ? "true" : "false";
+            }
+            if (operation == "||") {
+                return (leftStrValue == "true" || rightStrValue == "true") ? "true" : "false";
+            }
         }
         return "";
     }
@@ -269,7 +294,15 @@ public:
         if (!variable || !expression) {
             return false;
         }
-        return variable->evaluate() && expression->evaluate();
+
+        bool varValid = variable->evaluate();
+        bool varExp = expression->evaluate();
+
+        if(variable->getDataType() != expression->getDataType()) {
+            std::cerr << "Error semantico: se puede asignar " << expression->getDataType() << " a " << variable->getDataType() << std::endl;
+            return false;
+        }
+        return varValid && varExp;
     }
 
     std::string resolve() override {
@@ -321,13 +354,13 @@ public:
         return endpoint->evaluate();
     }
     std::string resolve() override {
-        std::unique_ptr<Node> newEndpoint= std::make_unique<StringNode>(
+        std::unique_ptr<Node> newEndpoint= std::make_unique<ConstantNode>(
                 endpoint->resolve(),
                 endpoint->getDataType()
                 );
         endpoint = std::move(newEndpoint);
         if (apiKey) {
-            std::unique_ptr<Node> newApiKey= std::make_unique<StringNode>(
+            std::unique_ptr<Node> newApiKey= std::make_unique<ConstantNode>(
                     apiKey->resolve(),
                     apiKey->getDataType()
                     );
@@ -387,18 +420,18 @@ public:
     }
 
     std::string resolve() override {
-        std::unique_ptr<Node> newEndpoint= std::make_unique<StringNode>(
+        std::unique_ptr<Node> newEndpoint= std::make_unique<ConstantNode>(
                 endpoint->resolve(),
                 endpoint->getDataType()
                 );
         endpoint = std::move(newEndpoint);
-        std::unique_ptr<Node> newBody= std::make_unique<StringNode>(
+        std::unique_ptr<Node> newBody= std::make_unique<ConstantNode>(
                 body->resolve(),
                 body->getDataType()
                 );
         body = std::move(newBody);
         if (apiKey) {
-            std::unique_ptr<Node> newApiKey= std::make_unique<StringNode>(
+            std::unique_ptr<Node> newApiKey= std::make_unique<ConstantNode>(
                     apiKey->resolve(),
                     apiKey->getDataType()
                     );
@@ -463,23 +496,23 @@ public:
     }
 
     std::string resolve() override {
-        std::unique_ptr<Node> newEndpoint= std::make_unique<StringNode>(
+        std::unique_ptr<Node> newEndpoint= std::make_unique<ConstantNode>(
                 endpoint->resolve(),
                 endpoint->getDataType()
                 );
         endpoint = std::move(newEndpoint);
-        std::unique_ptr<Node> newId= std::make_unique<StringNode>(
+        std::unique_ptr<Node> newId= std::make_unique<ConstantNode>(
                 id->resolve(),
                 id->getDataType()
                 );
         id = std::move(newId);
-        std::unique_ptr<Node> newBody= std::make_unique<StringNode>(
+        std::unique_ptr<Node> newBody= std::make_unique<ConstantNode>(
                 body->resolve(),
                 body->getDataType()
                 );
         body = std::move(newBody);
         if (apiKey) {
-            std::unique_ptr<Node> newApiKey= std::make_unique<StringNode>(
+            std::unique_ptr<Node> newApiKey= std::make_unique<ConstantNode>(
                     apiKey->resolve(),
                     apiKey->getDataType()
                     );
@@ -535,18 +568,18 @@ public:
     }
 
     std::string resolve() override {
-        std::unique_ptr<Node> newEndpoint= std::make_unique<StringNode>(
+        std::unique_ptr<Node> newEndpoint= std::make_unique<ConstantNode>(
                 endpoint->resolve(),
                 endpoint->getDataType()
                 );
         endpoint = std::move(newEndpoint);
-        std::unique_ptr<Node> newId= std::make_unique<StringNode>(
+        std::unique_ptr<Node> newId= std::make_unique<ConstantNode>(
                 id->resolve(),
                 id->getDataType()
                 );
         id = std::move(newId);
         if (apiKey) {
-            std::unique_ptr<Node> newApiKey= std::make_unique<StringNode>(
+            std::unique_ptr<Node> newApiKey= std::make_unique<ConstantNode>(
                     apiKey->resolve(),
                     apiKey->getDataType()
                     );
@@ -593,6 +626,59 @@ public:
             inst->resolve();
         }
         return "";
+    }
+};
+
+
+
+class CondicionalNode : public Node {
+private:
+    std::unique_ptr<BinaryOperationNode> comparison;
+    std::unique_ptr<ProgramNode> thenBlock;
+    std::unique_ptr<ProgramNode> elseBlock;
+
+public:
+    CondicionalNode(BinaryOperationNode* com, ProgramNode* thenB, ProgramNode* elseB)
+        : Node("Condicional"), comparison(com), thenBlock(thenB), elseBlock(elseB) {}
+
+    void print(int depth = 0) const override {
+        std::string indent(depth * 2, ' ');
+        std::cout << indent << name << ":" << std::endl;
+        if (comparison) {
+            std::cout << indent << "  Comparison:" << std::endl;
+            comparison->print(depth + 2);
+        }
+        if (thenBlock) {
+            std::cout << indent << "  Then Block:" << std::endl;
+            thenBlock->print(depth + 2);
+        }
+        if (elseBlock) {
+            std::cout << indent << "  Else Block:" << std::endl;
+            elseBlock->print(depth + 2);
+        }
+    }
+
+    bool evaluate() override {
+        if (!comparison || !thenBlock) {
+            return false;
+        }
+        if (elseBlock) {
+            return comparison->evaluate() && thenBlock->evaluate() && elseBlock->evaluate();
+        }
+        return comparison->evaluate() && thenBlock->evaluate();
+    }
+
+    std::string resolve() override {
+        std::string result = comparison->resolve();
+        if (result == "true") {
+            thenBlock->resolve();
+            elseBlock = nullptr;
+        }
+        else {
+            elseBlock->resolve();
+            thenBlock = nullptr;
+        }
+        return result;
     }
 };
 

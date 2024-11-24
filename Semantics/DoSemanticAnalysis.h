@@ -13,6 +13,7 @@ std::pair<std::shared_ptr<std::list<SemanticToken>>, std::unique_ptr<Node>> doSe
         std::unique_ptr<Node> astTree = converter.convertTree(root);
         std::cout << "Arbol creado" << std::endl;
 
+        astTree->print();
         bool isValid = astTree->evaluate();
         if(isValid) {
             std::cout << "Semantica valida" << std::endl;

@@ -491,6 +491,10 @@ std::pair<std::shared_ptr<SyntaxNode>,std::list<SyntaxToken>> Grammar::syntaxAna
             memory.top().node->productionName = "ε";
             memory.pop();
         }
+        else if (!isNonTerminal(memory.top().symbol)){
+            std::cerr<<"Error de sintaxis en el simbolo no terminal: "<<memory.top().symbol<<std::endl;
+            return {nullptr, {}};
+        }
     }
 
     if (idName != "0") {
