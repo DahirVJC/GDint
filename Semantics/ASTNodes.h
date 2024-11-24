@@ -222,6 +222,43 @@ public:
 
 };
 
+class AssignmentNode : public Node {
+private:
+    std::unique_ptr<IdentifierNode> variable;
+    std::unique_ptr<Node> expression;
+
+public:
+    AssignmentNode(IdentifierNode* var, Node* expr)
+        : Node("Assignment"), variable(var), expression(expr) {}
+
+    void print(int depth = 0) const override {
+        std::string indent(depth * 2, ' ');
+        std::cout << indent << "Assignment:" << std::endl;
+        if (variable) {
+            std::cout << indent << "  Variable:" << std::endl;
+            variable->print(depth + 2);
+        }
+        if (expression) {
+            std::cout << indent << "  Value:" << std::endl;
+            expression->print(depth + 2);
+        }
+    }
+
+    bool evaluate() override {
+        if (!variable || !expression) {
+            return false;
+        }
+        return variable->evaluate() && expression->evaluate();
+    }
+
+    std::string resolve() override {
+        std::string varValue = expression->resolve();
+        variable->setValue(varValue);
+        return varValue;
+    }
+
+};
+
 class ProgramNode : public Node {
 private:
     std::vector<std::unique_ptr<Node>> instructions;
