@@ -1,2 +1,2 @@
-variable a = 0
-variable b = 5 + a*'https://www.facebook.com/'
+variable a = '3 + 5'
+variable b = 3 + 5*2

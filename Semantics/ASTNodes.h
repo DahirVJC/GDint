@@ -5,6 +5,10 @@
 #include <vector>
 #include <memory>
 
+#include "SemanticToken.h"
+
+struct SemanticToken;
+
 class Node {
 protected:
     std::string name;
@@ -19,34 +23,45 @@ public:
         std::cout << indent << name << std::endl;
     }
 
-    // Base evaluate function - leaf nodes return true by default
-    virtual bool evaluate() const {
+    virtual bool evaluate() {
         return true;
+    }
+
+    virtual std::string resolve() {
+        return "-";
+    }
+
+    virtual std::string getDataType() const {
+        return "Unknown";
     }
 };
 
-// Identifier Node - Leaf node
 class IdentifierNode : public Node {
 private:
-    std::string identifier;
-    std::string dataType;
+    SemanticToken* symbolToken;
 
 public:
-    IdentifierNode(const std::string& id, const std::string& type)
-        : Node(id), identifier(id), dataType(type) {}
+    IdentifierNode(const std::string& id, SemanticToken* token)
+        : Node(id),
+          symbolToken(token) {}
 
     void print(int depth = 0) const override {
         std::string indent(depth * 2, ' ');
-        std::cout << indent << "Identifier: " << identifier << " (Type: " << dataType << ")" << std::endl;
+        std::cout << indent << symbolToken->name << " (Type: " << symbolToken->dataType << ")" << std::endl;
     }
-
-    // Leaf node returns true
-    bool evaluate() const override {
-        return true;
+    std::string resolve() override {
+        return symbolToken->value;
+    }
+    void setValue(const std::string &value) {
+        symbolToken->value = value;
+        int newSize = calculateSize(symbolToken->dataType,value);
+        symbolToken->size = newSize>symbolToken->size ? newSize : symbolToken->size;
+    }
+    std::string getDataType() const override {
+        return symbolToken->dataType;
     }
 };
 
-// Number Node - Leaf node
 class NumberNode : public Node {
 private:
     std::string value;
@@ -58,12 +73,13 @@ public:
 
     void print(int depth = 0) const override {
         std::string indent(depth * 2, ' ');
-        std::cout << indent << "Number: " << value << " (Type: " << dataType << ")" << std::endl;
+        std::cout << indent << value << " (Type: " << dataType << ")" << std::endl;
     }
-
-    // Leaf node returns true
-    bool evaluate() const override {
-        return true;
+    std::string resolve() override {
+        return value;
+    }
+    std::string getDataType() const override {
+        return dataType;
     }
 };
 
@@ -76,29 +92,30 @@ public:
         : Node(id), value(id), dataType(type) {}
     void print(int depth = 0) const override {
         std::string indent(depth * 2, ' ');
-        std::cout << indent << "String: " << value << " (Type: " << dataType << ")" << std::endl;
+        std::cout << indent << value << " (Type: " << dataType << ")" << std::endl;
     }
-
-    // Leaf node returns true
-    bool evaluate() const override {
-        return true;
+    std::string resolve() override {
+        return value;
+    }
+    std::string getDataType() const override {
+        return dataType;
     }
 };
 
-// Binary Operation Node
 class BinaryOperationNode : public Node {
 private:
     std::unique_ptr<Node> left;
     std::unique_ptr<Node> right;
     std::string operation;
+    std::string dataType;
 
 public:
     BinaryOperationNode(Node* left_node, Node* right_node, const std::string& op)
-        : Node(op), left(left_node), right(right_node), operation(op) {}
+        : Node(op), left(left_node), right(right_node), operation(op), dataType("Unknown") {}
 
     void print(int depth = 0) const override {
         std::string indent(depth * 2, ' ');
-        std::cout << indent << "BinaryOp: " << operation << std::endl;
+        std::cout << indent << operation << std::endl;
         if (left) {
             std::cout << indent << "  Left:" << std::endl;
             left->print(depth + 2);
@@ -108,16 +125,66 @@ public:
             right->print(depth + 2);
         }
     }
+    std::string getDataType() const override {
+        return dataType;
+    }
 
-    // Evaluates to true if both children evaluate to true
-    bool evaluate() const override {
-        bool leftEval = left ? left->evaluate() : false;
-        bool rightEval = right ? right->evaluate() : false;
-        return leftEval && rightEval;
+    bool evaluate() override {
+        if (!left || !right) {
+            return false;
+        }
+        bool leftValid = left->evaluate();
+        bool rightValid = right->evaluate();
+
+        const std::string& leftType = left->getDataType();
+        const std::string& rightType = right->getDataType();
+
+        if (leftType != rightType) {
+            std::cerr << "Error semantico: tipos de datos incompatibles" << std::endl;
+            return false;
+        }
+
+        dataType = leftType;
+
+        if (dataType == "String") {
+            if (operation != "+") {
+                std::cerr << "Error semantico: no se permite la operacion " << operation << " en " << dataType << std::endl;
+                return false;
+            }
+        }
+
+        return leftValid && rightValid;
+    }
+
+    std::string resolve() override {
+        std::string varValue = left ? left->resolve() : "0";
+        std::string expValue = right ? right->resolve() : "0";
+        if (left->getDataType() == "Number") {
+            int leftValue = std::stoi(varValue);
+            int rightValue = std::stoi(expValue);
+            if (operation == "+") {
+                return std::to_string(leftValue + rightValue);
+            }
+            if (operation == "-") {
+                return std::to_string(leftValue - rightValue);
+            }
+            if (operation == "*") {
+                return std::to_string(leftValue * rightValue);
+            }
+            if (operation == "/") {
+                if (rightValue == 0) {
+                    throw std::runtime_error("No se puede dividir entre 0");// Es un error de runtime porque el 0 puede salir de EXP como 2 - 2
+                }
+                return std::to_string(leftValue / rightValue);
+            }
+        }
+        else {
+            return varValue + expValue;
+        }
+        return "";
     }
 };
 
-// Declaration Node
 class DeclarationNode : public Node {
 private:
     std::unique_ptr<IdentifierNode> variable;
@@ -140,46 +207,58 @@ public:
         }
     }
 
-    // Evaluates to true if both variable and expression evaluate to true
-    bool evaluate() const override {
-        bool varEval = variable ? variable->evaluate() : false;
-        bool exprEval = expression ? expression->evaluate() : false;
-        return varEval && exprEval;
+    bool evaluate() override {
+        if (!variable || !expression) {
+            return false;
+        }
+        return variable->evaluate() && expression->evaluate();
     }
+
+    std::string resolve() override {
+        std::string varValue = expression->resolve();
+        variable->setValue(varValue);
+        return varValue;
+    }
+
 };
 
-// Program Node
 class ProgramNode : public Node {
 private:
-    std::vector<std::unique_ptr<Node>> declarations;
+    std::vector<std::unique_ptr<Node>> instructions;
 
 public:
     ProgramNode() : Node("Program") {}
 
-    void addDeclaration(Node* decl) {
-        if (decl) {
-            declarations.push_back(std::unique_ptr<Node>(decl));
+    void addInstruction(Node* inst) {
+        if (inst) {
+            instructions.push_back(std::unique_ptr<Node>(inst));
         }
     }
 
     void print(int depth = 0) const override {
         std::string indent(depth * 2, ' ');
         std::cout << indent << "Program:" << std::endl;
-        for (const auto& decl : declarations) {
-            if (decl) {
-                decl->print(depth + 1);
+        for (const auto& inst : instructions) {
+            if (inst) {
+                inst->print(depth + 1);
             }
         }
     }
 
-    // Evaluates to true if all declarations evaluate to true
-    bool evaluate() const override {
-        for (const auto& decl : declarations) {
-            if (!decl || !decl->evaluate()) {
+    bool evaluate() override {
+        for (const auto& inst : instructions) {
+            if (!inst || !inst->evaluate()) {
                 return false;
             }
         }
         return true;
+    }
+
+    std::string resolve() override {
+        for (const auto& inst : instructions) {
+            inst->resolve();
+        }
+        return "";
     }
 };
 

@@ -27,7 +27,7 @@ int main () {
     std::pair<std::shared_ptr<SyntaxNode>,std::list<SyntaxToken>> syntaxProducts = doSyntaxAnalysis(LexerTokens);
     if(nullptr == syntaxProducts.first) exit(0);
 
-    doSemanticAnalysis(syntaxProducts.first);
+    doSemanticAnalysis(syntaxProducts.first, syntaxProducts.second);
 
     return 0;
 }

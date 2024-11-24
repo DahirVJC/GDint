@@ -37,4 +37,5 @@ add_executable(CLionProjects
         Semantics/ASTNodes.h
         Semantics/DoSemanticAnalysis.h
         Semantics/ParseTreeConverter.h
+        Semantics/SemanticToken.h
 )
