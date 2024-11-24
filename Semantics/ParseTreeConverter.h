@@ -82,20 +82,19 @@ private:
 
         if (!bloqueNode->children.empty()) {
             auto instruccionNode = bloqueNode->children[0];
-            if (instruccionNode && (instruccionNode->productionName == "INSTRUCCION" || instruccionNode->productionName == "INSTBLOQ")) {
+            if (instruccionNode && instruccionNode->productionName == "INSTRUCCION") {
                 convertInstruccion(instruccionNode->children[0], program);
             }
         }
 
         if (bloqueNode->children.size() > 1) {
             auto bloquePrime = bloqueNode->children[1];
-            while (bloquePrime &&
-                  (bloquePrime->productionName == "BLOQUE'" || bloquePrime->productionName == "ANIDADO'") &&
+            while (bloquePrime && bloquePrime->productionName == "BLOQUE'" &&
                   !bloquePrime->children.empty()) {
 
                 if (bloquePrime->children.size() >= 2) {
                     auto instruccionNode = bloquePrime->children[1];
-                    if (instruccionNode && (instruccionNode->productionName == "INSTRUCCION" || instruccionNode->productionName == "INSTBLOQ")) {
+                    if (instruccionNode && instruccionNode->productionName == "INSTRUCCION") {
                         convertInstruccion(instruccionNode->children[0], program);
                     }
                 }
@@ -268,7 +267,7 @@ private:
         if (!thenBlockNode) return nullptr;
 
         auto thenProgram = std::make_unique<ProgramNode>();
-        convertBloque(thenBlockNode, thenProgram.get());
+        convertAnidado(thenBlockNode, thenProgram.get());
 
         auto sinoNode = node->children[7];
         std::unique_ptr<ProgramNode> elseProgram = nullptr;
@@ -277,15 +276,46 @@ private:
             auto elseBlockNode = sinoNode->children[2];
             if (elseBlockNode) {
                 elseProgram = std::make_unique<ProgramNode>();
-                convertBloque(elseBlockNode, elseProgram.get());
+                convertAnidado(elseBlockNode, elseProgram.get());
             }
         }
 
-        return std::make_unique<CondicionalNode>(
+        return std::make_unique<ConditionalNode>(
             static_cast<BinaryOperationNode*>(condition.release()),
             thenProgram.release(),
             elseProgram ? elseProgram.release() : nullptr
         );
+    }
+
+    void convertAnidado(const std::shared_ptr<SyntaxNode>& anidadoNode, ProgramNode* program) {
+        if (!anidadoNode || !program) return;
+
+        if (!anidadoNode->children.empty()) {
+            auto instBloqNode = anidadoNode->children[0];
+            if (instBloqNode) {
+                convertInstruccion(instBloqNode->children[0], program);
+            }
+        }
+
+        if (anidadoNode->children.size() > 2) {
+            auto anidadoPrime = anidadoNode->children[2];
+            while (anidadoPrime && anidadoPrime->productionName == "ANIDADO'" &&
+                   !anidadoPrime->children.empty()) {
+
+                if (anidadoPrime->children.size() >= 1) {
+                    auto instBloqNode = anidadoPrime->children[0];
+                    if (instBloqNode->children.size() > 0) {
+                        convertInstruccion(instBloqNode->children[0], program);
+                    }
+                }
+
+                if (anidadoPrime->children.size() > 2) {
+                    anidadoPrime = anidadoPrime->children[2];
+                } else {
+                    break;
+                }
+            }
+        }
     }
 
     std::unique_ptr<Node> convertCondition(const std::shared_ptr<SyntaxNode>& node) {

@@ -1,5 +1,22 @@
 variable a = 0
-si a<4||a==-3 entonces
-a = 3
-cambiar 'https://pokeapi.co/api/v2/pokemon/ditto' a 'body'
+a = 2 + 3
+variable b = 5*a + (0*2 + 4)
+variable c = 'c' + 'd'
+variable body = 'holaaa' + '4' + c
+variable url = 'https://pokeapi.co/api/v2/pokemon/ditto'
+obtener url body
+publicar url body
+#'intenta: variable id = 1'
+variable id = 'alumno1'
+cambiar url 3 body body
+borrar url 3 body
+si a<10||a==-3 entonces
+id = 'pokemon2'
+si id=='pokemon' entonces
+id = 'si'
+finsi
+cambiar 'https://pokeapi.co/api/v2/pokemon/ditto' id body
+sino
+id = 'pokemon3'
+cambiar 'https://pokeapi.co/api/v2/pokemon/incineroar' id body
 finsi

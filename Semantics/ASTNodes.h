@@ -631,14 +631,14 @@ public:
 
 
 
-class CondicionalNode : public Node {
+class ConditionalNode : public Node {
 private:
     std::unique_ptr<BinaryOperationNode> comparison;
     std::unique_ptr<ProgramNode> thenBlock;
     std::unique_ptr<ProgramNode> elseBlock;
 
 public:
-    CondicionalNode(BinaryOperationNode* com, ProgramNode* thenB, ProgramNode* elseB)
+    ConditionalNode(BinaryOperationNode* com, ProgramNode* thenB, ProgramNode* elseB)
         : Node("Condicional"), comparison(com), thenBlock(thenB), elseBlock(elseB) {}
 
     void print(int depth = 0) const override {
@@ -675,8 +675,10 @@ public:
             elseBlock = nullptr;
         }
         else {
-            elseBlock->resolve();
-            thenBlock = nullptr;
+            if (elseBlock) {
+                elseBlock->resolve();
+                thenBlock = nullptr;
+            }
         }
         return result;
     }
