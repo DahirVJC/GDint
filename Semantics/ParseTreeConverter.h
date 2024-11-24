@@ -81,12 +81,9 @@ private:
         if (!bloqueNode || !program) return;
 
         if (!bloqueNode->children.empty()) {
-            auto accionNode = bloqueNode->children[0];
-            if (accionNode && accionNode->productionName == "INSTRUCCION") {
-                auto instrNode = convertDeclaracion(accionNode->children[0]);
-                if (instrNode) {
-                    program->addInstruction(instrNode.release());
-                }
+            auto instruccionNode = bloqueNode->children[0];
+            if (instruccionNode && instruccionNode->productionName == "INSTRUCCION") {
+                convertInstruccion(instruccionNode->children[0], program);
             }
         }
 
@@ -95,12 +92,9 @@ private:
             while (bloquePrime && bloquePrime->productionName == "BLOQUE'" &&
                    !bloquePrime->children.empty()) {
                 if (bloquePrime->children.size() >= 2) {
-                    auto accionNode = bloquePrime->children[1];
-                    if (accionNode && accionNode->productionName == "INSTRUCCION") {
-                        auto instrNode = convertDeclaracion(accionNode->children[0]);
-                        if (instrNode) {
-                            program->addInstruction(instrNode.release());
-                        }
+                    auto instruccionNode = bloquePrime->children[1];
+                    if (instruccionNode && instruccionNode->productionName == "INSTRUCCION") {
+                        convertInstruccion(instruccionNode->children[0], program);
                     }
                 }
 
@@ -109,8 +103,154 @@ private:
                 } else {
                     break;
                 }
+                   }
+        }
+    }
+
+    void convertInstruccion(const std::shared_ptr<SyntaxNode>& instruccionNode, ProgramNode* program) {
+        if(instruccionNode->productionName == "DECLARACION") {
+            auto instrNode = convertDeclaracion(instruccionNode);
+            if (instrNode) {
+                program->addInstruction(instrNode.release());
             }
         }
+        else if(instruccionNode->productionName == "ASIGNACION") {
+            auto instrNode = convertAsignacion(instruccionNode);
+            if (instrNode) {
+                program->addInstruction(instrNode.release());
+            }
+        }
+        else if(instruccionNode->productionName == "OBTENER") {
+            auto instrNode = convertObtener(instruccionNode);
+            if (instrNode) {
+                program->addInstruction(instrNode.release());
+            }
+        }
+        else if(instruccionNode->productionName == "PUBLICAR") {
+            auto instrNode = convertPublicar(instruccionNode);
+            if (instrNode) {
+                program->addInstruction(instrNode.release());
+            }
+        }
+        else if(instruccionNode->productionName == "CAMBIAR") {
+            auto instrNode = convertCambiar(instruccionNode);
+            if (instrNode) {
+                program->addInstruction(instrNode.release());
+            }
+        }
+        else if(instruccionNode->productionName == "BORRAR") {
+            auto instrNode = convertBorrar(instruccionNode);
+            if (instrNode) {
+                program->addInstruction(instrNode.release());
+            }
+        }
+    }
+
+    std::unique_ptr<Node> convertObtener(const std::shared_ptr<SyntaxNode>& node) {
+        if (!node || node->children.size() < 5) return nullptr;
+
+        auto endpointNode = convertStrParam(node->children[2]);
+        std::unique_ptr<Node> apiKeyNode = nullptr;
+        apiKeyNode = convertStrParam(node->children[4]->children[0]);
+
+        return std::make_unique<GetHttpNode>(
+            endpointNode.release(),
+            apiKeyNode ? apiKeyNode.release() : nullptr
+        );
+    }
+
+    std::unique_ptr<Node> convertPublicar(const std::shared_ptr<SyntaxNode>& node) {
+        if (!node || node->children.size() < 7) return nullptr;
+
+        auto endpointNode = convertStrParam(node->children[2]);
+        auto bodyNode = convertStrParam(node->children[4]);
+        std::unique_ptr<Node> apiKeyNode = nullptr;
+        apiKeyNode = convertStrParam(node->children[6]->children[0]);
+
+        return std::make_unique<PostHttpNode>(
+            endpointNode.release(),
+            bodyNode.release(),
+            apiKeyNode ? apiKeyNode.release() : nullptr
+        );
+    }
+
+    std::unique_ptr<Node> convertCambiar(const std::shared_ptr<SyntaxNode>& node) {
+        if (!node || node->children.size() < 9) return nullptr;
+
+        auto endpointNode = convertStrParam(node->children[2]);
+        auto idNode = convertDato(node->children[4]->children[0]);
+        auto bodyNode = convertStrParam(node->children[6]);
+        std::unique_ptr<Node> apiKeyNode = nullptr;
+        apiKeyNode = convertStrParam(node->children[8]->children[0]);
+
+        return std::make_unique<PutHttpNode>(
+            endpointNode.release(),
+            idNode.release(),
+            bodyNode.release(),
+            apiKeyNode ? apiKeyNode.release() : nullptr
+        );
+    }
+
+    std::unique_ptr<Node> convertBorrar(const std::shared_ptr<SyntaxNode>& node) {
+        if (!node || node->children.size() < 7) return nullptr;
+
+        auto endpointNode = convertStrParam(node->children[2]);
+        auto idNode = convertDato(node->children[4]->children[0]);
+        std::unique_ptr<Node> apiKeyNode = nullptr;
+        apiKeyNode = convertStrParam(node->children[6]->children[0]);
+
+        return std::make_unique<DeleteHttpNode>(
+            endpointNode.release(),
+            idNode.release(),
+            apiKeyNode ? apiKeyNode.release() : nullptr
+        );
+    }
+
+    std::unique_ptr<Node> convertStrParam(const std::shared_ptr<SyntaxNode>& node) {
+        if (!node || node->children.size() < 1) return nullptr;
+        return convertDato(node->children[0]);
+    }
+
+
+    std::unique_ptr<Node> convertDeclaracion(const std::shared_ptr<SyntaxNode>& node) {
+        if (!node || node->children.size() < 7) return nullptr;
+
+        auto identifierNode = node->children[2];
+        if (!identifierNode) return nullptr;
+
+        auto identifier = std::make_unique<IdentifierNode>(
+            identifierNode->token.name,
+            findTokenPtr(identifierNode->token.name)
+        );
+
+        auto expNode = node->children[6];
+        auto expression = expNode ? convertExpression(expNode) : nullptr;
+
+        return std::make_unique<DeclarationNode>(
+            identifier.release(),
+            expression.release()
+        );
+    }
+
+
+    std::unique_ptr<Node> convertAsignacion(const std::shared_ptr<SyntaxNode>& node) {
+        if (!node || node->children.size() < 5) return nullptr;
+
+        auto identifierNode = node->children[0];
+        if (!identifierNode) return nullptr;
+
+        auto identifier = std::make_unique<IdentifierNode>(
+            identifierNode->token.name,
+            findTokenPtr(identifierNode->token.name)
+        );
+
+        auto expNode = node->children[4];
+        auto expression = expNode ? convertExpression(expNode) : nullptr;
+
+        return std::make_unique<AssignmentNode>(
+            identifier.release(),
+            expression.release()
+        );
     }
 
     std::unique_ptr<Node> convertExpression(const std::shared_ptr<SyntaxNode>& node) {
@@ -204,45 +344,29 @@ private:
             return nullptr;
         }
 
-        if (firstChild->token.tokenType == "Identifier") {
+        return convertDato(firstChild);
+    }
+
+    std::unique_ptr<Node> convertDato(const std::shared_ptr<SyntaxNode>& child) {
+        if (child->token.tokenType == "Identifier") {
             return std::make_unique<IdentifierNode>(
-                firstChild->token.name,
-                findTokenPtr(firstChild->token.name)
+                child->token.name,
+                findTokenPtr(child->token.name)
             );
         }
 
-        if (firstChild->token.tokenType == "Constant") {
+        if (child->token.tokenType == "Constant") {
             return std::make_unique<NumberNode>(
-                firstChild->token.name,
-                firstChild->token.dataType
+                child->token.name,
+                child->token.dataType
             );
         }
 
-        if (firstChild->productionName == "STRING") {
-            return convertString(firstChild);
+        if (child->productionName == "STRING") {
+            return convertString(child);
         }
 
         return nullptr;
-    }
-
-    std::unique_ptr<Node> convertDeclaracion(const std::shared_ptr<SyntaxNode>& node) {
-        if (!node || node->children.size() < 7) return nullptr;
-
-        auto identifierNode = node->children[2];
-        if (!identifierNode) return nullptr;
-
-        auto identifier = std::make_unique<IdentifierNode>(
-            identifierNode->token.name,
-            findTokenPtr(identifierNode->token.name)
-        );
-
-        auto expNode = node->children[6];
-        auto expression = expNode ? convertExpression(expNode) : nullptr;
-
-        return std::make_unique<DeclarationNode>(
-            identifier.release(),
-            expression.release()
-        );
     }
 };
 

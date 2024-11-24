@@ -56,7 +56,7 @@ void assignAddresses(std::list<SemanticToken>& tokens) {
 inline void printSemanticToken(const SemanticToken &token) {
     std::cout << "Token(name: " << token.name
               << ", token type: " << token.tokenType
-              << ", value: " << token.value
+              << ", final value: " << token.value
               << ", declaration line: " << token.declarationLine
               << ", usage lines: [";
     for (size_t i = 0; i < token.usageLines.size(); ++i) {

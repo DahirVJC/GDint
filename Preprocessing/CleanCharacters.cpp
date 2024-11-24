@@ -12,7 +12,7 @@ inline bool isBlank(const char c) {
 std::string cleanCharacters(const std::string& str){
     std::string output;
     for(char c : str){
-        if(!isBlank(c)) output += c;
+        if(!isBlank(c)) output += tolower(c);
     }
     return output;
 }

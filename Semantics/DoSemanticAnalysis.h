@@ -11,10 +11,11 @@ std::pair<std::shared_ptr<std::list<SemanticToken>>, std::unique_ptr<Node>> doSe
     ParseTreeConverter converter(symbols);
     try {
         std::unique_ptr<Node> astTree = converter.convertTree(root);
+        std::cout << "Arbol creado" << std::endl;
 
         bool isValid = astTree->evaluate();
         if(isValid) {
-            std::cout << "\nSemantica " << "valida" << std::endl;
+            std::cout << "Semantica valida" << std::endl;
             astTree->resolve();
             astTree->print();
             std::shared_ptr<std::list<SemanticToken>> symbolsTable = converter.getSymbolsTable();
@@ -22,6 +23,7 @@ std::pair<std::shared_ptr<std::list<SemanticToken>>, std::unique_ptr<Node>> doSe
             printSemanticTokens(*symbolsTable);
             return {symbolsTable, std::move(astTree)};
         }
+        std::cout << "El arbol no es valido" << std::endl;
     } catch (const std::exception& e) {
         std::cerr << "Error al convertir el arbol Parse a AST: " << e.what() << std::endl;
     }

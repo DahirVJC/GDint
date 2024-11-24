@@ -140,7 +140,7 @@ public:
         const std::string& rightType = right->getDataType();
 
         if (leftType != rightType) {
-            std::cerr << "Error semantico: tipos de datos incompatibles" << std::endl;
+            std::cerr << "Error semantico: tipos de datos incompatibles entre si en " << name << std::endl;
             return false;
         }
 
@@ -160,6 +160,17 @@ public:
         std::string varValue = left ? left->resolve() : "0";
         std::string expValue = right ? right->resolve() : "0";
         if (left->getDataType() == "Number") {
+            std::unique_ptr<Node> newLeft= std::make_unique<NumberNode>(
+                left->resolve(),
+                left->getDataType()
+            );
+            left = std::move(newLeft);
+            std::unique_ptr<Node> newRight= std::make_unique<NumberNode>(
+                right->resolve(),
+                right->getDataType()
+            );
+            right = std::move(newRight);
+
             int leftValue = std::stoi(varValue);
             int rightValue = std::stoi(expValue);
             if (operation == "+") {
@@ -179,6 +190,16 @@ public:
             }
         }
         else {
+            std::unique_ptr<Node> newLeft= std::make_unique<StringNode>(
+                left->resolve(),
+                left->getDataType()
+            );
+            left = std::move(newLeft);
+            std::unique_ptr<Node> newRight= std::make_unique<StringNode>(
+                right->resolve(),
+                right->getDataType()
+            );
+            right = std::move(newRight);
             return varValue + expValue;
         }
         return "";
@@ -257,6 +278,282 @@ public:
         return varValue;
     }
 
+};
+
+class GetHttpNode : public Node {
+private:
+    std::unique_ptr<Node> endpoint;
+    std::unique_ptr<Node> apiKey;
+
+public:
+    GetHttpNode(Node* end, Node* key)
+        : Node("GetHttp"), endpoint(end), apiKey(key) {}
+
+    void print(int depth = 0) const override {
+        std::string indent(depth * 2, ' ');
+        std::cout << indent << name << ":" << std::endl;
+        if (endpoint) {
+            std::cout << indent << "  Endpoint:";
+            std::cout << std::endl;
+            endpoint->print(depth + 2);
+        }
+        if (apiKey) {
+            std::cout << indent << "  ApiKey:" << std::endl;
+            apiKey->print(depth + 2);
+        }
+    }
+
+    bool evaluate() override {
+        if (!endpoint) {
+            return false;
+        }
+        if(endpoint->getDataType() != "String") {
+            std::cerr << "Error semantico: el url debe ser String " << name << std::endl;
+            return false;
+        }
+        if (apiKey) {
+            if(apiKey->getDataType() != "String") {
+                std::cerr << "Error semantico: la clave de API debe ser String " << name << std::endl;
+                return false;
+            }
+            return endpoint->evaluate() && apiKey->evaluate();
+        }
+        return endpoint->evaluate();
+    }
+    std::string resolve() override {
+        std::unique_ptr<Node> newEndpoint= std::make_unique<StringNode>(
+                endpoint->resolve(),
+                endpoint->getDataType()
+                );
+        endpoint = std::move(newEndpoint);
+        if (apiKey) {
+            std::unique_ptr<Node> newApiKey= std::make_unique<StringNode>(
+                    apiKey->resolve(),
+                    apiKey->getDataType()
+                    );
+            apiKey = std::move(newApiKey);
+        }
+        return "";
+    }
+};
+
+class PostHttpNode : public Node {
+private:
+    std::unique_ptr<Node> endpoint;
+    std::unique_ptr<Node> body;
+    std::unique_ptr<Node> apiKey;
+
+public:
+    PostHttpNode(Node* end, Node* content, Node* key)
+        : Node("PostHttp"), endpoint(end), body(content), apiKey(key) {}
+
+    void print(int depth = 0) const override {
+        std::string indent(depth * 2, ' ');
+        std::cout << indent << name << ":" << std::endl;
+        if (endpoint) {
+            std::cout << indent << "  Endpoint:" << std::endl;
+            endpoint->print(depth + 2);
+        }
+        if (body) {
+            std::cout << indent << "  Body:" << std::endl;
+            body->print(depth + 2);
+        }
+        if (apiKey) {
+            std::cout << indent << "  ApiKey:" << std::endl;
+            apiKey->print(depth + 2);
+        }
+    }
+
+    bool evaluate() override {
+        if (!endpoint) {
+            return false;
+        }
+        if(endpoint->getDataType() != "String") {
+            std::cerr << "Error semantico: el url debe ser String en " << name << std::endl;
+            return false;
+        }
+        if(body->getDataType() != "String") {
+            std::cerr << "Error semantico: el cuerpo debe ser String " << name << std::endl;
+            return false;
+        }
+        if (apiKey) {
+            if(apiKey->getDataType() != "String") {
+                std::cerr << "Error semantico: la clave de API debe ser String " << name << std::endl;
+                return false;
+            }
+            return endpoint->evaluate() && body->evaluate() && apiKey->evaluate();
+        }
+        return endpoint->evaluate() && body->evaluate();
+    }
+
+    std::string resolve() override {
+        std::unique_ptr<Node> newEndpoint= std::make_unique<StringNode>(
+                endpoint->resolve(),
+                endpoint->getDataType()
+                );
+        endpoint = std::move(newEndpoint);
+        std::unique_ptr<Node> newBody= std::make_unique<StringNode>(
+                body->resolve(),
+                body->getDataType()
+                );
+        body = std::move(newBody);
+        if (apiKey) {
+            std::unique_ptr<Node> newApiKey= std::make_unique<StringNode>(
+                    apiKey->resolve(),
+                    apiKey->getDataType()
+                    );
+            apiKey = std::move(newApiKey);
+        }
+        return "";
+    }
+};
+
+class PutHttpNode : public Node {
+private:
+    std::unique_ptr<Node> endpoint;
+    std::unique_ptr<Node> id;
+    std::unique_ptr<Node> body;
+    std::unique_ptr<Node> apiKey;
+
+public:
+    PutHttpNode(Node* end, Node* idRes, Node* content, Node* key)
+        : Node("PutHttp"), endpoint(end), id(idRes), body(content), apiKey(key) {}
+
+    void print(int depth = 0) const override {
+        std::string indent(depth * 2, ' ');
+        std::cout << indent << name << ":" << std::endl;
+        if (endpoint) {
+            std::cout << indent << "  Endpoint:" << std::endl;
+            endpoint->print(depth + 2);
+        }
+        if (id) {
+            std::cout << indent << "  Id:" << std::endl;
+            id->print(depth + 2);
+        }
+        if (body) {
+            std::cout << indent << "  Body:" << std::endl;
+            body->print(depth + 2);
+        }
+        if (apiKey) {
+            std::cout << indent << "  ApiKey:" << std::endl;
+            apiKey->print(depth + 2);
+        }
+    }
+
+    bool evaluate() override {
+        if (!endpoint) {
+            return false;
+        }
+        if(endpoint->getDataType() != "String") {
+            std::cerr << "Error semantico: el url debe ser String en " << name << std::endl;
+            return false;
+        }
+        if(body->getDataType() != "String") {
+            std::cerr << "Error semantico: el cuerpo debe ser String " << name << std::endl;
+            return false;
+        }
+        if (apiKey) {
+            if(apiKey->getDataType() != "String") {
+                std::cerr << "Error semantico: la clave de API debe ser String " << name << std::endl;
+                return false;
+            }
+            return endpoint->evaluate() && id->evaluate() && body->evaluate() && apiKey->evaluate();
+        }
+        return endpoint->evaluate() && id->evaluate() && body->evaluate();
+    }
+
+    std::string resolve() override {
+        std::unique_ptr<Node> newEndpoint= std::make_unique<StringNode>(
+                endpoint->resolve(),
+                endpoint->getDataType()
+                );
+        endpoint = std::move(newEndpoint);
+        std::unique_ptr<Node> newId= std::make_unique<StringNode>(
+                id->resolve(),
+                id->getDataType()
+                );
+        id = std::move(newId);
+        std::unique_ptr<Node> newBody= std::make_unique<StringNode>(
+                body->resolve(),
+                body->getDataType()
+                );
+        body = std::move(newBody);
+        if (apiKey) {
+            std::unique_ptr<Node> newApiKey= std::make_unique<StringNode>(
+                    apiKey->resolve(),
+                    apiKey->getDataType()
+                    );
+            apiKey = std::move(newApiKey);
+        }
+        return "";
+    }
+};
+
+class DeleteHttpNode : public Node {
+private:
+    std::unique_ptr<Node> endpoint;
+    std::unique_ptr<Node> id;
+    std::unique_ptr<Node> apiKey;
+
+public:
+    DeleteHttpNode(Node* end, Node* idRes, Node* key)
+        : Node("DeleteHttp"), endpoint(end), id(idRes), apiKey(key) {}
+
+    void print(int depth = 0) const override {
+        std::string indent(depth * 2, ' ');
+        std::cout << indent << name << ":" << std::endl;
+        if (endpoint) {
+            std::cout << indent << "  Endpoint:" << std::endl;
+            endpoint->print(depth + 2);
+        }
+        if (id) {
+            std::cout << indent << "  Id:" << std::endl;
+            id->print(depth + 2);
+        }
+        if (apiKey) {
+            std::cout << indent << "  ApiKey:" << std::endl;
+            apiKey->print(depth + 2);
+        }
+    }
+
+    bool evaluate() override {
+        if (!endpoint) {
+            return false;
+        }
+        if(endpoint->getDataType() != "String") {
+            std::cerr << "Error semantico: el url debe ser String en " << name << std::endl;
+            return false;
+        }
+        if (apiKey) {
+            if(apiKey->getDataType() != "String") {
+                std::cerr << "Error semantico: la clave de API debe ser String " << name << std::endl;
+                return false;
+            }
+            return endpoint->evaluate() && apiKey->evaluate();
+        }
+        return endpoint->evaluate();
+    }
+
+    std::string resolve() override {
+        std::unique_ptr<Node> newEndpoint= std::make_unique<StringNode>(
+                endpoint->resolve(),
+                endpoint->getDataType()
+                );
+        endpoint = std::move(newEndpoint);
+        std::unique_ptr<Node> newId= std::make_unique<StringNode>(
+                id->resolve(),
+                id->getDataType()
+                );
+        id = std::move(newId);
+        if (apiKey) {
+            std::unique_ptr<Node> newApiKey= std::make_unique<StringNode>(
+                    apiKey->resolve(),
+                    apiKey->getDataType()
+                    );
+            apiKey = std::move(newApiKey);
+        }
+        return "";
+    }
 };
 
 class ProgramNode : public Node {

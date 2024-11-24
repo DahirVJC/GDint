@@ -485,7 +485,7 @@ std::pair<std::shared_ptr<SyntaxNode>,std::list<SyntaxToken>> Grammar::syntaxAna
             memory.top().node->token = SyntaxToken(aux.name,aux.type,aux.line,STRING);
             memory.pop();
             index++;
-            dataType = STRING;
+            if (inDeclaration) dataType = STRING;
         }
         else if (memory.top().symbol == "ε") {
             memory.top().node->productionName = "ε";
