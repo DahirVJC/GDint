@@ -341,12 +341,12 @@ public:
             return false;
         }
         if(endpoint->getDataType() != "String") {
-            std::cerr << "Error semantico: el url debe ser String " << name << std::endl;
+            std::cerr << "Error semantico: el url debe ser String en " << name << std::endl;
             return false;
         }
         if (apiKey) {
             if(apiKey->getDataType() != "String") {
-                std::cerr << "Error semantico: la clave de API debe ser String " << name << std::endl;
+                std::cerr << "Error semantico: la clave de API debe ser String en " << name << std::endl;
                 return false;
             }
             return endpoint->evaluate() && apiKey->evaluate();
@@ -406,12 +406,12 @@ public:
             return false;
         }
         if(body->getDataType() != "String") {
-            std::cerr << "Error semantico: el cuerpo debe ser String " << name << std::endl;
+            std::cerr << "Error semantico: el cuerpo debe ser String en " << name << std::endl;
             return false;
         }
         if (apiKey) {
             if(apiKey->getDataType() != "String") {
-                std::cerr << "Error semantico: la clave de API debe ser String " << name << std::endl;
+                std::cerr << "Error semantico: la clave de API debe ser String en " << name << std::endl;
                 return false;
             }
             return endpoint->evaluate() && body->evaluate() && apiKey->evaluate();
@@ -482,12 +482,12 @@ public:
             return false;
         }
         if(body->getDataType() != "String") {
-            std::cerr << "Error semantico: el cuerpo debe ser String " << name << std::endl;
+            std::cerr << "Error semantico: el cuerpo debe ser String en " << name << std::endl;
             return false;
         }
         if (apiKey) {
             if(apiKey->getDataType() != "String") {
-                std::cerr << "Error semantico: la clave de API debe ser String " << name << std::endl;
+                std::cerr << "Error semantico: la clave de API debe ser String en " << name << std::endl;
                 return false;
             }
             return endpoint->evaluate() && id->evaluate() && body->evaluate() && apiKey->evaluate();
@@ -559,7 +559,7 @@ public:
         }
         if (apiKey) {
             if(apiKey->getDataType() != "String") {
-                std::cerr << "Error semantico: la clave de API debe ser String " << name << std::endl;
+                std::cerr << "Error semantico: la clave de API debe ser String en " << name << std::endl;
                 return false;
             }
             return endpoint->evaluate() && apiKey->evaluate();

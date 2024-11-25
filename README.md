@@ -67,14 +67,14 @@ variable id = 'alumno1'
 cambiar url 3 body body
 borrar url 3 body
 si a<10||a==-3 entonces
-id = 'pokemon2'
-si id=='pokemon' entonces
-id = 'si'
-finsi
-cambiar 'https://pokeapi.co/api/v2/pokemon/ditto' id body
-sino
-id = 'pokemon3'
-cambiar 'https://pokeapi.co/api/v2/pokemon/incineroar' id body
+    id = 'pokemon2' 
+    si id=='pokemon' entonces
+        id = 'si'
+    finsi
+    cambiar 'https://pokeapi.co/api/v2/pokemon/ditto' id body
+    sino
+    id = 'pokemon3'
+    cambiar 'https://pokeapi.co/api/v2/pokemon/incineroar' id body
 finsi
 ````
 - **Proceso de compilación:**
