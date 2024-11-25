@@ -37,9 +37,7 @@ Donde:
 [Análisis Sintáctico](Documents/Parser.md)
 
 ## Análisis Semántico
-    
-
-- **Ejemplos:**
+[Análisis Semántico](Documents/Semantics.md)
 
 ## Pruebas y Validación
 
