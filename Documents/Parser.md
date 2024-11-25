@@ -1,7 +1,7 @@
 ## Análisis Sintáctico
 - **Análisis sintáctico:**
 
-[Bosquejo de análisis sintáctico](Res/Bosquejo.pdf)
+  - [Bosquejo de análisis sintáctico](Res/Bosquejo.pdf)
   
 - **Nota**: Por cuestiones de implementación, " " se escribe como space en las reglas, y \n como salto únicamente en el archivo de gramática (LL1Grammar.txt), al igual que || se escribe como or en dicho archivo, esto para ser interpretado correctamente por el lector de gramática.
 - **Gramatica:**
