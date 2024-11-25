@@ -6,7 +6,7 @@
 ## Motivación y Problema a Resolver
 - **Descripción del problema:** Los lenguajes de programación actuales no son muy intuitivos a la hora de empezar a aprender. Muchos lenguajes son muy técnicos y es necesario la lectura de manual para saber por dónde empezar.
 - **Importancia:** Debido a la interpretación que comúnmente se le da a la programación, muchos jóvenes tienen miedo a empezar con la programación porque tienen la creencia de que la programación es difícil. Con herramientas que sean capaces de convertir pseudocódigo a código, pueden aprender cómo funciona un lenguaje de programación ya que tendrán puntos de comparación.
-- **Casos de uso:** El mayor caso de uso para nuestro compilador es para el aprendizaje. Otros casos de uso serían para usos más generales, hay casos en donde es necesario un script sencillo en python, pero sin el conocimiento básico es imposible hacerlo. Tener un lenguaje que pueda resolver estos problemas sin conocimiento haría que el flujo de trabajo sea más sencillo. Al mismo tiempo GDint sería capaz de operar con APIs públicas y tener la capacidad de hacer uso de los métodos verbos de HTML.
+- **Casos de uso:** El mayor caso de uso para nuestro compilador es para el aprendizaje. Otros casos de uso serían para usos más generales, hay casos en donde es necesario un script sencillo en python, pero sin el conocimiento básico es imposible hacerlo. Tener un lenguaje que pueda resolver estos problemas sin conocimiento haría que el flujo de trabajo sea más sencillo. Al mismo tiempo GDint sería capaz de operar con APIs públicas y tener la capacidad de hacer uso de los métodos o verbos de HTTP.
 
 ## Objetivos del Proyecto
 - **Objetivo 1:** Ser una herramienta central para la enseñanza de jóvenes interesados en la programación.
@@ -24,7 +24,7 @@
 - **Diagrama T:** ![T-Diagram](/resources/NotacionT.png)
 Donde:
   - GDInt es el lenguaje nuevo a compilar.
-  - Python es al lenguaje donde se va a traducir.
+  - Python es el lenguaje a donde se va a traducir.
   - C++ es el lenguaje de implementación.
   - 64 bits  es la arquitectura de las máquinas en las que se va a ejecutar.
 - **Explicación del flujo de datos:** El compilador recibe un flujo de caracteres en el formato GDint, pasa por los análisis léxico, sintáctico y semántico para crear un flujo de tokens y árboles sintácticos para crear la tabla de símbolos, la cual, es usada para generar código intermedio que es optimizado para producir código en el lenguaje de programación de python. Al final, el código generado es optimizado y se entrega como la salida del compilador.
@@ -49,9 +49,9 @@ Donde:
   - [Compilador](Documents/Test/Output.md)
 - **Casos de prueba específicos:** se realizaron pruebas en cada etapa del compilador, tanto pruebas de validez como pruebas de errores
   - Estas pruebas pueden encontrarse en:
-    - [Pruebas lexicas](Documents/Lexer.md#ejemplos)
-    - [Pruebas sintacticas](Documents/Parser.md#ejemplos)
-    - [Pruebas semanticas](Documents/Semantics.md#ejemplos)
+    - [Pruebas léxicas](Documents/Lexer.md#ejemplos)
+    - [Pruebas sintácticas](Documents/Parser.md#ejemplos)
+    - [Pruebas semánticas](Documents/Semantics.md#ejemplos)
 
 ## Herramientas y Entorno de Desarrollo
 - **Lenguajes de programación utilizados:** C++ y Python
@@ -89,7 +89,7 @@ finsi
 - **Ejecución del código compilado:** [Salida en consola](Documents/Test/Output.md)
 
 ## Desafíos y Soluciones
-[Bitacora](Documents/Bitacora.md)
+[Bitácora](Documents/Bitacora.md)
 - **Problemas técnicos o de diseño:**
   - Se crearon los analizadores sin tener en cuenta los pasos futuros. Esto causó imprevistos en la creación de analizadores en el posterior.
   - En el proceso de la creación de la gramática para el analizador semántico tuvimos problemas con crear una gramática que hiciera lo que visionamos.
