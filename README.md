@@ -47,8 +47,8 @@ Donde:
   - [Parser](Documents/Test/ParserValid.md)
   - [Semantics](Documents/Test/SemanticsValid.md)
   - [Compilador](Documents/Test/Output.md)
-- **Casos de prueba específicos:** se realizaron pruebas en cada etapaa del compilador, tanto pruebas de validez como pruebas de errores
-  - Estas pruebas pueden entontrarse en:
+- **Casos de prueba específicos:** se realizaron pruebas en cada etapa del compilador, tanto pruebas de validez como pruebas de errores
+  - Estas pruebas pueden encontrarse en:
     - [Pruebas lexicas](Documents/Lexer.md#ejemplos)
     - [Pruebas sintacticas](Documents/Parser.md#ejemplos)
     - [Pruebas semanticas](Documents/Semantics.md#ejemplos)
@@ -57,7 +57,7 @@ Donde:
 - **Lenguajes de programación utilizados:** C++ y Python
 - **Herramientas de desarrollo:** Git, GitHub y CLion
 - **Entorno de pruebas y simulación:** Pruebas en CLion en los sistemas operativos Windows 10, Windows 11 y EndeavourOS
-- **Otras herramientas:** Draw.io, Google Docs, ChatGPT y Claude
+- **Otras herramientas:** Draw.io, Google Docs, Google Sheets, JFlap, ChatGPT y Claude
 
 ## Demostración
 - **Ejemplo de código fuente:**
@@ -91,23 +91,23 @@ finsi
 ## Desafíos y Soluciones
 [Bitacora](Documents/Bitacora.md)
 - **Problemas técnicos o de diseño:**
-  - Se creó todos los analizadores sin tener en cuenta los pasos futuros. Esto causó imprevistos en la creación de analizadores en el posterior.
+  - Se crearon los analizadores sin tener en cuenta los pasos futuros. Esto causó imprevistos en la creación de analizadores en el posterior.
   - En el proceso de la creación de la gramática para el analizador semántico tuvimos problemas con crear una gramática que hiciera lo que visionamos.
-  - La tokenizacion de espacios y saltos de linea de los lenguajes tipo pseudocodigo resulto desafiante.
+  - La tokenización de espacios y saltos de línea de los lenguajes tipo pseudocódigo resultó desafiante.
 - **Estrategias adoptadas para superar desafíos:**
 - **Lecciones aprendidas:**
 
 ## Conclusiones y Trabajo Futuro
 - **Resumen de objetivos cumplidos:** Se elaboró un compilador capaz de analizar un lenguaje de tipo pseudocódigo que soporta métodos HTTP.  Con el objetivo de ser una herramienta de educación.
 - **Evaluación del desempeño:**
-- **Propuestas para mejoras futuras:** 
-El compilador puede mejorar bastante con mas tiempo, no solo de como esta estructurado el codigo, si no que tambien en caracteristicas que soporta.
-Por ejemplo, el lenguaje no soporta declaraciones en condicionales por como se maneja de declaracion de variables en el analizador sintactico.
+- **Propuestas para mejoras futuras:**
+El compilador puede mejorar bastante con más tiempo, no solo de cómo está estructurado el código, si no que también en características que soporta.
+Por ejemplo, el lenguaje no soporta declaraciones en condicionales por cómo se maneja la declaración de variables en el analizador sintáctico.
 Tampoco soporta operaciones entre diferentes tipos de datos.
-Otra caracteristica que se puede soportar es un manejo de tokens de espacio y salto de linea mas adecuado y flexible para el usuario.
-Por otra parte, el manejo de errores pudiera mejorar haciendo los mensajes mas especificos e indicando datos como el numero de linea.
-Por ultimo, el compilador solo realiza la parte del FrontEnd, por lo que agregar el BackEnd seria oportuno. 
-En el futuro, estas caracteristicas se puedieran implementar para hacer este compilador un mejor software.
+Otra característica que se puede soportar es un manejo de tokens de espacio y salto de línea más adecuado y flexible para el usuario.
+Por otra parte, el manejo de errores pudiera mejorar haciendo los mensajes más específicos e indicando datos como el número de línea.
+Por último, el compilador solo realiza la parte del FrontEnd, por lo que agregar el BackEnd sería oportuno.
+En el futuro, estas características se pudieran implementar para hacer este compilador un mejor software.
 
 ## Preguntas y Discusión
 - Espacio para responder preguntas y discusión sobre el proyecto.
