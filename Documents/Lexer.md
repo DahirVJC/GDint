@@ -8,13 +8,13 @@
     - Constante: ```[+|-]?\d+```
     - Keyword: ```(si|variable|entonces|sino|finsi|publicar|obtener|cambiar|borrar)```
     - Whitespace: ```[\t\r\f\v]+```
-    - Puntuacion: ```[\n| |"|(|)|,|#|'|:]```
+    - Puntuación: ```[\n| |"|(|)|,|#|'|:]```
     - Operadores: ```[+|-|=|*|/|==| || |&&|<|>|!|?]```
 ### **Ejemplos:**
 - a -> Identificador `Token(name: a, type: Identifier, line: 1)`
 - +98 -> Constante `Token(name: a, type: Identifier, line: 1)`
 - variable -> Keyword `Token(name: a, type: Identifier, line: 1)`
-- ' -> Puntuacion `Token(name: ', type: Punctuation, line: 1)`
+- ' -> Puntuación `Token(name: ', type: Punctuation, line: 1)`
 - \t -> Whitespace ` ` (Eliminado en preprocesado)
 - || -> Operador `Token(name: ||, type: Operation, line: 1)`
 - \` -> Error `Lexical Error: string not recognized by the automata detected.`
