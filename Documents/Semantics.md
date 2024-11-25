@@ -184,7 +184,7 @@ CADENA'->∈Σ-' CADENA'1|ε
     || CADENA'.val = ∈Σ-'.val
 }
 ````
-- **Ejemplos:**
+### **Ejemplos:**
 ````
 variable a = 0
 a = 2 + 3

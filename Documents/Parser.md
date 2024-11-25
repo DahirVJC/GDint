@@ -561,7 +561,7 @@
     - En \<TERM'> dado [si] produce: ε
     - En \<TERM'> dado [variable] produce: ε
     - En \<TERM'> dado [ε] produce: ε
-- **Ejemplos:**
+### **Ejemplos:**
 ````
 variable b = a*9
 variable c = 'a' + 'b'

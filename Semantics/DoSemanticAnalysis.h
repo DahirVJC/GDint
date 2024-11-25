@@ -25,9 +25,11 @@ std::pair<std::shared_ptr<std::list<SemanticToken>>, std::unique_ptr<Node>> doSe
             return {symbolsTable, std::move(astTree)};
         }
         std::cout << "El arbol no es valido" << std::endl;
+    // Asistido por: ChatGPT
     } catch (const std::exception& e) {
         std::cerr << "Error al convertir el arbol Parse a AST: " << e.what() << std::endl;
     }
+    // Fin Asistencia
     return {nullptr, nullptr};
 }
 

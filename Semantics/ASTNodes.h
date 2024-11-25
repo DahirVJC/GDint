@@ -7,8 +7,9 @@
 
 #include "SemanticToken.h"
 
-struct SemanticToken;
-
+// Autor: (Ling, 2024) [Inspiracion de los nodos AST]
+// Asistido por: ChatGPT [Inspiracion de tener las funciones de validacion y reglas gramaticas en los nodos]
+// Generado por: Claude
 class Node {
 protected:
     std::string name;
@@ -49,6 +50,7 @@ public:
         std::string indent(depth * 2, ' ');
         std::cout << indent << symbolToken->name << " (Type: " << symbolToken->dataType << ")" << std::endl;
     }
+// Fin Generacion
     std::string resolve() override {
         return symbolToken->value;
     }
@@ -82,7 +84,7 @@ public:
         return dataType;
     }
 };
-
+// Generado por: Claude
 class BinaryOperationNode : public Node {
 private:
     std::unique_ptr<Node> left;
@@ -106,6 +108,7 @@ public:
             right->print(depth + 2);
         }
     }
+// Fin Generacion
     std::string getDataType() const override {
         return dataType;
     }
@@ -230,7 +233,7 @@ public:
         return "";
     }
 };
-
+// Generado por: Claude
 class DeclarationNode : public Node {
 private:
     std::unique_ptr<IdentifierNode> variable;
@@ -252,7 +255,7 @@ public:
             expression->print(depth + 2);
         }
     }
-
+// Fin Generacion
     bool evaluate() override {
         if (!variable || !expression) {
             return false;
@@ -588,7 +591,7 @@ public:
         return "";
     }
 };
-
+// Generado por: Claude
 class ProgramNode : public Node {
 private:
     std::vector<std::unique_ptr<Node>> instructions;
@@ -628,7 +631,7 @@ public:
         return "";
     }
 };
-
+// Fin Generacion
 
 
 class ConditionalNode : public Node {
@@ -683,5 +686,7 @@ public:
         return result;
     }
 };
+// Fin Asistencia [Inspiracion de tener las funciones de validacion y reglas gramaticas en los nodos]
+// Fin Autor [Inspiracion de los nodos AST]
 
 #endif //ASTNODES_H

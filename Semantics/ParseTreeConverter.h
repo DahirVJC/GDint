@@ -8,6 +8,7 @@
 #include "ASTNodes.h"
 #include "SemanticToken.h"
 #include "../Parser/SyntaxNode.h"
+// Asistido por: Claude
 class ParseTreeConverter {
 public:
     std::unique_ptr<Node> convertTree(const std::shared_ptr<SyntaxNode>& root) {
@@ -39,9 +40,10 @@ public:
     std::shared_ptr<std::list<SemanticToken>> getSymbolsTable() {
         return symbolsTable;
     }
-
+//Fin Asistencia
 private:
     std::shared_ptr<std::list<SemanticToken>> symbolsTable;
+    // Generado por: ChatGPT
     SemanticToken* findTokenPtr(const std::string& name) {
         if (!symbolsTable) return nullptr;
 
@@ -56,6 +58,8 @@ private:
 
         return nullptr;
     }
+    // Fin Generacion
+    // Generado por: Claude
     void convertCodigo(const std::shared_ptr<SyntaxNode>& codigoNode, ProgramNode* program) {
         if (!codigoNode || !program) return;
 
@@ -76,7 +80,6 @@ private:
             }
         }
     }
-
     void convertBloque(const std::shared_ptr<SyntaxNode>& bloqueNode, ProgramNode* program) {
         if (!bloqueNode || !program) return;
 
@@ -89,8 +92,7 @@ private:
 
         if (bloqueNode->children.size() > 1) {
             auto bloquePrime = bloqueNode->children[1];
-            while (bloquePrime && bloquePrime->productionName == "BLOQUE'" &&
-                  !bloquePrime->children.empty()) {
+            while (bloquePrime && bloquePrime->productionName == "BLOQUE'" && !bloquePrime->children.empty()){
 
                 if (bloquePrime->children.size() >= 2) {
                     auto instruccionNode = bloquePrime->children[1];
@@ -104,17 +106,19 @@ private:
                 } else {
                     break;
                 }
-                  }
+            }
         }
     }
-
+    // Fin Generacion
     void convertInstruccion(const std::shared_ptr<SyntaxNode>& instruccionNode, ProgramNode* program) {
+        // Asistido por: Claude
         if(instruccionNode->productionName == "DECLARACION") {
             auto instrNode = convertDeclaracion(instruccionNode);
             if (instrNode) {
                 program->addInstruction(instrNode.release());
             }
         }
+        // Fin Asistencia
         else if(instruccionNode->productionName == "ASIGNACION") {
             auto instrNode = convertAsignacion(instruccionNode);
             if (instrNode) {
@@ -212,7 +216,7 @@ private:
         return convertDato(node->children[0]);
     }
 
-
+    // Generado por: Claude
     std::unique_ptr<Node> convertDeclaracion(const std::shared_ptr<SyntaxNode>& node) {
         if (!node || node->children.size() < 7) return nullptr;
 
@@ -232,7 +236,7 @@ private:
             expression.release()
         );
     }
-
+    // Fin Generacion
 
     std::unique_ptr<Node> convertAsignacion(const std::shared_ptr<SyntaxNode>& node) {
         if (!node || node->children.size() < 5) return nullptr;
@@ -254,6 +258,7 @@ private:
         );
     }
 
+    // Generado por: Claude
     std::unique_ptr<Node> convertCondicional(const std::shared_ptr<SyntaxNode>& node) {
         if (!node || node->children.size() < 8) return nullptr;
 
@@ -457,6 +462,7 @@ private:
 
         return result;
     }
+    // Fin Generacion
 
     std::string toCadena(const std::shared_ptr<SyntaxNode> & node) {
         if (!node || node->children.empty() || node->children.size() <= 1) return "";
@@ -471,7 +477,7 @@ private:
                 "String"
             );
     }
-
+    // Generado por: Claude
     std::unique_ptr<Node> convertFactor(const std::shared_ptr<SyntaxNode>& node) {
         if (!node || node->children.empty()) return nullptr;
 
@@ -486,14 +492,17 @@ private:
 
         return convertDato(firstChild);
     }
+    // Fin Generacion
 
     std::unique_ptr<Node> convertDato(const std::shared_ptr<SyntaxNode>& child) {
+        // Asistido por: Claude
         if (child->token.tokenType == "Identifier") {
             return std::make_unique<IdentifierNode>(
                 child->token.name,
                 findTokenPtr(child->token.name)
             );
         }
+        // Fin Asistencia
 
         if (child->token.tokenType == "Constant") {
             return std::make_unique<ConstantNode>(

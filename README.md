@@ -43,7 +43,15 @@ Donde:
 
 - **Metodología de pruebas:**
 - **Resultados obtenidos:**
-- **Casos de prueba específicos:**
+  - [Lexer](Documents/Test/LexerValid.md)
+  - [Parser](Documents/Test/ParserValid.md)
+  - [Semantics](Documents/Test/SemanticsValid.md)
+  - [Compilador](Documents/Test/Output.md)
+- **Casos de prueba específicos:** se realizaron pruebas en cada etapaa del compilador, tanto pruebas de validez como pruebas de errores
+  - Estas pruebas pueden entontrarse en:
+    - [Pruebas lexicas](Documents/Lexer.md#ejemplos)
+    - [Pruebas sintacticas](Documents/Parser.md#ejemplos)
+    - [Pruebas semanticas](Documents/Semantics.md#ejemplos)
 
 ## Herramientas y Entorno de Desarrollo
 - **Lenguajes de programación utilizados:** C++ y Python
@@ -97,6 +105,7 @@ El compilador puede mejorar bastante con mas tiempo, no solo de como esta estruc
 Por ejemplo, el lenguaje no soporta declaraciones en condicionales por como se maneja de declaracion de variables en el analizador sintactico.
 Tampoco soporta operaciones entre diferentes tipos de datos.
 Otra caracteristica que se puede soportar es un manejo de tokens de espacio y salto de linea mas adecuado y flexible para el usuario.
+Por otra parte, el manejo de errores pudiera mejorar haciendo los mensajes mas especificos e indicando datos como el numero de linea.
 Por ultimo, el compilador solo realiza la parte del FrontEnd, por lo que agregar el BackEnd seria oportuno. 
 En el futuro, estas caracteristicas se puedieran implementar para hacer este compilador un mejor software.
 
@@ -105,8 +114,10 @@ En el futuro, estas caracteristicas se puedieran implementar para hacer este com
 
 ## Referencias
 - **Fuentes citadas:** Lista de libros, artículos, papers, y otras fuentes relevantes.
+  - Aho, A., Lam, M., Sethi, R., y Ullman, J. (2007). *Compilers: Principles, Techniques, & Tools* (2.a ed.). Pearson.
   - Anthropic. (2024). *Claude* (Claude 3.5 Sonnet) [Modelo de lenguaje de gran tamaño]. https://claude.ai/
   - Anuragvbj79. (2024). *How to Extract a Subvector from a Vector in C++?* GeeksforGeeks. https://www.geeksforgeeks.org/how-to-extract-a-subvector-from-a-vector-in-cpp/
+  - Ling, J. (2024). *John-Ling/Pseudocode-Compiler: Basic compiler that turns pseudocode into Python.* GitHub. https://github.com/John-Ling/Pseudocode-Compiler
   - Neso Academy. (2023). *LL(1) Parsing* [Vídeo]. YouTube. https://www.youtube.com/watch?v=clkHOgZUGWU
   - OpenAI. (2024). *ChatGPT* (GPT-4o) [Modelo de lenguaje de gran tamaño]. https://chat.openai.com/chat
   - OpenAI. (2024). *ChatGPT* (GPT-4o mini) [Modelo de lenguaje de gran tamaño]. https://chat.openai.com/chat
@@ -114,4 +125,4 @@ En el futuro, estas caracteristicas se puedieran implementar para hacer este com
   - PseudoEditor. (s. f.). *Pseudocode Editor online - PseudoEditor*. https://pseudoeditor.com/
   - Riteshjha0002. (2023). *Split String by Space into Vector in C++ STL.* GeeksforGeeks. https://www.geeksforgeeks.org/split-string-by-space-into-vector-in-cpp-stl/
   - Scratch. (s. f.). *Scratch - FAQ*. https://scratch.mit.edu/faq
-
+  - UseTheSource. (s. f.). *Abstract Syntax Tree | The Rascal Meta Programming Language.* The Rascal Meta Programming Language. https://www.rascal-mpl.org/docs/Rascalopedia/AbstractSyntaxTree/
