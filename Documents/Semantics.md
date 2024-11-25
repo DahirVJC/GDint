@@ -4,8 +4,8 @@
 Donde `ε` es `nullptr`
 
 Notas:
-- Los identificadores se agregan a la tabla de simbolos en el analizador sintactico.
-- Siempre que hay una operacion, se evalua si los tipos son iguales si estos pueden ser diferentes (en condicionales siempre son Bool).
+- Los identificadores se agregan a la tabla de símbolos en el analizador sintáctico.
+- Siempre que hay una operación, se evalúa si los tipos son iguales cuando estos pueden ser diferentes (en condicionales el tipo siempre es Bool).
 ````
 CODIGO->BLOQUE CODIGO' {CODIGO.nodo += CODIGO.nodo.hijos.nodo}
 CODIGO'->BLOQUE CODIGO'|ε {CODIGO'.nodo += CODIGO'.nodo.hijos.nodo}
