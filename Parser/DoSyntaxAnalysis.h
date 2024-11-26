@@ -9,11 +9,12 @@ std::pair<std::shared_ptr<SyntaxNode>,std::list<SyntaxToken>> doSyntaxAnalysis(s
     Grammar grammar = grammarReader.getGrammar();
     std::pair<std::shared_ptr<SyntaxNode>,std::list<SyntaxToken>> result = grammar.syntaxAnalysis(tokens);
     if (nullptr != result.first) {
-        printSyntaxTree(result.first);
-        if (result.second.size() > 0) {
+        bool logIsOn = logOn();
+        if (logIsOn) printSyntaxTree(result.first);
+        if (result.second.size() > 0 && logIsOn) {
             printTokens(result.second);
         }
-        std::cout << "Valido" << std::endl;
+        if (logIsOn) std::cout << "Valido" << std::endl;
         return result;
     }
     return {nullptr, {}};

@@ -9,6 +9,7 @@
 
 #include "../Tools/TokenTypes.h"
 #include "../Tools/util.h"
+#include "../Tools/FileHandler.hpp"
 
 // Precondicion: La gramatica sigue con el consenso de escritura. El nombre de la regla como parametro.
 // Postcondicion: Regresa true si la regla es no terminal y false si es terminal. Esto se define apartir del consenso.
@@ -382,11 +383,13 @@ std::pair<std::shared_ptr<SyntaxNode>,std::list<SyntaxToken>> Grammar::syntaxAna
 
             Production symbols = parserTable[std::make_pair(memory.top().symbol, flowOfTokens.at(index).first)];
 
-            std::cout << memory.top().symbol << " Produce: ";
-            for (const auto& symbol : symbols) {
-                std::cout << symbolFormat(symbol) << " ";
+            if(logOn()) {
+                std::cout << memory.top().symbol << " Produce: ";
+                for (const auto& symbol : symbols) {
+                    std::cout << symbolFormat(symbol) << " ";
+                }
+                std::cout << "con " << symbolFormat(flowOfTokens[index].first) << std::endl;
             }
-            std::cout << "con " << symbolFormat(flowOfTokens[index].first) << std::endl;
 
             memory.pop();
             std::vector<ParserState> reverseStates;
@@ -444,7 +447,7 @@ std::pair<std::shared_ptr<SyntaxNode>,std::list<SyntaxToken>> Grammar::syntaxAna
                 else if (flowOfTokens.at(index).first == "\n") {
                     if (idTypes.find(idName) == idTypes.end()) {
                         idTypes[idName] = dataType;
-                        std::cout << idName << " es un "<< dataType << std::endl;
+                        if(logOn()) std::cout << idName << " es un "<< dataType << std::endl;
                         LexerToken lexerToken = LexerToken("NULL","NULL",-1);
                         getFirstLexerToken(tokens, idName, lexerToken);
                         if (lexerToken.line != -1) {

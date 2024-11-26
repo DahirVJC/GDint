@@ -5,12 +5,14 @@
 #include <cstring>
 #include <list>
 
+#include "paths.h"
+
 // Asistido por: ChatGPT
 std::string readFileToString(const std::string& filePath) {
     std::ifstream in_file(filePath);
     if (!in_file) {
-        std::cerr << "Error: Could not open file '" << filePath << "'. ";
-        std::cerr << "Reason: " << strerror(errno) << std::endl;
+        std::cerr << "Error: no se pudo abrir el archio '" << filePath << "'. ";
+        std::cerr << "Motivo: " << strerror(errno) << std::endl;
         return "";
     }
     std::string content;
@@ -26,11 +28,31 @@ std::string readFileToString(const std::string& filePath) {
 
 void writeStringToFile(const std::string& content, const std::string& fileName){
     std::ofstream out_file(fileName);
-    if (!out_file) {  // Check if the file was opened successfully
-        std::cerr << "Error: Could not open or create the file " << fileName << std::endl;
+    if (!out_file) {
+        std::cerr << "Error: No se pudo abrir o modificar el archivo " << fileName << std::endl;
         return;
     }
     out_file << content;
     out_file.close();
 }
+bool logOn() {
+    std::ifstream file(inputPath+R"(/Config.txt)");
+    std::string line;
+
+    if (!file.is_open()) {
+        std::cerr << "Error al abrir el archivo: " << inputPath+R"(/Config.txt)" << std::endl;
+        return false;
+    }
+
+    while (std::getline(file, line)) {
+        if (line.find("LOG=TRUE") != std::string::npos) {
+            return true;
+        }
+        if (line.find("LOG=FALSE") != std::string::npos) {
+            return false;
+        }
+    }
+    return false;
+}
+
 // Fin Asistencia

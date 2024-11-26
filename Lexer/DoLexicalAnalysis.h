@@ -22,7 +22,7 @@ inline std::list<LexerToken> doLexicalAnalysis(const std::string& code) {
     Lexer lexer;
     lexer.readInput(code);
     std::list<LexerToken> TokenTable = lexer.getTokens();
-    printTokens(TokenTable);
+    if (logOn()) printTokens(TokenTable);
     return TokenTable;
 }
 

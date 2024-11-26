@@ -5,6 +5,6 @@
 #ifndef PATHS_H
 #define PATHS_H
 #include <string>
-const std::string inputPath = "/home/hij555/Programming/Compiladores/Compiler/Input";
-const std::string outputPath = "/home/hij555/Programming/Compiladores/Compiler/Output";
+const std::string inputPath = "../Input";
+const std::string outputPath = "../Output";
 #endif //PATHS_H
