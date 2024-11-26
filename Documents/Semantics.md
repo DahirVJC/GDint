@@ -239,3 +239,14 @@ finsi
 ````
 `Error semantico: tipos de datos incompatibles entre si en >`
 [Salida](Test/SemanticsIfTypes.md)
+````
+variable a = 1/(2 - 2)
+````
+````
+Semantica valida
+Error de runtime en la fase semantica: No se puede dividir entre 0
+````
+[Salida](Test/SemanticsRunTime.md)
+
+Notese que este es un error de runtime, ya que ocurre al resolver el arbol, no al validarlo.
+Esto es asi porque se tiene que calcular la expresion para poder determinar si es una division entre cero.

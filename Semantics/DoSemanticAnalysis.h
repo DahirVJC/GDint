@@ -27,7 +27,7 @@ std::pair<std::shared_ptr<std::list<SemanticToken>>, std::unique_ptr<Node>> doSe
         std::cout << "El arbol no es valido" << std::endl;
     // Asistido por: ChatGPT
     } catch (const std::exception& e) {
-        std::cerr << "Error al convertir el arbol Parse a AST: " << e.what() << std::endl;
+        std::cerr << "Error de runtime en la fase semantica: " << e.what() << std::endl;
     }
     // Fin Asistencia
     return {nullptr, nullptr};

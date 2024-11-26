@@ -8,7 +8,7 @@
     - Constante: ```[+|-]?\d+```
     - Keyword: ```(si|variable|entonces|sino|finsi|publicar|obtener|cambiar|borrar)```
     - Whitespace: ```[\t\r\f\v]+```
-    - Puntuación: ```[\n| |"|(|)|,|#|'|:]```
+    - Puntuación: ```[\n| |"|(|)|,|#|'|:|.]```
     - Operadores: ```[+|-|=|*|/|==| || |&&|<|>|!|?]```
 ### **Ejemplos:**
 - a -> Identificador `Token(name: a, type: Identifier, line: 1)`
