@@ -171,7 +171,7 @@ public:
                 right->getDataType()
             );
             right = std::move(newRight);
-
+// Asistido por: ChatGPT
             int leftValue = std::stoi(leftStrValue);
             int rightValue = std::stoi(rightStrValue);
             if (operation == "+") {
@@ -199,6 +199,7 @@ public:
                 return leftValue < rightValue ? "true" : "false";
             }
         }
+// Fin Asistencia
         else if (left->getDataType() == "String") {
             std::unique_ptr<Node> newLeft= std::make_unique<ConstantNode>(
                 left->resolve(),
