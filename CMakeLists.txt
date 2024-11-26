@@ -34,4 +34,8 @@ add_executable(CLionProjects
         Tools/TokenTypes.h
         Parser/SyntaxNode.h
         Parser/SyntaxToken.h
+        Semantics/ASTNodes.h
+        Semantics/DoSemanticAnalysis.h
+        Semantics/ParseTreeConverter.h
+        Semantics/SemanticToken.h
 )

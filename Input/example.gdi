@@ -1,34 +1,22 @@
 variable a = 0
-a = 3 + 2
-variable b = a * 9
-variable c = 'a' + 'b'
-variable d = 4 + 'b'
-si a<4&&a==-3 entonces
-obtener 'https://pokeapi.co/api/v2/pokemon/ditto'
-obtener 'https://pokeapi.co/api/v2/pokemon/incineroar'
-sino
-obtener 'https://pokeapi.co/api/v2/pokemon/incineroar'
+a = 2 + 3
+variable b = 5*a + (0*2 + 4)
+variable c = 'c' + 'd'
+variable body = 'holaaa' + '4' + c
+variable url = 'https://pokeapi.co/api/v2/pokemon/ditto'
+obtener url body
+publicar url body
+#'Intenta: variable id = 1'
+variable id = 'alumno1'
+cambiar url 3 body body
+borrar url 3 body
+si a<10||a==-3 entonces
+    id = 'pokemon2'
+    si id=='pokemon' entonces
+        id = 'si'
+    finsi
+    cambiar 'https://pokeapi.co/api/v2/pokemon/ditto' id body
+    sino
+    id = 'pokemon3'
+    cambiar 'https://pokeapi.co/api/v2/pokemon/incineroar' id body
 finsi
-#obtener 'https://pokeapi.co/api/v2/pokemon/ditto'
-variable body = '
-doe: "a deer, a female deer"
- ray: "a drop of golden sun"
- pi: 3.14159
- xmas: true
- french-hens: 3
- calling-birds:
-   - huey
-   - dewey
-   - louie
-   - fred
- xmas-fifth-day:
-   calling-birds: four
-   french-hens: 3
-   golden-rings: 5
-   partridges:
-     count: 1
-     location: "a pear tree"
-   turtle-doves: two
-'
-publicar 'https://pokeapi.co/api/v2/pokemon/ditto' body
-variable f = 'h'

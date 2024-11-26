@@ -365,6 +365,9 @@ std::pair<std::shared_ptr<SyntaxNode>,std::list<SyntaxToken>> Grammar::syntaxAna
     SyntaxToken* idPlaceholder;
     std::unordered_map<std::string,std::string> idTypes;
     std::list<SyntaxToken> valuesTable;
+
+    std::unordered_map<std::string,std::vector<int>> usageLines;
+
     while (index < flowOfTokens.size()) {
         if (index == flowOfTokens.size() - 1 && memory.top().symbol == "EOF") break;
 
@@ -429,6 +432,7 @@ std::pair<std::shared_ptr<SyntaxNode>,std::list<SyntaxToken>> Grammar::syntaxAna
                         if (idTypes.find(flowOfTokens.at(index).second.name) != idTypes.end()) {
                             if (dataType != STRING) dataType = idTypes[flowOfTokens.at(index).second.name];
                             LexerToken aux = flowOfTokens.at(index).second;
+                            usageLines[aux.name].push_back(aux.line);
                             memory.top().node->token = SyntaxToken(aux.name,aux.type,aux.line,idTypes[flowOfTokens.at(index).second.name]);
                         } else {
                             std::cerr<<"Uso de una variable no declarada: "<<flowOfTokens.at(index).second.name<<std::endl;
@@ -469,6 +473,7 @@ std::pair<std::shared_ptr<SyntaxNode>,std::list<SyntaxToken>> Grammar::syntaxAna
                     return {nullptr, {}};
                 }
                 LexerToken aux = flowOfTokens.at(index).second;
+                usageLines[aux.name].push_back(aux.line);
                 memory.top().node->token = SyntaxToken(aux.name,aux.type,aux.line,idTypes[flowOfTokens.at(index).second.name]);
             }
 
@@ -480,11 +485,15 @@ std::pair<std::shared_ptr<SyntaxNode>,std::list<SyntaxToken>> Grammar::syntaxAna
             memory.top().node->token = SyntaxToken(aux.name,aux.type,aux.line,STRING);
             memory.pop();
             index++;
-            dataType = STRING;
+            if (inDeclaration) dataType = STRING;
         }
         else if (memory.top().symbol == "ε") {
             memory.top().node->productionName = "ε";
             memory.pop();
+        }
+        else if (!isNonTerminal(memory.top().symbol)){
+            std::cerr<<"Error de sintaxis en el simbolo no terminal: "<<memory.top().symbol<<std::endl;
+            return {nullptr, {}};
         }
     }
 
@@ -511,9 +520,13 @@ std::pair<std::shared_ptr<SyntaxNode>,std::list<SyntaxToken>> Grammar::syntaxAna
     }
 
     if (memory.top().symbol == "EOF" || memory.empty()) {
+        for (SyntaxToken& value : valuesTable) {
+            value.usageLines = usageLines[value.name];
+        }
         return std::make_pair(rootNode, valuesTable);
     }
     std::cerr << "Error de sintaxis" << std::endl;
     return {nullptr, {}};
 }
+
 // Fin Algoritmo
