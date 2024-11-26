@@ -42,12 +42,17 @@ Donde:
 ## Pruebas y Validación
 
 - **Metodología de pruebas:**
+  - Primero se planteaba un paso específico a probar.
+  - Después, se creaba un código GDInt que plasmaba ese caso.
+  - Una vez que se tenía el código, se escribía en el archivo de entrada del compilador.
+  - Por último, el compilador se ejecutaba con esa entrada y se analizaba la salida.
+  - Adicionalmente y en el caso de las pruebas más importantes, se guardaba la entrada y salida, y se documentaba.
 - **Resultados obtenidos:**
   - [Lexer](Documents/Test/LexerValid.md)
   - [Parser](Documents/Test/ParserValid.md)
   - [Semantics](Documents/Test/SemanticsValid.md)
   - [Compilador](Documents/Test/Output.md)
-- **Casos de prueba específicos:** se realizaron pruebas en cada etapa del compilador, tanto pruebas de validez como pruebas de errores
+- **Casos de prueba específicos:** se realizaron pruebas en cada etapa del compilador, tanto pruebas de validez como pruebas de errores.
   - Estas pruebas pueden encontrarse en:
     - [Pruebas léxicas](Documents/Lexer.md#ejemplos)
     - [Pruebas sintácticas](Documents/Parser.md#ejemplos)
@@ -86,7 +91,11 @@ si a<10||a==-3 entonces
 finsi
 ````
 - **Proceso de compilación:**
-- **Ejecución del código compilado:** [Salida en consola](Documents/Test/Output.md)
+  - El programa lee del archivo fuente el código a compilar y se le aplica un preprocesamiento que adapta los caracteres, ya sea removiendo, modificando o manteniendo estos símbolos.
+  - El código leído es pasado al Lexer, el cual, con ayuda de la tabla de transición de un autómata, agrupa los caracteres y los clasifica, creando así un flujo de tokens.
+  - La serie de tokens generada por el Lexer es transferida al Parser, en donde se utiliza un algoritmo LL(1) que hace uso de las reglas gramaticales guardadas en un archivo de texto. El parser valida la sintaxis del código en forma de tokens y genera un árbol Parse, al mismo tiempo que se introducen los identificadores a una tabla de símbolos, donde se guarda su información como token y otros datos importantes.
+  - Por último, el árbol Parse, junto con la tabla de valores, sirven como entrada al analizador semántico, el cual convierte dicho árbol en un árbol de sintaxis abstracta, cuyos nodos tienen los métodos para validarse y resolverse (resolver es el proceso de decorar o anotar árbol, resolver valores y actualizar la tabla de símbolos, y optimizarlo). Primero, es árbol se valida para detectar errores semánticos y se resuelve para devolver un árbol de sintaxis abstracta anotado. Al final de este análisis se tiene como producto un árbol de sintaxis abstracta decorado y una tabla de símbolos que contiene más datos que la tabla de la fase sintáctica.
+- **Ejecución del código compilado:** [salida en consola](Documents/Test/Output.md)
 
 ## Desafíos y Soluciones
 [Bitácora](Documents/Bitacora.md)
@@ -95,17 +104,23 @@ finsi
   - En el proceso de la creación de la gramática para el analizador semántico tuvimos problemas con crear una gramática que hiciera lo que visionamos.
   - La tokenización de espacios y saltos de línea de los lenguajes tipo pseudocódigo resultó desafiante.
 - **Estrategias adoptadas para superar desafíos:**
-- **Lecciones aprendidas:**
+  - Aunque varios problemas relacionados a las salidas de los analizadores anteriores se resolvieron al editarlos, en bastantes ocasiones la estrategia principal fue crear los analizadores actuales de manera que puedan manejar esos inconvenientes.
+  - La estrategia de prueba y error fue utilizada para las correcciones de las reglas sintácticas, ya que el análisis de casos particulares resulta muy complejo.
+  - Para la tokenización de espacios en blanco necesarios para el lenguaje, se decidió usar el preprocesador para limpiar algunos espacios fácilmente detectables, sin embargo, al ser símbolos sintácticos, la mayor parte de su manejo se hizo en el parser.
+- **Lecciones aprendidas:** durante la resolución de estos problemas, y en general en la elaboración del compilador, aprendimos la importancia de entender completamente el funcionamiento de todo un sistema para poder crear módulos con salidas oportunas. Aunque se busca que el desarrollo de software se realice con módulos independientes entre sí, es cierto que se tienen que tomar en cuenta la entrada y salida de cada componente para su correcta implementación. Por lo tanto, en futuros proyectos, se tomará en cuenta y se le dará gran importancia al análisis de lo que recibe y sale de cada componente de un sistema.
 
 ## Conclusiones y Trabajo Futuro
-- **Resumen de objetivos cumplidos:** Se elaboró un compilador capaz de analizar un lenguaje de tipo pseudocódigo que soporta métodos HTTP.  Con el objetivo de ser una herramienta de educación.
+- **Resumen de objetivos cumplidos:** se elaboró un compilador capaz de analizar un lenguaje de tipo pseudocódigo que soporta métodos HTTP.  Con el objetivo de ser una herramienta de educación.
 - **Evaluación del desempeño:**
+las múltiples pruebas realizadas apuntan que el compilador tiene la capacidad de manejar llamadas a endpoints dado un verbo HTTP, y manejar lógica básica y condicional.
+Una vez se agregue un módulo de generar código python, los objetivos del compilador se pueden satisfacer.
 - **Propuestas para mejoras futuras:**
-El compilador puede mejorar bastante con más tiempo, no solo de cómo está estructurado el código, si no que también en características que soporta.
+el compilador puede mejorar bastante con más tiempo, no solo de cómo está estructurado el código, si no que también en características que soporta.
 Por ejemplo, el lenguaje no soporta declaraciones en condicionales por cómo se maneja la declaración de variables en el analizador sintáctico.
 Tampoco soporta operaciones entre diferentes tipos de datos.
 Otra característica que se puede soportar es un manejo de tokens de espacio y salto de línea más adecuado y flexible para el usuario.
 Por otra parte, el manejo de errores pudiera mejorar haciendo los mensajes más específicos e indicando datos como el número de línea.
+Otra oportunidad es extender el manejo de las API y los objetos que se obtienen, ofreciendo una mayor interacción con las tecnologías web.
 Por último, el compilador solo realiza la parte del FrontEnd, por lo que agregar el BackEnd sería oportuno.
 En el futuro, estas características se pudieran implementar para hacer este compilador un mejor software.
 
