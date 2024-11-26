@@ -248,5 +248,5 @@ Error de runtime en la fase semantica: No se puede dividir entre 0
 ````
 [Salida](Test/SemanticsRunTime.md)
 
-Notese que este es un error de runtime, ya que ocurre al resolver el arbol, no al validarlo.
-Esto es asi porque se tiene que calcular la expresion para poder determinar si es una division entre cero.
+Nótese que este es un error de runtime, ya que ocurre al resolver el árbol, no al validarlo.
+Esto es así porque se tiene que calcular la expresión para poder determinar si es una división entre cero.
