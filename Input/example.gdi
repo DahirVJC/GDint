@@ -16,7 +16,7 @@ si a<10||a==-3 entonces
         id = 'si'
     finsi
     cambiar 'https://pokeapi.co/api/v2/pokemon/ditto' id body
-    sino
+sino
     id = 'pokemon3'
     cambiar 'https://pokeapi.co/api/v2/pokemon/incineroar' id body
 finsi

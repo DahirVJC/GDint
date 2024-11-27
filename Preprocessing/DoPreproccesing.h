@@ -11,6 +11,7 @@
 
 inline void doPreprocessing(std::string content) {
     content = cleanCharacters(content);
+    if (logOn())
     std::cout<<content;
     std::string filePath = outputPath+"/Preprocessing_Code.txt";
     writeStringToFile(content, filePath );

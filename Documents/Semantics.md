@@ -214,37 +214,37 @@ finsi
 variable a = 0
 a = '0'
 ````
-`Error semantico: se puede asignar String a Number`
+`Error semantico: se puede asignar String a Number. Linea: 2`
 [Salida](Test/SemanticsAssignType.md)
 ````
 variable a = 0*'0'
 ````
-`Error semantico: tipos de datos incompatibles entre si en *`
+`Error semantico: tipos de datos incompatibles entre si en *. Linea: 1`
 [Salida](Test/SemanticsExpTypes.md)
 ````
 variable url = 0
 obtener url
 ````
-`Error semantico: el url debe ser String en GetHttp`
+`Error semantico: el url debe ser String en GetHttp. Linea: 2`
 [Salida](Test/SemanticsApiParam.md)
 ````
 variable a = 'a'*'b'
 ````
-`Error semantico: no se permite la operacion * en String`
+`Error semantico: no se permite la operacion * en String. Linea: 1`
 [Salida](Test/SemanticsOpTypes.md)
 ````
 si 1>'2' entonces
     obtener 'url'
 finsi
 ````
-`Error semantico: tipos de datos incompatibles entre si en >`
+`Error semantico: tipos de datos incompatibles entre si en >. Linea: 1`
 [Salida](Test/SemanticsIfTypes.md)
 ````
 variable a = 1/(2 - 2)
 ````
 ````
 Semantica valida
-Error de runtime en la fase semantica: No se puede dividir entre 0
+Error de runtime en la fase semantica: No se puede dividir entre 0. Linea: 1
 ````
 [Salida](Test/SemanticsRunTime.md)
 

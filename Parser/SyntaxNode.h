@@ -27,7 +27,7 @@ struct ParserState {
 inline void printSyntaxTree(const std::shared_ptr<SyntaxNode>& node, int depth = 0) {
     if (node){
         std::cout << std::string(depth * 2, ' ');
-        if (node->token.line != -1) printToken(node->token);
+        if (node->token.dataType != "NULL") printToken(node->token);
         else std::cout<<symbolFormat(node->productionName)<<std::endl;
         for (const auto& child : node->children) {
             printSyntaxTree(child, depth + 1);

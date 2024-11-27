@@ -160,7 +160,8 @@ private:
 
         return std::make_unique<GetHttpNode>(
             endpointNode.release(),
-            apiKeyNode ? apiKeyNode.release() : nullptr
+            apiKeyNode ? apiKeyNode.release() : nullptr,
+            node->token.line
         );
     }
 
@@ -175,7 +176,8 @@ private:
         return std::make_unique<PostHttpNode>(
             endpointNode.release(),
             bodyNode.release(),
-            apiKeyNode ? apiKeyNode.release() : nullptr
+            apiKeyNode ? apiKeyNode.release() : nullptr,
+            node->token.line
         );
     }
 
@@ -192,7 +194,8 @@ private:
             endpointNode.release(),
             idNode.release(),
             bodyNode.release(),
-            apiKeyNode ? apiKeyNode.release() : nullptr
+            apiKeyNode ? apiKeyNode.release() : nullptr,
+            node->token.line
         );
     }
 
@@ -207,7 +210,8 @@ private:
         return std::make_unique<DeleteHttpNode>(
             endpointNode.release(),
             idNode.release(),
-            apiKeyNode ? apiKeyNode.release() : nullptr
+            apiKeyNode ? apiKeyNode.release() : nullptr,
+            node->token.line
         );
     }
 
@@ -233,7 +237,8 @@ private:
 
         return std::make_unique<DeclarationNode>(
             identifier.release(),
-            expression.release()
+            expression.release(),
+            node->token.line
         );
     }
     // Fin Generacion
@@ -254,7 +259,8 @@ private:
 
         return std::make_unique<AssignmentNode>(
             identifier.release(),
-            expression.release()
+            expression.release(),
+            node->token.line
         );
     }
 
@@ -341,7 +347,8 @@ private:
                         result = std::make_unique<BinaryOperationNode>(
                             result.release(),
                             rightComparison.release(),
-                            op
+                            op,
+                            node->token.line
                         );
                     }
                 }
@@ -375,7 +382,8 @@ private:
                         result = std::make_unique<BinaryOperationNode>(
                             result.release(),
                             rightBool.release(),
-                            op
+                            op,
+                            node->token.line
                         );
                     }
                 }
@@ -416,7 +424,8 @@ private:
                     result = std::make_unique<BinaryOperationNode>(
                         result.release(),
                         rightTerm.release(),
-                        opNode->children[0]->token.name
+                        opNode->children[0]->token.name,
+                        node->token.line
                     );
                 }
 
@@ -448,7 +457,8 @@ private:
                     result = std::make_unique<BinaryOperationNode>(
                         result.release(),
                         rightFactor.release(),
-                        op
+                        op,
+            node->token.line
                     );
                 }
 

@@ -11,6 +11,5 @@ Program:
       a (Type: Number)
     Value:
       0 (Type: String)
-El arbol no es valido
-Error semantico: se puede asignar String a Number
+Error semantico: se puede asignar String a Number. Linea: 2
 ````

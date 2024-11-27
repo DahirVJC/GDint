@@ -15,9 +15,9 @@
 - +98 -> Constante `Token(name: a, type: Identifier, line: 1)`
 - variable -> Keyword `Token(name: a, type: Identifier, line: 1)`
 - ' -> Puntuación `Token(name: ', type: Punctuation, line: 1)`
-- \t -> Whitespace ` ` (Eliminado en preprocesado)
+- \t -> Whitespace ` ` (Eliminado en el preprocesado)
 - || -> Operador `Token(name: ||, type: Operation, line: 1)`
-- \` -> Error `Lexical Error: string not recognized by the automata detected.`
+- \` -> Error `Error lexico: cadena no reconocida por el automata en la linea: 1.`
 
 ![Ejemplo de éxito](/resources/lexerCorrect.jpg)
 

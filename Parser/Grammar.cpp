@@ -9,6 +9,7 @@
 
 #include "../Tools/TokenTypes.h"
 #include "../Tools/util.h"
+#include "../Tools/FileHandler.hpp"
 
 // Precondicion: La gramatica sigue con el consenso de escritura. El nombre de la regla como parametro.
 // Postcondicion: Regresa true si la regla es no terminal y false si es terminal. Esto se define apartir del consenso.
@@ -371,22 +372,27 @@ std::pair<std::shared_ptr<SyntaxNode>,std::list<SyntaxToken>> Grammar::syntaxAna
     while (index < flowOfTokens.size()) {
         if (index == flowOfTokens.size() - 1 && memory.top().symbol == "EOF") break;
 
+        std::string currentLine = flowOfTokens.at(index).second.line != -1 ? std::to_string(flowOfTokens.at(index).second.line) : "ultima linea";
+
         if (isNonTerminal(memory.top().symbol)) {
             ParserState currentState = memory.top();
             if (parserTable[std::make_pair(memory.top().symbol, flowOfTokens.at(index).first)].empty()) {
-                std::cerr << "Error de sintaxis" << std::endl;
-                return {nullptr, {}};
+                std::cerr << "Error de sintaxis. Linea: "<< currentLine << std::endl;
+                std::cerr << "Estructura: "<< memory.top().symbol << ". Simbolo: " << symbolFormat(flowOfTokens.at(index).first) << std::endl;
+                exit(0);
             }
 
             if (memory.top().symbol == "DECLARACION") inDeclaration = true;
 
             Production symbols = parserTable[std::make_pair(memory.top().symbol, flowOfTokens.at(index).first)];
 
-            std::cout << memory.top().symbol << " Produce: ";
-            for (const auto& symbol : symbols) {
-                std::cout << symbolFormat(symbol) << " ";
+            if(logOn()) {
+                std::cout << memory.top().symbol << " Produce: ";
+                for (const auto& symbol : symbols) {
+                    std::cout << symbolFormat(symbol) << " ";
+                }
+                std::cout << "con " << symbolFormat(flowOfTokens[index].first) << std::endl;
             }
-            std::cout << "con " << symbolFormat(flowOfTokens[index].first) << std::endl;
 
             memory.pop();
             std::vector<ParserState> reverseStates;
@@ -399,6 +405,7 @@ std::pair<std::shared_ptr<SyntaxNode>,std::list<SyntaxToken>> Grammar::syntaxAna
             std::reverse(reverseStates.begin(), reverseStates.end());
             for (const auto& state : reverseStates) {
                 memory.emplace(state);
+                memory.top().node->token.line = flowOfTokens.at(index).second.line;
             }
         }
         if (memory.top().symbol == flowOfTokens.at(index).first) {
@@ -421,8 +428,8 @@ std::pair<std::shared_ptr<SyntaxNode>,std::list<SyntaxToken>> Grammar::syntaxAna
                     if (idName == "0") {
                         idName = flowOfTokens.at(index).second.name;
                         if (idTypes.find(idName) != idTypes.end()) {
-                            std::cerr << "La variable '" << idName << "' ya fue declarada previamente" << std::endl;
-                            return {nullptr, {}};
+                            std::cerr << "Error en la fase sintactica: la variable '" << idName << "' ya fue declarada previamente. Linea de error: " << currentLine << std::endl;
+                            exit(0);
                         }
                         memory.top().node->token = SyntaxToken("NULL","NULL",-1,"NULL");
                         idPlaceholder = &memory.top().node->token;
@@ -435,8 +442,8 @@ std::pair<std::shared_ptr<SyntaxNode>,std::list<SyntaxToken>> Grammar::syntaxAna
                             usageLines[aux.name].push_back(aux.line);
                             memory.top().node->token = SyntaxToken(aux.name,aux.type,aux.line,idTypes[flowOfTokens.at(index).second.name]);
                         } else {
-                            std::cerr<<"Uso de una variable no declarada: "<<flowOfTokens.at(index).second.name<<std::endl;
-                            return {nullptr, {}};
+                            std::cerr<<"Error en la fase sintactica: uso de una variable no declarada: "<<flowOfTokens.at(index).second.name<<". Linea de error: "<<currentLine<<std::endl;
+                            exit(0);
                         }
                     }
                 }
@@ -444,7 +451,7 @@ std::pair<std::shared_ptr<SyntaxNode>,std::list<SyntaxToken>> Grammar::syntaxAna
                 else if (flowOfTokens.at(index).first == "\n") {
                     if (idTypes.find(idName) == idTypes.end()) {
                         idTypes[idName] = dataType;
-                        std::cout << idName << " es un "<< dataType << std::endl;
+                        if(logOn()) std::cout << idName << " es un "<< dataType << std::endl;
                         LexerToken lexerToken = LexerToken("NULL","NULL",-1);
                         getFirstLexerToken(tokens, idName, lexerToken);
                         if (lexerToken.line != -1) {
@@ -462,15 +469,15 @@ std::pair<std::shared_ptr<SyntaxNode>,std::list<SyntaxToken>> Grammar::syntaxAna
                         idName = "0";
                     }
                     else {
-                        std::cerr << "La variable '" << idName << "' ya fue declarada previamente" << std::endl;
-                        return {nullptr, {}};
+                        std::cerr << "Error en la fase sintactica: la variable '" << idName << "' ya fue declarada previamente. Linea de error:" << currentLine << std::endl;
+                        exit(0);
                     }
                 }
             }
             else if (memory.top().symbol == "identificador") {
                 if (idTypes.find(flowOfTokens.at(index).second.name) == idTypes.end()) {
-                    std::cerr<<"Uso de una variable no declarada: "<<flowOfTokens.at(index).second.name<<std::endl;
-                    return {nullptr, {}};
+                    std::cerr<<"Error en la fase sintactica: uso de una variable no declarada: "<<flowOfTokens.at(index).second.name<<". Linea de error: "<<currentLine<<std::endl;
+                    exit(0);
                 }
                 LexerToken aux = flowOfTokens.at(index).second;
                 usageLines[aux.name].push_back(aux.line);
@@ -492,15 +499,15 @@ std::pair<std::shared_ptr<SyntaxNode>,std::list<SyntaxToken>> Grammar::syntaxAna
             memory.pop();
         }
         else if (!isNonTerminal(memory.top().symbol)){
-            std::cerr<<"Error de sintaxis en el simbolo no terminal: "<<memory.top().symbol<<std::endl;
-            return {nullptr, {}};
+            std::cerr<<"Error de sintaxis en el simbolo no terminal: \""<<symbolFormat(memory.top().symbol)<<"\" en la linea: "<<currentLine<<std::endl;
+            exit(0);
         }
     }
 
     if (idName != "0") {
         if (idTypes.find(idName) == idTypes.end()) {
             idTypes[idName] = dataType;
-            std::cout << idName << " es un "<< dataType << std::endl;
+            if(logOn()) std::cout << idName << " es un "<< dataType << std::endl;
             LexerToken lexerToken = LexerToken("NULL","NULL",-1);
             getFirstLexerToken(tokens, idName, lexerToken);
             if (lexerToken.line != -1) {
@@ -514,8 +521,9 @@ std::pair<std::shared_ptr<SyntaxNode>,std::list<SyntaxToken>> Grammar::syntaxAna
             }
         }
         else {
-            std::cerr << "La variable '" << idName << "' ya fue declarada previamente" << std::endl;
-            return {nullptr, {}};
+            std::string errorLine = flowOfTokens.at(index).second.line != -1 ? std::to_string(flowOfTokens.at(index).second.line) : "ultima linea";
+            std::cerr << "Error en la fase sintactica: la variable '" << idName << "' ya fue declarada previamente. Linea de error: " << errorLine << std::endl;
+            exit(0);
         }
     }
 
@@ -525,8 +533,8 @@ std::pair<std::shared_ptr<SyntaxNode>,std::list<SyntaxToken>> Grammar::syntaxAna
         }
         return std::make_pair(rootNode, valuesTable);
     }
-    std::cerr << "Error de sintaxis" << std::endl;
-    return {nullptr, {}};
+    std::cerr << "Error de sintaxis. Linea: ultima linea." << std::endl;
+    exit(0);
 }
 
 // Fin Algoritmo
