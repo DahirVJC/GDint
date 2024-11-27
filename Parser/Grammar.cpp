@@ -378,7 +378,7 @@ std::pair<std::shared_ptr<SyntaxNode>,std::list<SyntaxToken>> Grammar::syntaxAna
             ParserState currentState = memory.top();
             if (parserTable[std::make_pair(memory.top().symbol, flowOfTokens.at(index).first)].empty()) {
                 std::cerr << "Error de sintaxis. Linea: "<< currentLine << std::endl;
-                std::cerr << "Estructura: "<< memory.top().symbol << ". Simbolo: " << flowOfTokens.at(index).first << std::endl;
+                std::cerr << "Estructura: "<< memory.top().symbol << ". Simbolo: " << symbolFormat(flowOfTokens.at(index).first) << std::endl;
                 exit(0);
             }
 

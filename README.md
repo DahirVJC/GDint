@@ -123,13 +123,16 @@ Salida: `Codigo compilado exitosamente.`
 las múltiples pruebas realizadas apuntan que el compilador tiene la capacidad de manejar llamadas a endpoints dado un verbo HTTP, y manejar lógica básica y condicional.
 Una vez se agregue un módulo de generar código python, los objetivos del compilador se pueden satisfacer.
 - **Propuestas para mejoras futuras:**
-el compilador puede mejorar bastante con más tiempo, no solo de cómo está estructurado el código, si no que también en características que soporta.
-Por ejemplo, el lenguaje no soporta declaraciones en condicionales por cómo se maneja la declaración de variables en el analizador sintáctico.
-Tampoco soporta operaciones entre diferentes tipos de datos.
-Otra característica que se puede soportar es un manejo de tokens de espacio y salto de línea más adecuado y flexible para el usuario.
-Otra oportunidad es extender el manejo de las API y los objetos que se obtienen, ofreciendo una mayor interacción con las tecnologías web.
-Por último, el compilador solo realiza la parte del FrontEnd, por lo que agregar el BackEnd sería oportuno.
-En el futuro, estas características se pudieran implementar para hacer este compilador un mejor software.
+  el compilador puede mejorar bastante con más tiempo, no solo de cómo está estructurado el código, si no que también en características que soporta.
+  - El lenguaje no soporta declaraciones en condicionales por cómo se maneja la declaración de variables en el analizador sintáctico.
+  - Tampoco soporta operaciones entre diferentes tipos de datos.
+  - Otra característica que se puede soportar es un manejo de tokens de espacio y salto de línea más adecuado y flexible para el usuario.
+  - Por otra parte, el sistema de comentarios también puede ser mejorado, haciendo que este sea más flexible e intuitivo, permitiendo usar caracteres como ' y ser planteado de una forma que no sea intrusivo con los símbolos sintácticos del lenguaje.
+  - También, se puede añadir el soporte de strings vacíos y validaciones que se pueden hacer con ellos. Actualmente, no permitir strings vacíos son la validación de no tener URLs vacías o cuerpos vacíos.
+  - Otra oportunidad es extender el manejo de las API y los objetos que se obtienen, ofreciendo una mayor interacción con las tecnologías web.
+  - Por último, el compilador solo realiza la parte del FrontEnd, por lo que agregar el BackEnd sería oportuno.
+
+  En el futuro, estas características se pudieran implementar para hacer este compilador un mejor software.
 
 ## Preguntas y Discusión
 - Espacio para responder preguntas y discusión sobre el proyecto.
