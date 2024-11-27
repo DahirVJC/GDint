@@ -602,7 +602,11 @@ Salida: `Valido`
 obtener 'https://pokeapi.co/api/v2/pokemon/ditto'
 publicar 'https://pokeapi.co/api/v2/pokemon/incineroar'
 ````
-Salida: `Error de sintaxis`
+Salida: 
+````
+Error de sintaxis. Linea: ultima linea
+Estructura: STRPARAM. Simbolo: EOF
+````
 
 ````
 variable a
@@ -619,16 +623,16 @@ finsi
 publicar
 variable f = 'h'
 ````
-Salida: `Error de sintaxis en el simbolo no terminal: =`
+Salida: `Error de sintaxis en el simbolo no terminal: "=" en la linea: 1`
 ````
 variable a = 0
 a = 3 + 2
 variable a = 'a'
 ````
-Salida: `La variable 'a' ya fue declarada previamente`
+Salida: `Error en la fase sintactica: la variable 'a' ya fue declarada previamente. Linea de error: 3`
 ````
 variable a = 0
 a = 3 + 2
 variable b = a + u
 ````
-Salida: `Uso de una variable no declarada: u`
+Salida: `Error en la fase sintactica: uso de una variable no declarada: u. Linea de error: 3`

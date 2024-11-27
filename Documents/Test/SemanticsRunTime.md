@@ -15,5 +15,5 @@ Program:
             Right:
               2 (Type: Number)
 Semantica valida
-Error de runtime en la fase semantica: No se puede dividir entre 0
+Error de runtime en la fase semantica: No se puede dividir entre 0. Linea: 1
 ````

@@ -1,7 +1,9 @@
 # GDint
 
 ## Resumen
-- GDint es un compilador que busca cerrar la brecha entre la lengua natural y los lenguajes de programación. GDint busca facilitar el proceso de aprendizaje para jóvenes que tienen interés en la programación y no saben por dónde empezar. 
+- GDint es un compilador que busca cerrar la brecha entre la lengua natural y los lenguajes de programación.
+GDint busca facilitar el proceso de aprendizaje para jóvenes que tienen interés en la programación y no saben por dónde empezar.
+El enfoque principal del lenguaje compilado es el de manejo de llamadas a APIs, sirviendo como acercamiento a tecnologías web.
 
 ## Motivación y Problema a Resolver
 - **Descripción del problema:** Los lenguajes de programación actuales no son muy intuitivos a la hora de empezar a aprender. Muchos lenguajes son muy técnicos y es necesario la lectura de manual para saber por dónde empezar.
@@ -47,6 +49,10 @@ Donde:
   - Una vez que se tenía el código, se escribía en el archivo de entrada del compilador.
   - Por último, el compilador se ejecutaba con esa entrada y se analizaba la salida.
   - Adicionalmente y en el caso de las pruebas más importantes, se guardaba la entrada y salida, y se documentaba.
+  
+  Para obtener información detallada sobre el proceso de compilación, el archivo [Input/Config.txt](Input/Config.txt) puede ser modificado para mostrar el log.
+
+  `LOG=FALSE` oculta la información mientras que `LOG=TRUE` muestra detalles del proceso de ejecución y productos intermedios en consola.
 - **Resultados obtenidos:**
   - [Lexer](Documents/Test/LexerValid.md)
   - [Parser](Documents/Test/ParserValid.md)
@@ -80,16 +86,18 @@ variable id = 'alumno1'
 cambiar url 3 body body
 borrar url 3 body
 si a<10||a==-3 entonces
-    id = 'pokemon2' 
+    id = 'pokemon2'
     si id=='pokemon' entonces
         id = 'si'
     finsi
     cambiar 'https://pokeapi.co/api/v2/pokemon/ditto' id body
-    sino
+sino
     id = 'pokemon3'
     cambiar 'https://pokeapi.co/api/v2/pokemon/incineroar' id body
 finsi
 ````
+Salida: `Codigo compilado exitosamente.`
+
 - **Proceso de compilación:**
   - El programa lee del archivo fuente el código a compilar y se le aplica un preprocesamiento que adapta los caracteres, ya sea removiendo, modificando o manteniendo estos símbolos.
   - El código leído es pasado al Lexer, el cual, con ayuda de la tabla de transición de un autómata, agrupa los caracteres y los clasifica, creando así un flujo de tokens.
@@ -119,7 +127,6 @@ el compilador puede mejorar bastante con más tiempo, no solo de cómo está est
 Por ejemplo, el lenguaje no soporta declaraciones en condicionales por cómo se maneja la declaración de variables en el analizador sintáctico.
 Tampoco soporta operaciones entre diferentes tipos de datos.
 Otra característica que se puede soportar es un manejo de tokens de espacio y salto de línea más adecuado y flexible para el usuario.
-Por otra parte, el manejo de errores pudiera mejorar haciendo los mensajes más específicos e indicando datos como el número de línea.
 Otra oportunidad es extender el manejo de las API y los objetos que se obtienen, ofreciendo una mayor interacción con las tecnologías web.
 Por último, el compilador solo realiza la parte del FrontEnd, por lo que agregar el BackEnd sería oportuno.
 En el futuro, estas características se pudieran implementar para hacer este compilador un mejor software.

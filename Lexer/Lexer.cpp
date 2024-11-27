@@ -26,8 +26,7 @@ void Lexer::readInput(const std::string& code) {
         if (state == -1) {
             state=0;
             if (std::find(std::begin(nonFinal), std::end(nonFinal), prevState) != std::end(nonFinal)) {
-                std::cerr << "Lexical Error: string not recognized by the automata detected.\n";
-                //return;
+                std::cerr << "Error lexico: cadena no reconocida por el automata en la linea: "<< currentLine <<".\n";
                 exit(0);
             }
             if (!word.empty()) tokens.emplace_back(word,testState(prevState),currentLine);

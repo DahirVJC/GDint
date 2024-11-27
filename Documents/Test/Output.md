@@ -1725,6 +1725,7 @@ Token(name: c, token type: Identifier, final value: cd, declaration line: 4, usa
 Token(name: body, token type: Identifier, final value: holaaa4cd, declaration line: 5, usage lines: [7, 8, 11, 11, 12, 18, 21], data type: String, size: 10 bytes, dimension: 1, scope: Global, address: 0x100B)
 Token(name: url, token type: Identifier, final value: https://pokeapi.co/api/v2/pokemon/ditto, declaration line: 6, usage lines: [7, 8, 11, 12], data type: String, size: 40 bytes, dimension: 1, scope: Global, address: 0x1015)
 Token(name: id, token type: Identifier, final value: pokemon2, declaration line: 9, usage lines: [14, 15, 16, 18, 20, 21], data type: String, size: 9 bytes, dimension: 1, scope: Global, address: 0x103D)
+Codigo compilado exitosamente.
 
 Process finished with exit code 0
 ````

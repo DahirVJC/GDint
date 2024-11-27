@@ -9,6 +9,5 @@ Program:
   GetHttp:
     Endpoint:
       url (Type: Number)
-El arbol no es valido
-Error semantico: el url debe ser String en GetHttp
+Error semantico: el url debe ser String en GetHttp. Linea: 2
 ````

@@ -91,10 +91,11 @@ private:
     std::unique_ptr<Node> right;
     std::string operation;
     std::string dataType;
+    int line;
 
 public:
-    BinaryOperationNode(Node* left_node, Node* right_node, const std::string& op)
-        : Node(op), left(left_node), right(right_node), operation(op), dataType("Unknown") {}
+    BinaryOperationNode(Node* left_node, Node* right_node, const std::string& op, int l)
+        : Node(op), left(left_node), right(right_node), operation(op), dataType("Unknown"), line(l) {}
 
     void print(int depth = 0) const override {
         std::string indent(depth * 2, ' ');
@@ -124,26 +125,26 @@ public:
         const std::string& rightType = right->getDataType();
 
         if (leftType != rightType) {
-            std::cerr << "Error semantico: tipos de datos incompatibles entre si en " << name << std::endl;
-            return false;
+            std::cerr << "Error semantico: tipos de datos incompatibles entre si en " << name << ". Linea: " << line << std::endl;
+            exit(0);
         }
 
         if (leftType == "String") {
             if (operation != "+" && operation != "==") {
-                std::cerr << "Error semantico: no se permite la operacion " << operation << " en " << leftType << std::endl;
-                return false;
+                std::cerr << "Error semantico: no se permite la operacion " << operation << " en " << leftType << ". Linea: " << line << std::endl;
+                exit(0);
             }
         }
         else if (leftType == "Number") {
             if (operation != "+" && operation != "-" && operation != "*" && operation != "/" && operation != "==" && operation != "<" && operation != ">") {
-                std::cerr << "Error semantico: no se permite la operacion " << operation << " en " << leftType << std::endl;
-                return false;
+                std::cerr << "Error semantico: no se permite la operacion " << operation << " en " << leftType << ". Linea: " << line << std::endl;
+                exit(0);
             }
         }
         else if (leftType == "Bool") {
             if (operation != "&&" && operation != "||") {
-                std::cerr << "Error semantico: no se permite la operacion " << operation << " en " << leftType << std::endl;
-                return false;
+                std::cerr << "Error semantico: no se permite la operacion " << operation << " en " << leftType << ". Linea: " << line << std::endl;
+                exit(0);
             }
         }
 
@@ -185,7 +186,8 @@ public:
             }
             if (operation == "/") {
                 if (rightValue == 0) {
-                    throw std::runtime_error("No se puede dividir entre 0");// Es un error de runtime porque el 0 puede salir de EXP como 2 - 2
+                    std::string errorMessage = "No se puede dividir entre 0. Linea: " + std::to_string(line);
+                    throw std::runtime_error(errorMessage);// Es un error de runtime porque el 0 puede salir de EXP como 2 - 2
                 }
                 return std::to_string(leftValue / rightValue);
             }
@@ -239,10 +241,11 @@ class DeclarationNode : public Node {
 private:
     std::unique_ptr<IdentifierNode> variable;
     std::unique_ptr<Node> expression;
+    int line;
 
 public:
-    DeclarationNode(IdentifierNode* var, Node* expr)
-        : Node("Declaration"), variable(var), expression(expr) {}
+    DeclarationNode(IdentifierNode* var, Node* expr, int l)
+        : Node("Declaration"), variable(var), expression(expr), line(l) {}
 
     void print(int depth = 0) const override {
         std::string indent(depth * 2, ' ');
@@ -258,8 +261,13 @@ public:
     }
 // Fin Generacion
     bool evaluate() override {
-        if (!variable || !expression) {
-            return false;
+        if (!variable) {
+            std::cerr << "Error en fase semantica: no existe la variable o es invalida. Linea: " << line << std::endl;
+            exit(0);
+        }
+        if (!expression) {
+            std::cerr << "Error en fase semantica: no existe la expresion o es invalida. Linea: " << line << std::endl;
+            exit(0);
         }
         return variable->evaluate() && expression->evaluate();
     }
@@ -276,10 +284,11 @@ class AssignmentNode : public Node {
 private:
     std::unique_ptr<IdentifierNode> variable;
     std::unique_ptr<Node> expression;
+    int line;
 
 public:
-    AssignmentNode(IdentifierNode* var, Node* expr)
-        : Node("Assignment"), variable(var), expression(expr) {}
+    AssignmentNode(IdentifierNode* var, Node* expr, int l)
+        : Node("Assignment"), variable(var), expression(expr), line(l) {}
 
     void print(int depth = 0) const override {
         std::string indent(depth * 2, ' ');
@@ -295,16 +304,21 @@ public:
     }
 
     bool evaluate() override {
-        if (!variable || !expression) {
-            return false;
+        if (!variable) {
+            std::cerr << "Error en fase semantica: no existe la variable o es invalida. Linea: " << line << std::endl;
+            exit(0);
+        }
+        if (!expression) {
+            std::cerr << "Error en fase semantica: no existe la expresion o es invalida. Linea: " << line << std::endl;
+            exit(0);
         }
 
         bool varValid = variable->evaluate();
         bool varExp = expression->evaluate();
 
         if(variable->getDataType() != expression->getDataType()) {
-            std::cerr << "Error semantico: se puede asignar " << expression->getDataType() << " a " << variable->getDataType() << std::endl;
-            return false;
+            std::cerr << "Error semantico: se puede asignar " << expression->getDataType() << " a " << variable->getDataType() << ". Linea: " << line << std::endl;
+            exit(0);
         }
         return varValid && varExp;
     }
@@ -321,10 +335,11 @@ class GetHttpNode : public Node {
 private:
     std::unique_ptr<Node> endpoint;
     std::unique_ptr<Node> apiKey;
+    int line;
 
 public:
-    GetHttpNode(Node* end, Node* key)
-        : Node("GetHttp"), endpoint(end), apiKey(key) {}
+    GetHttpNode(Node* end, Node* key, int l)
+        : Node("GetHttp"), endpoint(end), apiKey(key), line(l) {}
 
     void print(int depth = 0) const override {
         std::string indent(depth * 2, ' ');
@@ -342,16 +357,17 @@ public:
 
     bool evaluate() override {
         if (!endpoint) {
-            return false;
+            std::cerr << "Error en fase semantica: no existe el endpoint o es invalido. Linea: " << line << std::endl;
+            exit(0);
         }
         if(endpoint->getDataType() != "String") {
-            std::cerr << "Error semantico: el url debe ser String en " << name << std::endl;
-            return false;
+            std::cerr << "Error semantico: el url debe ser String en " << name << ". Linea: " << line << std::endl;
+            exit(0);
         }
         if (apiKey) {
             if(apiKey->getDataType() != "String") {
-                std::cerr << "Error semantico: la clave de API debe ser String en " << name << std::endl;
-                return false;
+                std::cerr << "Error semantico: la clave de API debe ser String en " << name << ". Linea: " << line << std::endl;
+                exit(0);
             }
             return endpoint->evaluate() && apiKey->evaluate();
         }
@@ -379,10 +395,11 @@ private:
     std::unique_ptr<Node> endpoint;
     std::unique_ptr<Node> body;
     std::unique_ptr<Node> apiKey;
+    int line;
 
 public:
-    PostHttpNode(Node* end, Node* content, Node* key)
-        : Node("PostHttp"), endpoint(end), body(content), apiKey(key) {}
+    PostHttpNode(Node* end, Node* content, Node* key, int l)
+        : Node("PostHttp"), endpoint(end), body(content), apiKey(key), line(l) {}
 
     void print(int depth = 0) const override {
         std::string indent(depth * 2, ' ');
@@ -403,20 +420,21 @@ public:
 
     bool evaluate() override {
         if (!endpoint) {
-            return false;
+            std::cerr << "Error en fase semantica: no existe el endpoint o es invalido. Linea: " << line << std::endl;
+            exit(0);
         }
         if(endpoint->getDataType() != "String") {
-            std::cerr << "Error semantico: el url debe ser String en " << name << std::endl;
-            return false;
+            std::cerr << "Error semantico: el url debe ser String en " << name << ". Linea: " << line << std::endl;
+            exit(0);
         }
         if(body->getDataType() != "String") {
-            std::cerr << "Error semantico: el cuerpo debe ser String en " << name << std::endl;
-            return false;
+            std::cerr << "Error semantico: el cuerpo debe ser String en " << name << ". Linea: " << line << std::endl;
+            exit(0);
         }
         if (apiKey) {
             if(apiKey->getDataType() != "String") {
-                std::cerr << "Error semantico: la clave de API debe ser String en " << name << std::endl;
-                return false;
+                std::cerr << "Error semantico: la clave de API debe ser String en " << name << ". Linea: " << line << std::endl;
+                exit(0);
             }
             return endpoint->evaluate() && body->evaluate() && apiKey->evaluate();
         }
@@ -451,10 +469,11 @@ private:
     std::unique_ptr<Node> id;
     std::unique_ptr<Node> body;
     std::unique_ptr<Node> apiKey;
+    int line;
 
 public:
-    PutHttpNode(Node* end, Node* idRes, Node* content, Node* key)
-        : Node("PutHttp"), endpoint(end), id(idRes), body(content), apiKey(key) {}
+    PutHttpNode(Node* end, Node* idRes, Node* content, Node* key, int l)
+        : Node("PutHttp"), endpoint(end), id(idRes), body(content), apiKey(key), line(l) {}
 
     void print(int depth = 0) const override {
         std::string indent(depth * 2, ' ');
@@ -479,20 +498,21 @@ public:
 
     bool evaluate() override {
         if (!endpoint) {
-            return false;
+            std::cerr << "Error en fase semantica: no existe el endpoint o es invalido. Linea: " << line << std::endl;
+            exit(0);
         }
         if(endpoint->getDataType() != "String") {
-            std::cerr << "Error semantico: el url debe ser String en " << name << std::endl;
-            return false;
+            std::cerr << "Error semantico: el url debe ser String en " << name << ". Linea: " << line << std::endl;
+            exit(0);
         }
         if(body->getDataType() != "String") {
-            std::cerr << "Error semantico: el cuerpo debe ser String en " << name << std::endl;
-            return false;
+            std::cerr << "Error semantico: el cuerpo debe ser String en " << name << ". Linea: " << line << std::endl;
+            exit(0);
         }
         if (apiKey) {
             if(apiKey->getDataType() != "String") {
-                std::cerr << "Error semantico: la clave de API debe ser String en " << name << std::endl;
-                return false;
+                std::cerr << "Error semantico: la clave de API debe ser String en " << name << ". Linea: " << line << std::endl;
+                exit(0);
             }
             return endpoint->evaluate() && id->evaluate() && body->evaluate() && apiKey->evaluate();
         }
@@ -531,10 +551,11 @@ private:
     std::unique_ptr<Node> endpoint;
     std::unique_ptr<Node> id;
     std::unique_ptr<Node> apiKey;
+    int line;
 
 public:
-    DeleteHttpNode(Node* end, Node* idRes, Node* key)
-        : Node("DeleteHttp"), endpoint(end), id(idRes), apiKey(key) {}
+    DeleteHttpNode(Node* end, Node* idRes, Node* key, int l)
+        : Node("DeleteHttp"), endpoint(end), id(idRes), apiKey(key), line(l) {}
 
     void print(int depth = 0) const override {
         std::string indent(depth * 2, ' ');
@@ -555,16 +576,17 @@ public:
 
     bool evaluate() override {
         if (!endpoint) {
-            return false;
+            std::cerr << "Error en fase semantica: no existe el endpoint o es invalido. Linea: " << line << std::endl;
+            exit(0);
         }
         if(endpoint->getDataType() != "String") {
-            std::cerr << "Error semantico: el url debe ser String en " << name << std::endl;
-            return false;
+            std::cerr << "Error semantico: el url debe ser String en " << name  << ". Linea: " << line<< std::endl;
+            exit(0);
         }
         if (apiKey) {
             if(apiKey->getDataType() != "String") {
-                std::cerr << "Error semantico: la clave de API debe ser String en " << name << std::endl;
-                return false;
+                std::cerr << "Error semantico: la clave de API debe ser String en " << name << ". Linea: " << line << std::endl;
+                exit(0);
             }
             return endpoint->evaluate() && apiKey->evaluate();
         }
@@ -596,6 +618,7 @@ public:
 class ProgramNode : public Node {
 private:
     std::vector<std::unique_ptr<Node>> instructions;
+    int line;
 
 public:
     ProgramNode() : Node("Program") {}
@@ -619,7 +642,8 @@ public:
     bool evaluate() override {
         for (const auto& inst : instructions) {
             if (!inst || !inst->evaluate()) {
-                return false;
+                std::cerr<<"No existen la instruccion o es invalida.";
+                exit(0);
             }
         }
         return true;
