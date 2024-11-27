@@ -563,6 +563,7 @@
     - En \<TERM'> dado [ε] produce: ε
 ### **Ejemplos:**
 ````
+variable a = 0
 variable b = a*9
 variable c = 'a' + 'b'
 variable d = 4 + 'b'
